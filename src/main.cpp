@@ -20,7 +20,7 @@ bool MyApp::OnInit() {
 // MyFrame 클래스의 생성자 구현
 MyFrame::MyFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
         : wxFrame(NULL, wxID_ANY, title, pos, size) {
-    // 여기에 추가적인 초기화 코드를 작성할 수 있습니다.
+
 }
 
 wxIMPLEMENT_APP(MyApp);
