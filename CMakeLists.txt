@@ -9,7 +9,11 @@ find_package(wxWidgets REQUIRED core base)
 include(${wxWidgets_USE_FILE})
 
 # 실행 파일 이름과 소스 파일 경로를 지정.
-add_executable(Picture_with_Tag src/main.cpp)
+add_executable(Picture_with_Tag
+        src/AppInitializer.h
+        src/PictureFrame.h
+        src/AppInitializer.cpp
+        src/PictureFrame.cpp)
 
 # wxWidgets 라이브러리 링크
 target_link_libraries(Picture_with_Tag ${wxWidgets_LIBRARIES})
