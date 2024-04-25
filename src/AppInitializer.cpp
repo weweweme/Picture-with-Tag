@@ -1,9 +1,19 @@
 #include "AppInitializer.h"
 #include "PictureFrame.h"
 
+// 상수 정의
+constexpr int INIT_WINDOW_WIDTH = 1280;
+constexpr int INIT_WINDOW_HEIGHT = 1024;
+constexpr int INIT_WINDOW_X = 50;
+constexpr int INIT_WINDOW_Y = 50;
+constexpr char INIT_WINDOW_TITLE[] = "Picture with Tag";
+
 bool AppInitializer::OnInit() {
-    PictureFrame* frame = new PictureFrame("Picture with Tag", wxPoint(50, 50), wxSize(1920, 1080));
+    auto* frame = new PictureFrame(INIT_WINDOW_TITLE,
+                                           wxPoint(INIT_WINDOW_X, INIT_WINDOW_Y),
+                                           wxSize(INIT_WINDOW_WIDTH, INIT_WINDOW_HEIGHT));
     frame->Show(true);
+
     return true;
 }
 

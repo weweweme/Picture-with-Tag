@@ -6,7 +6,7 @@
 
 class AppInitializer : public wxApp {
 public:
-    virtual bool OnInit() override;
+    bool OnInit() override;
 };
 
 #endif // APPINITIALIZER_H
