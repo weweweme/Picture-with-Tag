@@ -2,8 +2,8 @@
 #include "PictureFrame.h"
 
 // 상수 정의
-constexpr int INIT_WINDOW_WIDTH = 1280;
-constexpr int INIT_WINDOW_HEIGHT = 1024;
+constexpr int INIT_WINDOW_WIDTH = 1440;
+constexpr int INIT_WINDOW_HEIGHT = 810;
 constexpr int INIT_WINDOW_X = 50;
 constexpr int INIT_WINDOW_Y = 50;
 constexpr char INIT_WINDOW_TITLE[] = "Picture with Tag";

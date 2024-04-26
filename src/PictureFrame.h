@@ -9,6 +9,16 @@ public:
 
 private:
     void HandleSizeChange(wxSizeEvent& event);
+    void OnClickAdd(wxCommandEvent& event);
+    void OnClickSearch(wxCommandEvent& event);
+    void OnClickManageData(wxCommandEvent& event);
+    void OnClickExit(wxCommandEvent& event);
+    void InitUI();
+
+    wxButton* btnAdd{};
+    wxButton* btnSearch{};
+    wxButton* btnManage{};
+    wxButton* btnExit{};
 };
 
 #endif // PICTUREFRAME_H
