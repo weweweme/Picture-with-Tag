@@ -10,15 +10,21 @@ PictureFrame::PictureFrame(const wxString& title, const wxPoint& pos, const wxSi
 }
 
 void PictureFrame::HandleSizeChange(wxSizeEvent& event) {
-    // 사용자 정의 크기 조정 로직 먼저 실행
     wxSize size = event.GetSize();
     int newWidth = size.GetWidth();
     int newHeight = size.GetHeight();
-    if (newWidth != ASPECT_RATIO_WIDTH * newHeight / ASPECT_RATIO_HEIGHT) {
-        newHeight = newWidth * ASPECT_RATIO_HEIGHT / ASPECT_RATIO_WIDTH;
-        this->SetSize(wxSize(newWidth, newHeight));
+
+    // 최적의 너비와 높이 계산
+    int expectedHeight = newWidth * ASPECT_RATIO_HEIGHT / ASPECT_RATIO_WIDTH;
+    int expectedWidth = newHeight * ASPECT_RATIO_WIDTH / ASPECT_RATIO_HEIGHT;
+
+    // 너비 또는 높이가 예상치와 다른 경우 조정
+    if (newHeight != expectedHeight) {
+        newHeight = expectedHeight;
+    } else if (newWidth != expectedWidth) {
+        newWidth = expectedWidth;
     }
 
-    // 이벤트 처리를 계속 진행 함
-    event.Skip();
+    this->SetSize(wxSize(newWidth, newHeight));
+    event.Skip();  // 다른 핸들러가 이벤트를 처리할 수 있도록 함
 }
