@@ -8,7 +8,7 @@ public:
     PictureFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
 
 private:
-    void OnSize(wxSizeEvent& event);
+    void HandleSizeChange(wxSizeEvent& event);
 };
 
 #endif // PICTUREFRAME_H
