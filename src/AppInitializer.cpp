@@ -1,5 +1,6 @@
 #include "AppInitializer.h"
 #include "TitlePage.h"
+#include "AddPage.h"
 
 // 상수 정의
 constexpr int INIT_WINDOW_WIDTH = 1440;
@@ -13,6 +14,10 @@ bool AppInitializer::OnInit() {
                                      wxPoint(INIT_WINDOW_X, INIT_WINDOW_Y),
                                      wxSize(INIT_WINDOW_WIDTH, INIT_WINDOW_HEIGHT));
     frames[ID_Title] = titleFrame; // 저장
+
+    auto* addPage = new AddPage("Add Data", wxPoint(INIT_WINDOW_X, INIT_WINDOW_Y),
+                                wxSize(INIT_WINDOW_WIDTH, INIT_WINDOW_HEIGHT));
+    frames[ID_Add] = addPage;
 
     titleFrame->Show(true); // 기본적으로 타이틀 프레임을 활성화
 

@@ -16,7 +16,9 @@ add_executable(Picture_with_Tag
         src/TitlePage.cpp
         src/PageID.h
         src/BasePage.h
-        src/BasePage.cpp)
+        src/BasePage.cpp
+        src/AddPage.h
+        src/AddPage.cpp)
 
 # wxWidgets 라이브러리 링크
 target_link_libraries(Picture_with_Tag ${wxWidgets_LIBRARIES})
