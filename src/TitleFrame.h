@@ -3,17 +3,20 @@
 
 #include <wx/wx.h>
 
-class PictureFrame : public wxFrame {
+class TitleFrame : public wxFrame {
 public:
-    PictureFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
+    TitleFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
 
 private:
+    wxButton* CreateButton(const wxString& label, void (TitleFrame::*eventHandler)(wxCommandEvent&));
+
     void OnClickAdd(wxCommandEvent& event);
     void OnClickSearch(wxCommandEvent& event);
     void OnClickManageData(wxCommandEvent& event);
     void OnClickExit(wxCommandEvent& event);
     void InitUI();
 
+    wxBoxSizer* vSizer;
     wxButton* btnAdd{};
     wxButton* btnSearch{};
     wxButton* btnManage{};

@@ -2,7 +2,7 @@
 #define APPINITIALIZER_H
 
 #include <wx/wx.h>
-#include "PictureFrame.h"
+#include "TitleFrame.h"
 
 class AppInitializer : public wxApp {
 public:
