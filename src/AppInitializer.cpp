@@ -1,7 +1,8 @@
 #include "AppInitializer.h"
 #include "TitlePage.h"
 #include "AddPage.h"
-#include "FrameManager.h"
+#include "PageManager.h"
+#include "SearchPage.h"
 
 // 상수 정의
 constexpr int INIT_WINDOW_WIDTH = 1440;
@@ -9,21 +10,21 @@ constexpr int INIT_WINDOW_HEIGHT = 810;
 constexpr int INIT_WINDOW_X = 50;
 constexpr int INIT_WINDOW_Y = 50;
 constexpr char INIT_WINDOW_TITLE[] = "Picture with Tag";
+constexpr char INIT_WINDOW_ADD[] = "Add Page";
+constexpr char INIT_WINDOW_SEARCH[] = "Search Page";
 
 bool AppInitializer::OnInit() {
-    FrameManager* manager = FrameManager::GetInstance();
+    PageManager* manager = PageManager::GetInstance();
 
     InitPage(PageID::ID_Title);
     InitPage(PageID::ID_Add);
-
-    // 기본적으로 타이틀 프레임을 활성화
-    manager->ShowPage(PageID::ID_Title);
+    InitPage(PageID::ID_Search);
 
     return true;
 }
 
 void AppInitializer::InitPage(const PageID id) {
-    FrameManager* manager = FrameManager::GetInstance();
+    PageManager* manager = PageManager::GetInstance();
     wxSize initSize = wxSize(INIT_WINDOW_WIDTH, INIT_WINDOW_HEIGHT);
     wxPoint initPosition = wxPoint(INIT_WINDOW_X, INIT_WINDOW_Y);
     wxFrame* frame;
@@ -31,9 +32,13 @@ void AppInitializer::InitPage(const PageID id) {
     switch (id) {
         case PageID::ID_Title:
             frame = new TitlePage(INIT_WINDOW_TITLE, initPosition, initSize);
+            frame->Show();
             break;
         case PageID::ID_Add:
-            frame = new AddPage(INIT_WINDOW_TITLE, initPosition, initSize, ID_Add);
+            frame = new AddPage(INIT_WINDOW_ADD, initPosition, initSize, ID_Add);
+            break;
+        case PageID::ID_Search:
+            frame = new SearchPage(INIT_WINDOW_SEARCH, initPosition, initSize, ID_Search);
             break;
     }
 

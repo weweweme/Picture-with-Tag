@@ -1,5 +1,5 @@
 #include "BasePage.h"
-#include "FrameManager.h"
+#include "PageManager.h"
 
 // 상수 정의
 constexpr char BACK_BUTTON_LABEL[] = "뒤로가기";
@@ -19,7 +19,7 @@ void BasePage::CreateBackButton() {
 }
 
 void BasePage::OnClickBack(wxCommandEvent& _) {
-    FrameManager* manager = FrameManager::GetInstance();
+    PageManager* manager = PageManager::GetInstance();
     manager->HidePage(this->currentPage);
     manager->ShowPage(PageID::ID_Title);
 }
