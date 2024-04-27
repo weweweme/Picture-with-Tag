@@ -33,7 +33,7 @@ void AppInitializer::InitPage(const PageID id) {
             frame = new TitlePage(INIT_WINDOW_TITLE, initPosition, initSize);
             break;
         case PageID::ID_Add:
-            frame = new AddPage(INIT_WINDOW_TITLE, initPosition, initSize);
+            frame = new AddPage(INIT_WINDOW_TITLE, initPosition, initSize, ID_Add);
             break;
     }
 

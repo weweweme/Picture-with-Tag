@@ -1,4 +1,5 @@
 #include "TitlePage.h"
+#include "FrameManager.h"
 
 // 상수 정의
 constexpr int BUTTON_SPACE = 3;  // 버튼 사이의 공간
@@ -26,10 +27,10 @@ void TitlePage::InitUI() {
     // 버튼이 추가될 수직 sizer에 상단 공간 추가
     vSizer->AddStretchSpacer(SPACER_OPTIONS);  // 상단의 stretchable 공간
 
-    CreateButton(BTN_LABEL_ADD, &TitlePage::OnClickAdd);
-    CreateButton(BTN_LABEL_SEARCH, &TitlePage::OnClickSearch);
-    CreateButton(BTN_LABEL_MANAGE, &TitlePage::OnClickManageData);
-    CreateButton(BTN_LABEL_EXIT, &TitlePage::OnClickExit);
+    CreateButton(BTN_LABEL_ADD, PageID::ID_Add);
+    CreateButton(BTN_LABEL_SEARCH, PageID::ID_Search);  // 예시 ID
+    CreateButton(BTN_LABEL_MANAGE, PageID::ID_DataManagement);
+    CreateButton(BTN_LABEL_EXIT, PageID::ID_None);  // 종료 버튼의 경우 특별한 처리 필요
 
     // 버튼이 추가될 수직 sizer에 하단 공간 추가
     vSizer->AddStretchSpacer(SPACER_OPTIONS);  // 하단의 stretchable 공간
@@ -38,25 +39,14 @@ void TitlePage::InitUI() {
     this->Layout();
 }
 
-wxButton* TitlePage::CreateButton(const wxString& label, void (TitlePage::*eventHandler)(wxCommandEvent&)) {
+void TitlePage::CreateButton(const wxString& label, PageID pageID) {
     auto* button = new wxButton(this, wxID_ANY, label, wxDefaultPosition, wxSize(BUTTON_WIDTH, BUTTON_HEIGHT), 0);
     vSizer->Add(button, NO_EXPAND, ALIGNMENT_OPTIONS, BUTTON_SPACE);
-    button->Bind(wxEVT_BUTTON, eventHandler, this);
-    return button;
+    button->Bind(wxEVT_BUTTON, [this, pageID](wxCommandEvent& event) {
+        OnClickGeneric(event, pageID);
+    });
 }
 
-void TitlePage::OnClickAdd(wxCommandEvent& event) {
-    // '추가' 버튼 로직
-}
-
-void TitlePage::OnClickSearch(wxCommandEvent& event) {
-    // '검색' 버튼 로직
-}
-
-void TitlePage::OnClickManageData(wxCommandEvent& event) {
-    // '데이터 관리' 버튼 로직
-}
-
-void TitlePage::OnClickExit(wxCommandEvent& event) {
-    Close(true);
+void TitlePage::OnClickGeneric(wxCommandEvent& _, PageID pageID) {
+    FrameManager::GetInstance()->ShowPage(pageID);
 }

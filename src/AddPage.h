@@ -5,7 +5,7 @@
 
 class AddPage : public BasePage {
 public:
-    AddPage(const wxString& title, const wxPoint& pos, const wxSize& size);
+    AddPage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage);
     void SetupPage() override;
 };
 
