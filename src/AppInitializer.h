@@ -11,7 +11,7 @@ public:
     bool OnInit() override;
 
 private:
-    std::map<PageID, wxFrame*> frames;
+
 };
 
 #endif // APPINITIALIZER_H
