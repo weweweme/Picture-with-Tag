@@ -9,10 +9,12 @@ constexpr int INIT_WINDOW_Y = 50;
 constexpr char INIT_WINDOW_TITLE[] = "Picture with Tag";
 
 bool AppInitializer::OnInit() {
-    auto* frame = new TitleFrame(INIT_WINDOW_TITLE,
-                                 wxPoint(INIT_WINDOW_X, INIT_WINDOW_Y),
-                                 wxSize(INIT_WINDOW_WIDTH, INIT_WINDOW_HEIGHT));
-    frame->Show(true);
+    auto* titleFrame = new TitleFrame(INIT_WINDOW_TITLE,
+                                      wxPoint(INIT_WINDOW_X, INIT_WINDOW_Y),
+                                      wxSize(INIT_WINDOW_WIDTH, INIT_WINDOW_HEIGHT));
+    frames[ID_Title] = titleFrame; // 저장
+
+    titleFrame->Show(true); // 기본적으로 타이틀 프레임을 활성화
 
     return true;
 }
