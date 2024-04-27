@@ -12,13 +12,15 @@ public:
 
 protected:
     virtual void InitUI();
+    wxPanel* panel{};
+    wxSize buttonSize;
+    static constexpr int RIGHT_BUTTON_X = 1300;
+    static constexpr int BACK_BUTTON_Y = 700;
 
 private:
     void OnClickBack(wxCommandEvent& _);
-    void SetupPage();
 
     PageID currentPage;
-    wxButton* backButton{};
 };
 
 #endif // BASEPAGE_H

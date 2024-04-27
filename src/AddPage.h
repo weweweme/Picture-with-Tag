@@ -9,6 +9,9 @@ public:
 
 protected:
     void InitUI() override;
+
+private:
+    void OnClickConfirm(wxCommandEvent& _);
 };
 
 #endif // PICTURE_WITH_TAG_ADDPAGE_H
