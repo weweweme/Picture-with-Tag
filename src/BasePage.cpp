@@ -2,19 +2,20 @@
 #include "PageManager.h"
 
 // 상수 정의
+constexpr int SIZE_BUTTON_X = 100;
+constexpr int SIZE_BUTTON_Y = 35;
 constexpr char BACK_BUTTON_LABEL[] = "뒤로가기";
-constexpr int BACK_BUTTON_X = 1300;
-constexpr int BACK_BUTTON_Y = 700;
+
 
 BasePage::BasePage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage)
-        : wxFrame(nullptr, wxID_ANY, title, pos, size) {
-    this->currentPage = currentPage;
-    CreateBackButton();
+        : wxFrame(nullptr, wxID_ANY, title, pos, size),
+          buttonSize(SIZE_BUTTON_X, SIZE_BUTTON_Y),
+          currentPage(currentPage) {
 }
 
-void BasePage::CreateBackButton() {
-    auto* panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-    backButton = new wxButton(panel, wxID_ANY, BACK_BUTTON_LABEL, wxPoint(BACK_BUTTON_X, BACK_BUTTON_Y), wxDefaultSize);
+void BasePage::InitUI() {
+    panel = new wxPanel(this);
+    auto* backButton = new wxButton(panel, wxID_ANY, BACK_BUTTON_LABEL, wxPoint(RIGHT_BUTTON_X, BACK_BUTTON_Y), buttonSize);
     backButton->Bind(wxEVT_BUTTON, &BasePage::OnClickBack, this);
 }
 

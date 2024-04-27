@@ -6,7 +6,9 @@
 class SearchPage : public BasePage {
 public:
     SearchPage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage);
-    void SetupPage() override;
+
+protected:
+    void InitUI() override;
 };
 
 #endif //PICTURE_WITH_TAG_SEARCHPAGE_H

@@ -10,14 +10,17 @@ public:
     BasePage(const wxString& title, const wxPoint& pos, const wxSize& size, PageID currentPage);
     ~BasePage() override = default;
 
-    virtual void SetupPage() = 0;
+protected:
+    virtual void InitUI();
+    wxPanel* panel{};
+    wxSize buttonSize;
+    static constexpr int RIGHT_BUTTON_X = 1300;
+    static constexpr int BACK_BUTTON_Y = 700;
 
 private:
-    void CreateBackButton();
     void OnClickBack(wxCommandEvent& _);
 
     PageID currentPage;
-    wxButton* backButton{};
 };
 
 #endif // BASEPAGE_H
