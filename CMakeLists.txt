@@ -11,9 +11,16 @@ include(${wxWidgets_USE_FILE})
 # 실행 파일 이름과 소스 파일 경로를 지정.
 add_executable(Picture_with_Tag
         src/AppInitializer.h
-        src/TitleFrame.h
+        src/TitlePage.h
         src/AppInitializer.cpp
-        src/TitleFrame.cpp)
+        src/TitlePage.cpp
+        src/PageID.h
+        src/BasePage.h
+        src/BasePage.cpp
+        src/AddPage.h
+        src/AddPage.cpp
+        src/FrameManager.h
+        src/FrameManager.cpp)
 
 # wxWidgets 라이브러리 링크
 target_link_libraries(Picture_with_Tag ${wxWidgets_LIBRARIES})
