@@ -11,7 +11,7 @@ PageManager* PageManager::GetInstance() {
 }
 
 void PageManager::RegisterPage(PageID id, wxFrame* frame) {
-    frames[id] = frame;
+    pages[id] = frame;
 }
 
 void PageManager::ShowPage(PageID id) {
@@ -20,11 +20,13 @@ void PageManager::ShowPage(PageID id) {
         return;
     }
 
-    frames[id]->Show(true);
-    frames[id]->Raise(); // 프레임을 전면으로 가져옴
+    pages[currentVisiblePage]->Hide();
+    currentVisiblePage = id;
+    pages[id]->Show();
+    pages[id]->Raise();
 }
 
 void PageManager::HidePage(PageID id) {
-    frames[id]->Show(false);
-    frames[id]->Hide();
+    currentVisiblePage = id;
+    pages[id]->Hide();
 }

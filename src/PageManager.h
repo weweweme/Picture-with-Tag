@@ -24,7 +24,8 @@ private:
     PageManager() = default; // 싱글톤 패턴을 위한 private 생성자
 
     static PageManager *instance;
-    std::map<PageID, wxFrame *> frames;
+    PageID currentVisiblePage = PageID::ID_Title;
+    std::map<PageID, wxFrame *> pages;
 };
 
 #endif // FRAMEMANAGER_H
