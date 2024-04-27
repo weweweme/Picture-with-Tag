@@ -8,7 +8,6 @@ public:
     PictureFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
 
 private:
-    void HandleSizeChange(wxSizeEvent& event);
     void OnClickAdd(wxCommandEvent& event);
     void OnClickSearch(wxCommandEvent& event);
     void OnClickManageData(wxCommandEvent& event);

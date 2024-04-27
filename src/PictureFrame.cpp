@@ -14,12 +14,14 @@ constexpr char BTN_LABEL_EXIT[] = "종료";
 
 PictureFrame::PictureFrame(const wxString& title, const wxPoint& pos, const wxSize& size)
         : wxFrame(nullptr, wxID_ANY, title, pos, size) {
+
+    // 창의 크기를 고정으로 유지하기 위한 기본값 입니다.
+    this->SetMinSize(size);
+    this->SetMaxSize(size);
     InitUI();
 }
 
 void PictureFrame::InitUI() {
-    this->Bind(wxEVT_SIZE, &PictureFrame::HandleSizeChange, this);
-
     // 버튼 생성 및 배치
     btnAdd = new wxButton(this, wxID_ANY, BTN_LABEL_ADD, wxDefaultPosition, wxSize(BUTTON_WIDTH, BUTTON_HEIGHT));
     btnSearch = new wxButton(this, wxID_ANY, BTN_LABEL_SEARCH, wxDefaultPosition, wxSize(BUTTON_WIDTH, BUTTON_HEIGHT));
@@ -40,25 +42,6 @@ void PictureFrame::InitUI() {
     btnSearch->Bind(wxEVT_BUTTON, &PictureFrame::OnClickSearch, this);
     btnManage->Bind(wxEVT_BUTTON, &PictureFrame::OnClickManageData, this);
     btnExit->Bind(wxEVT_BUTTON, &PictureFrame::OnClickExit, this);
-}
-
-void PictureFrame::HandleSizeChange(wxSizeEvent& event) {
-    wxSize size = event.GetSize();
-    int newWidth = size.GetWidth();
-    int newHeight = size.GetHeight();
-
-    int expectedHeight = static_cast<int>(newWidth * ASPECT_RATIO_HEIGHT / static_cast<double>(ASPECT_RATIO_WIDTH));
-    int expectedWidth = static_cast<int>(newHeight * ASPECT_RATIO_WIDTH / static_cast<double>(ASPECT_RATIO_HEIGHT));
-
-    // 너비와 높이 비율 조정
-    if (expectedHeight != newHeight) {
-        newHeight = expectedHeight;
-    } else if (expectedWidth != newWidth) {
-        newWidth = expectedWidth;
-    }
-
-    this->SetSize(newWidth, newHeight); // 사이즈 재설정
-    event.Skip(); // 다른 이벤트 핸들러가 처리할 수 있도록 함
 }
 
 void PictureFrame::OnClickAdd(wxCommandEvent& event) {
