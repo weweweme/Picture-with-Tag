@@ -13,7 +13,8 @@ add_executable(Picture_with_Tag
         src/AppInitializer.h
         src/TitleFrame.h
         src/AppInitializer.cpp
-        src/TitleFrame.cpp)
+        src/TitleFrame.cpp
+        src/FrameID.h)
 
 # wxWidgets 라이브러리 링크
 target_link_libraries(Picture_with_Tag ${wxWidgets_LIBRARIES})
