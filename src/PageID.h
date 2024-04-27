@@ -1,7 +1,7 @@
 #ifndef FRAMEIDENTIFIERS_H
 #define FRAMEIDENTIFIERS_H
 
-enum FrameID {
+enum PageID {
     ID_Title,
     ID_Add,
     ID_Search,

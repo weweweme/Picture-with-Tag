@@ -3,12 +3,12 @@
 
 #include <wx/wx.h>
 
-class TitleFrame : public wxFrame {
+class TitlePage : public wxFrame {
 public:
-    TitleFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
+    TitlePage(const wxString& title, const wxPoint& pos, const wxSize& size);
 
 private:
-    wxButton* CreateButton(const wxString& label, void (TitleFrame::*eventHandler)(wxCommandEvent&));
+    wxButton* CreateButton(const wxString& label, void (TitlePage::*eventHandler)(wxCommandEvent&));
 
     void OnClickAdd(wxCommandEvent& event);
     void OnClickSearch(wxCommandEvent& event);
