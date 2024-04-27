@@ -10,11 +10,12 @@ public:
     BasePage(const wxString& title, const wxPoint& pos, const wxSize& size, PageID currentPage);
     ~BasePage() override = default;
 
-    virtual void SetupPage() = 0;
+protected:
+    virtual void InitUI();
 
 private:
-    void CreateBackButton();
     void OnClickBack(wxCommandEvent& _);
+    void SetupPage();
 
     PageID currentPage;
     wxButton* backButton{};
