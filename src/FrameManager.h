@@ -16,9 +16,9 @@ class FrameManager {
 public:
     static FrameManager* GetInstance();
 
-    void RegisterFrame(PageID id, wxFrame *frame);
-    void ShowFrame(PageID id);
-    void HideFrame(PageID id);
+    void RegisterPage(PageID id, wxFrame *frame);
+    void ShowPage(PageID id);
+    void HidePage(PageID id);
 
 private:
     FrameManager() = default; // 싱글톤 패턴을 위한 private 생성자

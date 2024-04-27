@@ -10,16 +10,16 @@ FrameManager* FrameManager::GetInstance() {
     return instance;
 }
 
-void FrameManager::RegisterFrame(PageID id, wxFrame* frame) {
+void FrameManager::RegisterPage(PageID id, wxFrame* frame) {
     frames[id] = frame;
 }
 
-void FrameManager::ShowFrame(PageID id) {
+void FrameManager::ShowPage(PageID id) {
     frames[id]->Show();
     frames[id]->Raise(); // 프레임을 전면으로 가져옴
 }
 
-void FrameManager::HideFrame(PageID id) {
+void FrameManager::HidePage(PageID id) {
     frames[id]->Hide();
 }
 
