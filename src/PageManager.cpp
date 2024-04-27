@@ -1,20 +1,20 @@
-#include "FrameManager.h"
+#include "PageManager.h"
 
-FrameManager* FrameManager::instance = nullptr;
+PageManager* PageManager::instance = nullptr;
 
-FrameManager* FrameManager::GetInstance() {
+PageManager* PageManager::GetInstance() {
     if (instance == nullptr) {
-        instance = new FrameManager();
+        instance = new PageManager();
     }
 
     return instance;
 }
 
-void FrameManager::RegisterPage(PageID id, wxFrame* frame) {
+void PageManager::RegisterPage(PageID id, wxFrame* frame) {
     frames[id] = frame;
 }
 
-void FrameManager::ShowPage(PageID id) {
+void PageManager::ShowPage(PageID id) {
     if (id == PageID::ID_None) {
         wxTheApp->Exit();
         return;
@@ -24,7 +24,7 @@ void FrameManager::ShowPage(PageID id) {
     frames[id]->Raise(); // 프레임을 전면으로 가져옴
 }
 
-void FrameManager::HidePage(PageID id) {
+void PageManager::HidePage(PageID id) {
     frames[id]->Show(false);
     frames[id]->Hide();
 }

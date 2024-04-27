@@ -1,5 +1,5 @@
 #include "TitlePage.h"
-#include "FrameManager.h"
+#include "PageManager.h"
 
 // 상수 정의
 constexpr int BUTTON_SPACE = 3;  // 버튼 사이의 공간
@@ -48,5 +48,5 @@ void TitlePage::CreateButton(const wxString& label, PageID pageID) {
 }
 
 void TitlePage::OnClickGeneric(wxCommandEvent& _, PageID pageID) {
-    FrameManager::GetInstance()->ShowPage(pageID);
+    PageManager::GetInstance()->ShowPage(pageID);
 }
