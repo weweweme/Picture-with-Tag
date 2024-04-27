@@ -48,6 +48,10 @@ void AppInitializer::InitPage(const PageID id) {
             break;
     }
 
+    // 창의 크기 고정을 위한 기본값
+    frame->SetMinSize(initSize);
+    frame->SetMaxSize(initSize);
+
     manager->RegisterPage(id, frame);
 }
 

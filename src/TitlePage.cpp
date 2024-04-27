@@ -15,9 +15,7 @@ const int ALIGNMENT_OPTIONS = wxALIGN_CENTER_HORIZONTAL | wxALL;
 
 TitlePage::TitlePage(const wxString& title, const wxPoint& pos, const wxSize& size)
         : wxFrame(nullptr, wxID_ANY, title, pos, size) {
-    // 창의 크기 고정을 위한 기본값
-    this->SetMinSize(size);
-    this->SetMaxSize(size);
+
 
     vSizer = new wxBoxSizer(wxVERTICAL);
     InitUI();
