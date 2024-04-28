@@ -15,8 +15,6 @@ const int ALIGNMENT_OPTIONS = wxALIGN_CENTER_HORIZONTAL | wxALL;
 
 TitlePage::TitlePage(const wxString& title, const wxPoint& pos, const wxSize& size)
         : wxFrame(nullptr, wxID_ANY, title, pos, size) {
-
-
     vSizer = new wxBoxSizer(wxVERTICAL);
     InitUI();
 }
