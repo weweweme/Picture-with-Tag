@@ -2,6 +2,7 @@
 #define PICTURE_WITH_TAG_ADDPAGE_H
 
 #include "BasePage.h"
+#include <set>
 
 class AddPage : public BasePage {
 public:
@@ -19,6 +20,9 @@ private:
 
     wxTextCtrl* titleInput{};
     wxTextCtrl* tagInput{};
+    wxButton* tagButton{};
+    wxListBox* tagList{};
+    std::set<wxString> tags;
 };
 
 #endif // PICTURE_WITH_TAG_ADDPAGE_H

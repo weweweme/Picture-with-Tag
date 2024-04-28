@@ -33,33 +33,59 @@ void AddPage::InitUI() {
 
     // 제목 입력 필드
     auto* titleLabel = new wxStaticText(panel, wxID_ANY, TITLE_LABEL_TEXT, wxPoint(TITLE_LABEL_X, TITLE_LABEL_Y));
-    titleInput = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y), wxSize(TITLE_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT));
-    titleInput->Bind(wxEVT_TEXT, &AddPage::OnTitleTextChange, this);
+    this->titleInput = new wxTextCtrl(this->panel, wxID_ANY, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y), wxSize(TITLE_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT));
+    this->titleInput->Bind(wxEVT_TEXT, &AddPage::OnTitleTextChange, this);
 
     // 태그 입력 필드
     auto* tagLabel = new wxStaticText(panel, wxID_ANY, TAG_LABEL_TEXT, wxPoint(TITLE_LABEL_X, TITLE_LABEL_Y + TAG_INPUT_Y_OFFSET));
-    tagInput = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y + TAG_INPUT_Y_OFFSET), wxSize(TAG_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT));
-    tagInput->Bind(wxEVT_TEXT, &AddPage::OnTagTextChange, this);
+    this->tagInput = new wxTextCtrl(this->panel, wxID_ANY, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y + TAG_INPUT_Y_OFFSET), wxSize(TAG_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT));
+    this->tagInput->Bind(wxEVT_TEXT, &AddPage::OnTagTextChange, this);
 
     // 태그 입력 버튼
-    auto* tagButton = new wxButton(panel, wxID_ANY, TAG_BUTTON_TEXT, wxPoint(TAG_INPUT_FIELD_WIDTH + TAG_BUTTON_X_OFFSET, TITLE_INPUT_Y + TAG_INPUT_Y_OFFSET), wxSize(TAG_BUTTON_WIDTH, INPUT_FIELD_HEIGHT));
-    tagButton->Bind(wxEVT_BUTTON, &AddPage::OnTagButtonClick, this);
+    this->tagButton = new wxButton(this->panel, wxID_ANY, TAG_BUTTON_TEXT, wxPoint(TAG_INPUT_FIELD_WIDTH + TAG_BUTTON_X_OFFSET, TITLE_INPUT_Y + TAG_INPUT_Y_OFFSET), wxSize(TAG_BUTTON_WIDTH, INPUT_FIELD_HEIGHT));
+    this->tagButton->Bind(wxEVT_BUTTON, &AddPage::OnTagButtonClick, this);
+    this->tagButton->Enable(false);
+
+    // 태그 리스트박스 초기화
+    this->tagList = new wxListBox(this->panel, wxID_ANY, wxPoint(RIGHT_BUTTON_X, 25), wxSize(200, 300));
 
     // 확인 버튼
-    auto* confirmButton = new wxButton(panel, wxID_ANY, CONFIRM_BUTTON_LABEL, wxPoint(RIGHT_BUTTON_X, CONFIRM_BUTTON_Y), buttonSize);
+    auto* confirmButton = new wxButton(this->panel, wxID_ANY, CONFIRM_BUTTON_LABEL, wxPoint(RIGHT_BUTTON_X, CONFIRM_BUTTON_Y), buttonSize);
     confirmButton->Bind(wxEVT_BUTTON, &AddPage::OnClickConfirm, this);
 }
 
 void AddPage::OnTitleTextChange(wxCommandEvent& _) {
-    SetBackgroundColourBasedOnLength(titleInput, MAX_TITLE_LENGTH);
+    SetBackgroundColourBasedOnLength(this->titleInput, MAX_TITLE_LENGTH);
 }
 
 void AddPage::OnTagTextChange(wxCommandEvent& _) {
-    SetBackgroundColourBasedOnLength(tagInput, MAX_TAG_LENGTH);
+    wxString text = this->tagInput->GetValue();
+    bool isValid = !text.IsEmpty() && text.length() <= MAX_TAG_LENGTH && this->tagList->GetCount() <= MAX_TAGS;
+
+    this->tagButton->Enable(isValid);
+
+    SetBackgroundColourBasedOnLength(this->tagInput, MAX_TAG_LENGTH);
 }
 
 void AddPage::OnTagButtonClick(wxCommandEvent& event) {
-    wxLogMessage("태그 버튼 클릭");
+    wxString tag = this->tagInput->GetValue().Trim().Trim(false);
+
+    // 태그에 공백이 포함된 경우 경고
+    if (tag.Contains(" ")) {
+        wxLogMessage("태그에 공백을 포함할 수 없습니다.");
+        return;  // 함수 종료
+    }
+
+    // 먼저 태그의 중복 여부를 검사
+    if (!(this->tags.insert(tag).second)) {
+        wxLogMessage("중복된 태그입니다");
+        return;  // 중복된 태그인 경우 추가 로직을 수행하지 않고 함수를 종료
+    }
+
+    // 중복되지 않은 경우, 태그 리스트에 추가
+    this->tagList->Append(tag);
+    this->tagInput->Clear(); // 입력 필드 초기화
+    this->tagInput->SetFocus(); // 포커스 재설정
 }
 
 void AddPage::OnClickConfirm(wxCommandEvent& event) {
@@ -69,10 +95,8 @@ void AddPage::OnClickConfirm(wxCommandEvent& event) {
 
 void AddPage::SetBackgroundColourBasedOnLength(wxTextCtrl* input, size_t max_length) {
     wxString text = input->GetValue();
-    if (text.length() > max_length) {
-        input->SetBackgroundColour(LIGHT_RED);
-    } else {
-        input->SetBackgroundColour(DEFAULT_BG_COLOR);
-    }
+    bool isTooLong = text.length() > max_length;
+
+    input->SetBackgroundColour(isTooLong ? LIGHT_RED : DEFAULT_BG_COLOR);
     input->Refresh();
 }
