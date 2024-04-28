@@ -29,7 +29,9 @@ add_executable(Picture_with_Tag
         src/SearchPage.cpp
         src/DataManagementPage.h
         src/DataManagementPage.cpp
-        src/DataItem.h)
+        src/DataItem.h
+        src/GlobalColors.h
+        src/GlobalColors.cpp)
 
 target_link_libraries(Picture_with_Tag ${wxWidgets_LIBRARIES} ${Boost_LIBRARIES})
 
