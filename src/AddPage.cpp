@@ -1,7 +1,7 @@
 #include "AddPage.h"
 
 constexpr char CONFIRM_BUTTON_LABEL[] = "저장";
-constexpr int CONFIRM_BUTTON_Y = 600;
+constexpr int CONFIRM_BUTTON_Y = 640;
 constexpr int INPUT_FIELD_HEIGHT = 25;
 
 const wxColour LIGHT_RED(255, 204, 204);
