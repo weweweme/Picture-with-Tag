@@ -14,6 +14,11 @@ constexpr int TITLE_INPUT_Y = 20;
 constexpr char TITLE_LABEL_TEXT[] = "제목";
 constexpr size_t MAX_TITLE_LENGTH = 32;
 
+constexpr int TAG_INPUT_Y_OFFSET = 50;
+constexpr char TAG_LABEL_TEXT[] = "태그";
+constexpr size_t MAX_TAGS = 32;
+constexpr size_t MAX_TAG_LENGTH = 16;
+
 AddPage::AddPage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage)
         : BasePage(title, pos, size, currentPage) {
     AddPage::InitUI();
@@ -22,17 +27,21 @@ AddPage::AddPage(const wxString& title, const wxPoint& pos, const wxSize& size, 
 void AddPage::InitUI() {
     BasePage::InitUI();
 
-    // 제목 입력 필드 추가
+    // 제목 입력 필드
     auto* titleLabel = new wxStaticText(panel, wxID_ANY, TITLE_LABEL_TEXT, wxPoint(TITLE_LABEL_X, TITLE_LABEL_Y));
-    auto* titleInput = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y), wxSize(INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT));
-    titleInput->Bind(wxEVT_TEXT, &AddPage::OnTitleTextChange);
+    titleInput = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y), wxSize(INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT));
+    titleInput->Bind(wxEVT_TEXT, &AddPage::OnTitleTextChange, this);
+
+    // 태그 입력 필드
+    auto* tagLabel = new wxStaticText(panel, wxID_ANY, TAG_LABEL_TEXT, wxPoint(TITLE_LABEL_X, TITLE_LABEL_Y + TAG_INPUT_Y_OFFSET));
+    tagInput = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y + TAG_INPUT_Y_OFFSET), wxSize(INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT));
+    tagInput->Bind(wxEVT_TEXT, &AddPage::OnTagTextChange, this);
 
     auto* backButton = new wxButton(panel, wxID_ANY, CONFIRM_BUTTON_LABEL, wxPoint(RIGHT_BUTTON_X, CONFIRM_BUTTON_Y), buttonSize);
     backButton->Bind(wxEVT_BUTTON, &AddPage::OnClickConfirm, this);
 }
 
-void AddPage::OnTitleTextChange(wxCommandEvent& event) {
-    auto* titleInput = dynamic_cast<wxTextCtrl*>(event.GetEventObject());
+void AddPage::OnTitleTextChange(wxCommandEvent& _) {
     wxString text = titleInput->GetValue();
     if (text.length() > MAX_TITLE_LENGTH) {
         titleInput->SetBackgroundColour(LIGHT_RED); // Light red background
@@ -41,6 +50,10 @@ void AddPage::OnTitleTextChange(wxCommandEvent& event) {
         titleInput->SetBackgroundColour(DEFAULT_BG_COLOR); // Reset to white background
         titleInput->Refresh();
     }
+}
+
+void AddPage::OnTagTextChange(wxCommandEvent& event) {
+
 }
 
 void AddPage::OnClickConfirm(wxCommandEvent &_) {
