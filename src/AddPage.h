@@ -23,6 +23,12 @@ private:
     wxButton* tagButton{};
     wxListBox* tagList{};
     std::set<wxString> tags;
+
+    static constexpr int LISTBOX_X = 1185; // 리스트박스의 X 위치
+    static constexpr int LISTBOX_Y = 18; // 리스트박스의 Y 위치
+    static constexpr int LISTBOX_WIDTH = 230; // 리스트박스의 너비
+    static constexpr int LISTBOX_HEIGHT = 600; // 리스트박스의 높이
+    static constexpr int LISTBOX_X_OFFSET = 10;
 };
 
 #endif // PICTURE_WITH_TAG_ADDPAGE_H

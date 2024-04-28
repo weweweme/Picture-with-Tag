@@ -47,10 +47,10 @@ void AddPage::InitUI() {
     this->tagButton->Enable(false);
 
     // 태그 리스트박스 초기화
-    this->tagList = new wxListBox(this->panel, wxID_ANY, wxPoint(RIGHT_BUTTON_X, 25), wxSize(200, 300));
+    this->tagList = new wxListBox(this->panel, wxID_ANY, wxPoint(LISTBOX_X, LISTBOX_Y), wxSize(LISTBOX_WIDTH, LISTBOX_HEIGHT));
 
     // 확인 버튼
-    auto* confirmButton = new wxButton(this->panel, wxID_ANY, CONFIRM_BUTTON_LABEL, wxPoint(RIGHT_BUTTON_X, CONFIRM_BUTTON_Y), buttonSize);
+    auto* confirmButton = new wxButton(this->panel, wxID_ANY, CONFIRM_BUTTON_LABEL, wxPoint(RIGHT_BUTTON_X, CONFIRM_BUTTON_Y), defaultButtonSize);
     confirmButton->Bind(wxEVT_BUTTON, &AddPage::OnClickConfirm, this);
 }
 
@@ -72,7 +72,7 @@ void AddPage::OnTagButtonClick(wxCommandEvent& event) {
 
     // 태그에 공백이 포함된 경우 경고
     if (tag.Contains(" ")) {
-        wxLogMessage("태그에 공백을 포함할 수 없습니다.");
+        wxLogMessage("태그에 공백을 포함할 수 없습니다");
         return;  // 함수 종료
     }
 
