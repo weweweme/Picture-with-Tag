@@ -15,14 +15,15 @@ private:
     static void SetBackgroundColourBasedOnLength(wxTextCtrl* input, size_t max_length);
     void OnClickConfirm(wxCommandEvent& _);
     void OnTitleTextChange(wxCommandEvent& _);
-    void OnTagTextChange(wxCommandEvent& event);
-    void OnTagButtonClick(wxCommandEvent& event);
-    void OnBodyTextChange(wxCommandEvent& event);
-    void OnAddPhoto(wxCommandEvent& event);
-    void OnRemovePhoto(wxCommandEvent& event);
+    void OnTagTextChange(wxCommandEvent& _);
+    void OnTagButtonClick(wxCommandEvent& _);
+    void OnBodyTextChange(wxCommandEvent& _);
+    void OnAddPhoto(wxCommandEvent& _);
+    void OnRemovePhoto(wxCommandEvent& _);
     void OnMouseEnterPhoto(wxMouseEvent& event);
     void OnMouseLeavePhoto(wxMouseEvent& event);
     void UpdatePhotoDisplay(const wxString& path);
+    void OnResetButtonClick(wxCommandEvent& _);
 
     wxTextCtrl* titleInput;
     wxTextCtrl* tagInput;
@@ -36,6 +37,7 @@ private:
 
     static constexpr char CONFIRM_BUTTON_LABEL[] = "저장";
     static constexpr int CONFIRM_BUTTON_Y = 640;
+    static constexpr int CLEAR_BUTTON_Y = 680;
     static constexpr int INPUT_FIELD_HEIGHT = 25;
     static constexpr int TITLE_INPUT_FIELD_WIDTH = 900;
     static constexpr int TITLE_LABEL_X = 20;
@@ -70,6 +72,7 @@ private:
     static constexpr int LISTBOX_Y = 18;
     static constexpr int LISTBOX_WIDTH = 230;
     static constexpr int LISTBOX_HEIGHT = 600;
+    static constexpr char CLEAR_BUTTON_TEXT[] = "초기화";
     static constexpr char TAG_DUPLICATE_TEXT[] = "중복된 태그입니다";
     static constexpr char TAG_SPACE_IN_TEXT[] = "태그에 공백을 포함할 수 없습니다";
     static constexpr char SAVING_BUTTON_CLICK[] = "저장 버튼 클릭";
