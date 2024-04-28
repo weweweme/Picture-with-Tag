@@ -12,6 +12,7 @@ protected:
 
 private:
     void OnClickConfirm(wxCommandEvent& _);
+    static void OnTitleTextChange(wxCommandEvent& event);
 };
 
 #endif // PICTURE_WITH_TAG_ADDPAGE_H
