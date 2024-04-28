@@ -1,5 +1,7 @@
 #include "AddPage.h"
 #include "DataItem.h"
+#include "GlobalColors.h"
+#include "UIHelpers.h"
 #include <wx/stdpaths.h>
 #include <wx/filename.h>
 #include <fstream>
@@ -47,7 +49,6 @@ void AddPage::InitUI() {
 
     // photoDisplay 정적 비트맵 설정
     this->photoDisplay = new wxStaticBitmap(this->panel, wxID_ANY, wxNullBitmap, wxPoint(PHOTO_DISPLAY_X, PHOTO_DISPLAY_Y), wxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT));
-    this->photoDisplay->SetBackgroundColour(*wxWHITE);
 
     // 사진 추가 버튼 초기화
     int centerX = (MAX_IMAGE_WIDTH - BUTTON_WIDTH) / 2;
@@ -189,14 +190,14 @@ void AddPage::OnRemovePhoto(wxCommandEvent& _) {
 
 void AddPage::OnResetButtonClick(wxCommandEvent& _) {
     if (wxMessageBox(_("정말로 모든 정보를 초기화하시겠습니까?"), _("경고"), wxICON_WARNING | wxYES_NO | wxNO_DEFAULT) == wxYES) {
-        titleInput->Clear();
-        tagInput->Clear();
-        tagList->Clear();
-        bodyInput->Clear();
-        photoDisplay->SetBitmap(wxNullBitmap);
-        addPhotoButton->Show();
-        removePhotoButton->Hide();
-        panel->Refresh();
+        this->titleInput->Clear();
+        this->tagInput->Clear();
+        this->tagList->Clear();
+        this->bodyInput->Clear();
+        this->photoDisplay->SetBitmap(wxNullBitmap);
+        this->addPhotoButton->Show();
+        this->removePhotoButton->Hide();
+        this->panel->Refresh();
     }
 }
 
@@ -273,7 +274,8 @@ void AddPage::OnClickConfirm(wxCommandEvent& _) {
 void AddPage::SetBackgroundColourBasedOnLength(wxTextCtrl* input, size_t max_length) {
     wxString text = input->GetValue();
     bool isTooLong = text.length() > max_length;
+    wxColour backgroundColour = isTooLong ? LIGHT_RED : DEFAULT_BG_COLOR;
 
-    input->SetBackgroundColour(isTooLong ? LIGHT_RED : DEFAULT_BG_COLOR);
+    UIHelpers::SetControlColours(input, backgroundColour, GlobalColors::textColour);
     input->Refresh();
 }

@@ -4,6 +4,7 @@
 #include "PageManager.h"
 #include "SearchPage.h"
 #include "DataManagementPage.h"
+#include "GlobalColors.h"
 
 // 상수 정의
 constexpr int INIT_WINDOW_WIDTH = 1440;
@@ -17,7 +18,7 @@ constexpr char INIT_WINDOW_DATA_MANAGEMENT[] = "Data Management Page";
 
 bool AppInitializer::OnInit() {
     wxInitAllImageHandlers();
-    PageManager* manager = PageManager::GetInstance();
+    GlobalColors::Init();
 
     InitPage(PageID::ID_Title);
     InitPage(PageID::ID_Add);
