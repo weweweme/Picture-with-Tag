@@ -1,4 +1,9 @@
 #include "AddPage.h"
+#include "DataItem.h"
+#include <wx/stdpaths.h>
+#include <wx/filename.h>
+#include <fstream>
+#include <boost/archive/text_oarchive.hpp>
 
 static const wxColour LIGHT_RED(255, 204, 204);
 static const wxColour DEFAULT_BG_COLOR(*wxWHITE);
@@ -64,8 +69,8 @@ void AddPage::InitUI() {
     resetButton->Bind(wxEVT_BUTTON, &AddPage::OnResetButtonClick, this);
 
     // 확인 버튼
-    auto* confirmButton = new wxButton(this->panel, wxID_ANY, CONFIRM_BUTTON_LABEL, wxPoint(RIGHT_BUTTON_X, CONFIRM_BUTTON_Y), defaultButtonSize);
-    confirmButton->Bind(wxEVT_BUTTON, &AddPage::OnClickConfirm, this);
+    this->confirmButton = new wxButton(this->panel, wxID_ANY, CONFIRM_BUTTON_LABEL, wxPoint(RIGHT_BUTTON_X, CONFIRM_BUTTON_Y), defaultButtonSize);
+    this->confirmButton->Bind(wxEVT_BUTTON, &AddPage::OnClickConfirm, this);
 
     // 패널의 클릭 이벤트를 바인딩합니다.
     this->panel->Bind(wxEVT_LEFT_DOWN, &AddPage::OnPanelClick, this);
@@ -207,7 +212,62 @@ void AddPage::OnPanelClick(wxMouseEvent& event) {
 }
 
 void AddPage::OnClickConfirm(wxCommandEvent& _) {
-    wxLogMessage(_(SAVING_BUTTON_CLICK));
+    bool inputValid = true;
+    wxString validationMessage = _("유효한 값을 입력해주세요:");
+
+    // 입력 데이터 수집
+    wxString title = this->titleInput->GetValue();
+    wxString body = this->bodyInput->GetValue();
+    wxBitmap bitmap = this->photoDisplay->GetBitmap();
+
+    // 태그 집합 생성
+    std::set<wxString> tags;
+    for (unsigned int i = 0; i < this->tagList->GetCount(); ++i) {
+        tags.insert(this->tagList->GetString(i));
+    }
+
+    // 1. 제목 검증
+    if (title.IsEmpty()) {
+        validationMessage += _("\n- 제목을 입력해야 합니다.");
+        inputValid = false;
+    }
+
+    // 2. 이미지 검증
+    if (!bitmap.IsOk()) {
+        validationMessage += _("\n- 사진이 첨부되어야 합니다.");
+        inputValid = false;
+    }
+
+    // 3. 태그 검증
+    if (tags.empty()) {
+        validationMessage += _("\n- 태그가 최소 1개 이상 등록되어야 합니다.");
+        inputValid = false;
+    }
+
+    // 입력 검증에 실패한 경우 함수를 조기 종료하고 메시지를 로그로 출력
+    if (!inputValid) {
+        wxLogMessage(validationMessage);
+        return;
+    }
+
+    // DataItem 객체 생성
+    wxImage image = bitmap.ConvertToImage();
+    DataItem newItem(title, tags, body, image);
+
+    // 파일 경로 설정
+    wxString docDir = wxStandardPaths::Get().GetDocumentsDir();
+    wxString targetDir = docDir + "/Picture-with-Tag";
+    if (!wxDirExists(targetDir)) {
+        wxMkdir(targetDir);
+    }
+    wxString filePath = targetDir + "/" + title + ".pwt";
+
+    // 데이터 직렬화 및 파일 저장
+    std::ofstream ofs(filePath.ToStdString(), std::ios::binary);
+    boost::archive::text_oarchive oa(ofs);
+    oa << newItem;
+
+    wxLogMessage(_("데이터가 성공적으로 저장되었습니다."));
 }
 
 void AddPage::SetBackgroundColourBasedOnLength(wxTextCtrl* input, size_t max_length) {

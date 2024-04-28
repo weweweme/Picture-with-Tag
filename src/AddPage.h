@@ -37,6 +37,7 @@ private:
     wxTextCtrl* bodyInput;
     wxButton* addPhotoButton;
     wxButton* removePhotoButton;
+    wxButton* confirmButton;
     wxStaticBitmap* photoDisplay;
 
     static constexpr char CONFIRM_BUTTON_LABEL[] = "저장";
