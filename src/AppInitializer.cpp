@@ -16,6 +16,7 @@ constexpr char INIT_WINDOW_SEARCH[] = "Search Page";
 constexpr char INIT_WINDOW_DATA_MANAGEMENT[] = "Data Management Page";
 
 bool AppInitializer::OnInit() {
+    wxInitAllImageHandlers();
     PageManager* manager = PageManager::GetInstance();
 
     InitPage(PageID::ID_Title);
