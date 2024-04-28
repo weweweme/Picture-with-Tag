@@ -118,13 +118,10 @@ void AddPage::UpdatePhotoDisplay(const wxString& path) {
         image.Rescale(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT, wxIMAGE_QUALITY_HIGH);
     }
 
-    int imageX = (MAX_IMAGE_WIDTH - image.GetWidth()) / 2;
-    int imageY = (MAX_IMAGE_HEIGHT - image.GetHeight()) / 2;
     this->photoDisplay->SetBitmap(wxBitmap(image));
-    this->photoDisplay->SetPosition(wxPoint(PHOTO_DISPLAY_X + imageX, PHOTO_DISPLAY_Y + imageY));
-    this->photoDisplay->Show();
     this->addPhotoButton->Hide();
     this->panel->Refresh();
+    this->photoDisplay->Refresh();
 }
 
 void AddPage::OnMouseEnterPhoto(wxMouseEvent& event) {
