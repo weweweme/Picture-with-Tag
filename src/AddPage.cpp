@@ -53,6 +53,10 @@ void AddPage::InitUI() {
     this->photoDisplay->Bind(wxEVT_ENTER_WINDOW, &AddPage::OnMouseEnterPhoto, this);
     this->photoDisplay->Bind(wxEVT_LEAVE_WINDOW, &AddPage::OnMouseLeavePhoto, this);
 
+    // 초기화 버튼
+    auto* resetButton = new wxButton(this->panel, wxID_ANY, CLEAR_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X, CLEAR_BUTTON_Y), defaultButtonSize);
+    resetButton->Bind(wxEVT_BUTTON, &AddPage::OnResetButtonClick, this);
+
     // 확인 버튼
     auto* confirmButton = new wxButton(this->panel, wxID_ANY, CONFIRM_BUTTON_LABEL, wxPoint(RIGHT_BUTTON_X, CONFIRM_BUTTON_Y), defaultButtonSize);
     confirmButton->Bind(wxEVT_BUTTON, &AddPage::OnClickConfirm, this);
@@ -71,7 +75,7 @@ void AddPage::OnTagTextChange(wxCommandEvent& _) {
     SetBackgroundColourBasedOnLength(this->tagInput, MAX_TAG_LENGTH);
 }
 
-void AddPage::OnTagButtonClick(wxCommandEvent& event) {
+void AddPage::OnTagButtonClick(wxCommandEvent& _) {
     wxString tag = this->tagInput->GetValue().Trim().Trim(false);
 
     // 태그에 공백이 포함된 경우 경고
@@ -97,7 +101,7 @@ void AddPage::OnBodyTextChange(wxCommandEvent& _) {
     SetBackgroundColourBasedOnLength(bodyInput, MAX_BODY_LENGTH);
 }
 
-void AddPage::OnAddPhoto(wxCommandEvent& event) {
+void AddPage::OnAddPhoto(wxCommandEvent& _) {
     wxFileDialog openFileDialog(this, _(SELECT_PHOTO_TEXT), "", "", _(FILE_DIALOG_FILTER), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 
     if (openFileDialog.ShowModal() == wxID_CANCEL)
@@ -138,7 +142,7 @@ void AddPage::OnMouseLeavePhoto(wxMouseEvent& event) {
     event.Skip();
 }
 
-void AddPage::OnRemovePhoto(wxCommandEvent& event) {
+void AddPage::OnRemovePhoto(wxCommandEvent& _) {
     // 사진 제거 로직
     this->removePhotoButton->Hide();
     this->photoDisplay->SetBitmap(wxNullBitmap);
@@ -146,7 +150,20 @@ void AddPage::OnRemovePhoto(wxCommandEvent& event) {
     this->photoDisplay->Refresh();
 }
 
-void AddPage::OnClickConfirm(wxCommandEvent& event) {
+void AddPage::OnResetButtonClick(wxCommandEvent& _) {
+    if (wxMessageBox(_("정말로 모든 정보를 초기화하시겠습니까?"), _("경고"), wxICON_WARNING | wxYES_NO | wxNO_DEFAULT) == wxYES) {
+        titleInput->Clear();
+        tagInput->Clear();
+        tagList->Clear();
+        bodyInput->Clear();
+        photoDisplay->SetBitmap(wxNullBitmap);
+        addPhotoButton->Show();
+        removePhotoButton->Hide();
+        panel->Refresh();
+    }
+}
+
+void AddPage::OnClickConfirm(wxCommandEvent& _) {
     wxLogMessage(_(SAVING_BUTTON_CLICK));
 }
 
