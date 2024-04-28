@@ -17,11 +17,13 @@ private:
     void OnTitleTextChange(wxCommandEvent& _);
     void OnTagTextChange(wxCommandEvent& event);
     void OnTagButtonClick(wxCommandEvent& event);
+    void OnBodyTextChange(wxCommandEvent& event);
 
     wxTextCtrl* titleInput{};
     wxTextCtrl* tagInput{};
     wxButton* tagButton{};
     wxListBox* tagList{};
+    wxTextCtrl* bodyInput{};
     std::set<wxString> tags;
 
     static constexpr int LISTBOX_X = 1185; // 리스트박스의 X 위치
