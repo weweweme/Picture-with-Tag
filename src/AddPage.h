@@ -17,6 +17,8 @@ private:
     void OnTitleTextChange(wxCommandEvent& _);
     void OnTagTextChange(wxCommandEvent& _);
     void OnTagButtonClick(wxCommandEvent& _);
+    void OnTagSelected(wxCommandEvent& _);
+    void OnDeleteTagButtonClick(wxCommandEvent& _);
     void OnBodyTextChange(wxCommandEvent& _);
     void OnAddPhoto(wxCommandEvent& _);
     void OnRemovePhoto(wxCommandEvent& _);
@@ -24,11 +26,13 @@ private:
     void OnMouseLeavePhoto(wxMouseEvent& event);
     void UpdatePhotoDisplay(const wxString& path);
     void OnResetButtonClick(wxCommandEvent& _);
+    void OnPanelClick(wxMouseEvent& event);
 
     wxTextCtrl* titleInput;
     wxTextCtrl* tagInput;
     wxButton* tagButton;
     wxListBox* tagList;
+    wxButton* deleteTagButton;
     std::set<wxString> tags;
     wxTextCtrl* bodyInput;
     wxButton* addPhotoButton;
@@ -72,6 +76,8 @@ private:
     static constexpr int LISTBOX_Y = 18;
     static constexpr int LISTBOX_WIDTH = 230;
     static constexpr int LISTBOX_HEIGHT = 600;
+    static constexpr int DELETE_BUTTON_OFFSET_X = LISTBOX_X + LISTBOX_WIDTH - 30;
+    static constexpr int DELETE_BUTTON_OFFSET_Y = 14;
     static constexpr char CLEAR_BUTTON_TEXT[] = "초기화";
     static constexpr char TAG_DUPLICATE_TEXT[] = "중복된 태그입니다";
     static constexpr char TAG_SPACE_IN_TEXT[] = "태그에 공백을 포함할 수 없습니다";

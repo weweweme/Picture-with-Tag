@@ -28,6 +28,12 @@ void AddPage::InitUI() {
 
     // 태그 리스트 박스 초기화
     this->tagList = new wxListBox(this->panel, wxID_ANY, wxPoint(LISTBOX_X, LISTBOX_Y), wxSize(LISTBOX_WIDTH, LISTBOX_HEIGHT));
+    this->tagList->Bind(wxEVT_LISTBOX, &AddPage::OnTagSelected, this);
+
+    // 태그 삭제 버튼 초기화
+    this->deleteTagButton = new wxButton(this->panel, wxID_ANY, _("-"), wxDefaultPosition, wxSize(20, BUTTON_HEIGHT));
+    this->deleteTagButton->Bind(wxEVT_BUTTON, &AddPage::OnDeleteTagButtonClick, this);
+    this->deleteTagButton->Hide();  // 초기에 비활성화
 
     // 본문 텍스트 입력 필드
     auto* bodyLabel = new wxStaticText(this->panel, wxID_ANY, BODY_LABEL_TEXT, wxPoint(BODY_LABEL_X, BODY_LABEL_Y));
@@ -60,6 +66,9 @@ void AddPage::InitUI() {
     // 확인 버튼
     auto* confirmButton = new wxButton(this->panel, wxID_ANY, CONFIRM_BUTTON_LABEL, wxPoint(RIGHT_BUTTON_X, CONFIRM_BUTTON_Y), defaultButtonSize);
     confirmButton->Bind(wxEVT_BUTTON, &AddPage::OnClickConfirm, this);
+
+    // 패널의 클릭 이벤트를 바인딩합니다.
+    this->panel->Bind(wxEVT_LEFT_DOWN, &AddPage::OnPanelClick, this);
 }
 
 void AddPage::OnTitleTextChange(wxCommandEvent& _) {
@@ -95,6 +104,29 @@ void AddPage::OnTagButtonClick(wxCommandEvent& _) {
     this->tagInput->Clear(); // 입력 필드 초기화
     this->tagInput->SetFocus(); // 포커스 재설정
 }
+
+void AddPage::OnTagSelected(wxCommandEvent& event) {
+    int selection = this->tagList->GetSelection();
+    int itemHeight = LISTBOX_Y;  // 예상 아이템 높이
+    int itemTop = itemHeight * selection;  // 선택된 항목의 상단 위치 계산
+    this->deleteTagButton->SetPosition(wxPoint(DELETE_BUTTON_OFFSET_X, itemTop + DELETE_BUTTON_OFFSET_Y));
+    this->deleteTagButton->Show();
+}
+
+
+void AddPage::OnDeleteTagButtonClick(wxCommandEvent& _) {
+    int selection = this->tagList->GetSelection();
+
+    wxString tag = this->tagList->GetString(selection);  // 선택된 태그의 문자열 가져오기
+    bool shouldDelete = wxMessageBox(_("선택한 태그를 정말로 삭제하시겠습니까?"), _("태그 삭제 확인"), wxYES_NO | wxICON_WARNING) == wxYES;
+
+    if (shouldDelete) {
+        this->tags.erase(tag);
+        this->tagList->Delete(selection);
+        this->deleteTagButton->Hide();
+    }
+}
+
 
 void AddPage::OnBodyTextChange(wxCommandEvent& _) {
     wxString text = bodyInput->GetValue();
@@ -161,6 +193,17 @@ void AddPage::OnResetButtonClick(wxCommandEvent& _) {
         removePhotoButton->Hide();
         panel->Refresh();
     }
+}
+
+void AddPage::OnPanelClick(wxMouseEvent& event) {
+    wxPoint pt = event.GetPosition();
+    // 패널 클릭 위치가 ListBox 범위 내에 없을 경우
+    if (!this->tagList->GetRect().Contains(pt)) {
+        this->tagList->SetSelection(wxNOT_FOUND);  // 선택 취소
+        this->deleteTagButton->Hide();  // 삭제 버튼 숨기기
+    }
+
+    event.Skip();
 }
 
 void AddPage::OnClickConfirm(wxCommandEvent& _) {
