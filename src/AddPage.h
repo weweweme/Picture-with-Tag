@@ -11,9 +11,11 @@ protected:
     void InitUI() override;
 
 private:
+    static void SetBackgroundColourBasedOnLength(wxTextCtrl* input, size_t max_length);
     void OnClickConfirm(wxCommandEvent& _);
     void OnTitleTextChange(wxCommandEvent& _);
     void OnTagTextChange(wxCommandEvent& event);
+    void OnTagButtonClick(wxCommandEvent& event);
 
     wxTextCtrl* titleInput{};
     wxTextCtrl* tagInput{};
