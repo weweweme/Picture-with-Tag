@@ -13,9 +13,10 @@ public:
 protected:
     virtual void InitUI();
     wxPanel* panel{};
-    wxSize buttonSize;
-    static constexpr int RIGHT_BUTTON_X = 1300;
-    static constexpr int BACK_BUTTON_Y = 700;
+    wxSize defaultButtonSize;
+
+    static constexpr int RIGHT_BUTTON_X = 1188;
+    static constexpr int BACK_BUTTON_Y = 720;
 
 private:
     void OnClickBack(wxCommandEvent& _);
