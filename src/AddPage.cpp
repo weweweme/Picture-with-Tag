@@ -1,4 +1,9 @@
 #include "AddPage.h"
+#include "DataItem.h"
+#include <wx/stdpaths.h>
+#include <wx/filename.h>
+#include <fstream>
+#include <boost/archive/text_oarchive.hpp>
 
 static const wxColour LIGHT_RED(255, 204, 204);
 static const wxColour DEFAULT_BG_COLOR(*wxWHITE);
@@ -207,7 +212,34 @@ void AddPage::OnPanelClick(wxMouseEvent& event) {
 }
 
 void AddPage::OnClickConfirm(wxCommandEvent& _) {
-    wxLogMessage(_(SAVING_BUTTON_CLICK));
+    // 입력 데이터 수집
+    wxString title = this->titleInput->GetValue();
+    wxString body = this->bodyInput->GetValue();
+    wxImage image = this->photoDisplay->GetBitmap().ConvertToImage();
+
+    // 태그 집합 생성
+    std::set<wxString> tags;
+    for (unsigned int i = 0; i < this->tagList->GetCount(); ++i) {
+        tags.insert(this->tagList->GetString(i));
+    }
+
+    // DataItem 객체 생성
+    DataItem newItem(title, tags, body, image);
+
+    // 파일 경로 설정
+    wxString docDir = wxStandardPaths::Get().GetDocumentsDir();
+    wxString targetDir = docDir + "/Picture-with-Tag";
+    if (!wxDirExists(targetDir)) {
+        wxMkdir(targetDir);
+    }
+    wxString filePath = targetDir + "/" + title + ".pwt";
+
+    // 데이터 직렬화 및 파일 저장
+    std::ofstream ofs(filePath.ToStdString(), std::ios::binary);
+    boost::archive::text_oarchive oa(ofs);
+    oa << newItem;
+
+    wxLogMessage(_("데이터가 성공적으로 저장되었습니다."));
 }
 
 void AddPage::SetBackgroundColourBasedOnLength(wxTextCtrl* input, size_t max_length) {

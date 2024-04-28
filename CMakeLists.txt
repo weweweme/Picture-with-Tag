@@ -8,7 +8,11 @@ set(CMAKE_CXX_STANDARD 20)
 find_package(wxWidgets REQUIRED core base)
 include(${wxWidgets_USE_FILE})
 
-# 실행 파일 이름과 소스 파일 경로를 지정.
+# Boost 설정
+find_package(Boost 1.65 REQUIRED COMPONENTS serialization)
+include_directories(${Boost_INCLUDE_DIRS})
+
+# 실행 파일 이름과 소스 파일 경로를 지정
 add_executable(Picture_with_Tag
         src/AppInitializer.h
         src/TitlePage.h
@@ -27,5 +31,5 @@ add_executable(Picture_with_Tag
         src/DataManagementPage.cpp
         src/DataItem.h)
 
-# wxWidgets 라이브러리 링크
-target_link_libraries(Picture_with_Tag ${wxWidgets_LIBRARIES})
+target_link_libraries(Picture_with_Tag ${wxWidgets_LIBRARIES} ${Boost_LIBRARIES})
+
