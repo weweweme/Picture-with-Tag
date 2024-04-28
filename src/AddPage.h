@@ -19,6 +19,9 @@ private:
     void OnTagButtonClick(wxCommandEvent& event);
     void OnBodyTextChange(wxCommandEvent& event);
     void OnAddPhoto(wxCommandEvent& event);
+    void OnRemovePhoto(wxCommandEvent& event);
+    void OnMouseEnterPhoto(wxMouseEvent& event);
+    void OnMouseLeavePhoto(wxMouseEvent& event);
     void UpdatePhotoDisplay(const wxString& path);
 
     wxTextCtrl* titleInput;
@@ -28,7 +31,7 @@ private:
     std::set<wxString> tags;
     wxTextCtrl* bodyInput;
     wxButton* addPhotoButton;
-    wxBitmap photoBitmap;
+    wxButton* removePhotoButton;
     wxStaticBitmap* photoDisplay;
 
     static constexpr char CONFIRM_BUTTON_LABEL[] = "저장";
@@ -71,6 +74,7 @@ private:
     static constexpr char TAG_SPACE_IN_TEXT[] = "태그에 공백을 포함할 수 없습니다";
     static constexpr char SAVING_BUTTON_CLICK[] = "저장 버튼 클릭";
     static constexpr char PHOTO_ADD_TEXT[] = "사진 추가";
+    static constexpr char PHOTO_REMOVE_TEXT[] = "사진 제거";
     static constexpr char SELECT_PHOTO_TEXT[] = "사진 선택";
     static constexpr char IMAGE_LOAD_FAIL_TEXT[] = "이미지 파일을 로드할 수 없습니다.";
     static constexpr char FILE_DIALOG_FILTER[] = "JPEG files (*.jpg)|*.jpg|PNG files (*.png)|*.png";

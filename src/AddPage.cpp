@@ -44,6 +44,15 @@ void AddPage::InitUI() {
     this->addPhotoButton = new wxButton(this->photoDisplay, wxID_ANY, PHOTO_ADD_TEXT, wxPoint(centerX, centerY), wxSize(BUTTON_WIDTH, BUTTON_HEIGHT));
     this->addPhotoButton->Bind(wxEVT_BUTTON, &AddPage::OnAddPhoto, this);
 
+    // 사진 제거 버튼 추가
+    this->removePhotoButton = new wxButton(this->photoDisplay, wxID_ANY, PHOTO_REMOVE_TEXT, wxPoint(centerX, centerY), wxSize(BUTTON_WIDTH, BUTTON_HEIGHT));
+    this->removePhotoButton->Bind(wxEVT_BUTTON, &AddPage::OnRemovePhoto, this);
+    this->removePhotoButton->Hide();  // 초기에는 숨김
+
+    // 마우스 이벤트 바인딩
+    this->photoDisplay->Bind(wxEVT_ENTER_WINDOW, &AddPage::OnMouseEnterPhoto, this);
+    this->photoDisplay->Bind(wxEVT_LEAVE_WINDOW, &AddPage::OnMouseLeavePhoto, this);
+
     // 확인 버튼
     auto* confirmButton = new wxButton(this->panel, wxID_ANY, CONFIRM_BUTTON_LABEL, wxPoint(RIGHT_BUTTON_X, CONFIRM_BUTTON_Y), defaultButtonSize);
     confirmButton->Bind(wxEVT_BUTTON, &AddPage::OnClickConfirm, this);
@@ -116,6 +125,28 @@ void AddPage::UpdatePhotoDisplay(const wxString& path) {
     this->photoDisplay->Show();
     this->addPhotoButton->Hide();
     this->panel->Refresh();
+}
+
+void AddPage::OnMouseEnterPhoto(wxMouseEvent& event) {
+    if (this->photoDisplay->GetBitmap().IsOk()) {  // Check if photoDisplay has a valid bitmap
+        this->removePhotoButton->Show();
+        this->photoDisplay->Refresh();
+    }
+    event.Skip();
+}
+
+void AddPage::OnMouseLeavePhoto(wxMouseEvent& event) {
+    this->removePhotoButton->Hide();
+    this->panel->Refresh();
+    event.Skip();
+}
+
+void AddPage::OnRemovePhoto(wxCommandEvent& event) {
+    // 사진 제거 로직
+    this->removePhotoButton->Hide();
+    this->photoDisplay->SetBitmap(wxNullBitmap);
+    this->addPhotoButton->Show();
+    this->photoDisplay->Refresh();
 }
 
 void AddPage::OnClickConfirm(wxCommandEvent& event) {
