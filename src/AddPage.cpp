@@ -69,8 +69,8 @@ void AddPage::InitUI() {
     resetButton->Bind(wxEVT_BUTTON, &AddPage::OnResetButtonClick, this);
 
     // 확인 버튼
-    auto* confirmButton = new wxButton(this->panel, wxID_ANY, CONFIRM_BUTTON_LABEL, wxPoint(RIGHT_BUTTON_X, CONFIRM_BUTTON_Y), defaultButtonSize);
-    confirmButton->Bind(wxEVT_BUTTON, &AddPage::OnClickConfirm, this);
+    this->confirmButton = new wxButton(this->panel, wxID_ANY, CONFIRM_BUTTON_LABEL, wxPoint(RIGHT_BUTTON_X, CONFIRM_BUTTON_Y), defaultButtonSize);
+    this->confirmButton->Bind(wxEVT_BUTTON, &AddPage::OnClickConfirm, this);
 
     // 패널의 클릭 이벤트를 바인딩합니다.
     this->panel->Bind(wxEVT_LEFT_DOWN, &AddPage::OnPanelClick, this);
@@ -212,10 +212,13 @@ void AddPage::OnPanelClick(wxMouseEvent& event) {
 }
 
 void AddPage::OnClickConfirm(wxCommandEvent& _) {
+    bool inputValid = true;
+    wxString validationMessage = _("유효한 값을 입력해주세요:");
+
     // 입력 데이터 수집
     wxString title = this->titleInput->GetValue();
     wxString body = this->bodyInput->GetValue();
-    wxImage image = this->photoDisplay->GetBitmap().ConvertToImage();
+    wxBitmap bitmap = this->photoDisplay->GetBitmap();
 
     // 태그 집합 생성
     std::set<wxString> tags;
@@ -223,7 +226,32 @@ void AddPage::OnClickConfirm(wxCommandEvent& _) {
         tags.insert(this->tagList->GetString(i));
     }
 
+    // 1. 제목 검증
+    if (title.IsEmpty()) {
+        validationMessage += _("\n- 제목을 입력해야 합니다.");
+        inputValid = false;
+    }
+
+    // 2. 이미지 검증
+    if (!bitmap.IsOk()) {
+        validationMessage += _("\n- 사진이 첨부되어야 합니다.");
+        inputValid = false;
+    }
+
+    // 3. 태그 검증
+    if (tags.empty()) {
+        validationMessage += _("\n- 태그가 최소 1개 이상 등록되어야 합니다.");
+        inputValid = false;
+    }
+
+    // 입력 검증에 실패한 경우 함수를 조기 종료하고 메시지를 로그로 출력
+    if (!inputValid) {
+        wxLogMessage(validationMessage);
+        return;
+    }
+
     // DataItem 객체 생성
+    wxImage image = bitmap.ConvertToImage();
     DataItem newItem(title, tags, body, image);
 
     // 파일 경로 설정
