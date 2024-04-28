@@ -31,7 +31,9 @@ add_executable(Picture_with_Tag
         src/DataManagementPage.cpp
         src/DataItem.h
         src/GlobalColors.h
-        src/GlobalColors.cpp)
+        src/GlobalColors.cpp
+        src/UIHelpers.h
+        src/UIHelpers.cpp)
 
 target_link_libraries(Picture_with_Tag ${wxWidgets_LIBRARIES} ${Boost_LIBRARIES})
 
