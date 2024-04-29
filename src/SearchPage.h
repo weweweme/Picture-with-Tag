@@ -2,6 +2,7 @@
 #define PICTURE_WITH_TAG_SEARCHPAGE_H
 
 #include "BasePage.h"
+#include "DataItem.h"
 
 class SearchPage : public BasePage {
 public:
@@ -15,6 +16,7 @@ private:
     void OnArticleSelected(wxCommandEvent& _);
     void OnSearchConfirm(wxCommandEvent& _);
     void OnClickReset(wxCommandEvent& _);
+    static std::vector<DataItem> LoadDataItems();
 
     wxTextCtrl* searchInput;
     wxListBox* articleList;
