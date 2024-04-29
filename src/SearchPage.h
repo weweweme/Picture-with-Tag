@@ -19,6 +19,7 @@ private:
     wxListBox* articleList;
     wxChoice* searchCondition;
     wxButton* searchButton;
+    wxTextCtrl* tagView;
 
     // Label constants
     static constexpr char SEARCH_LABEL_TEXT[] = "검색";
@@ -42,6 +43,15 @@ private:
     static constexpr int SEARCH_CONDITION_TOP_OFFSET = 2; // Vertical alignment offset
     static constexpr int SEARCH_BUTTON_OFFSET = 80; // Offset for button from the condition dropdown
     static constexpr int SEARCH_BUTTON_TOP_OFFSET = -6; // Vertical alignment offset for button
+
+    // 태그
+    static constexpr char TAG_LABEL_TEXT[] = "태그";
+    static constexpr int TITLE_LABEL_X = 20;
+    static constexpr int TITLE_LABEL_Y = 25;
+    static constexpr int TITLE_INPUT_X = 60;
+    static constexpr int TITLE_INPUT_Y = 20;
+    static constexpr int TAG_INPUT_FIELD_WIDTH = 1055;
+    static constexpr int TAG_INPUT_Y_OFFSET = 50;
 };
 
 #endif //PICTURE_WITH_TAG_SEARCHPAGE_H
