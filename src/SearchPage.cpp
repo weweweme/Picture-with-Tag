@@ -106,6 +106,7 @@ void SearchPage::OnSearchConfirm(wxCommandEvent& _) {
     for (auto& item : items) {
         switch (selectedOption) {
             case 0: // 제목으로 검색
+                // 제목에 searchText가 포함되어 있는지 확인
                 if (item.title.Lower().Contains(searchText)) {
                     this->searchResults.push_back(item);
                 }
