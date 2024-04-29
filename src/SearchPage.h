@@ -20,6 +20,7 @@ private:
     wxChoice* searchCondition;
     wxButton* searchButton;
     wxTextCtrl* tagView;
+    wxStaticBitmap* pictureDisplay;
 
     // Label constants
     static constexpr char SEARCH_LABEL_TEXT[] = "검색";
@@ -52,6 +53,12 @@ private:
     static constexpr int TITLE_INPUT_Y = 20;
     static constexpr int TAG_INPUT_FIELD_WIDTH = 1055;
     static constexpr int TAG_INPUT_Y_OFFSET = 50;
+
+    // 사진
+    static constexpr int PHOTO_DISPLAY_X = 18;
+    static constexpr int PHOTO_DISPLAY_Y = 122;
+    static constexpr int MAX_IMAGE_WIDTH = 940;
+    static constexpr int MAX_IMAGE_HEIGHT = 480;
 };
 
 #endif //PICTURE_WITH_TAG_SEARCHPAGE_H

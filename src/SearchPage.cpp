@@ -31,6 +31,9 @@ void SearchPage::InitUI() {
     // 글 목록 리스트
     this->articleList = new wxListBox(this->panel, wxID_ANY, wxPoint(LISTBOX_X, LISTBOX_Y), wxSize(LISTBOX_WIDTH, LISTBOX_HEIGHT));
     this->articleList->Bind(wxEVT_LISTBOX, &SearchPage::OnArticleSelected, this);
+
+    // PictureDisplay 정적 비트맵 설정
+    this->pictureDisplay = new wxStaticBitmap(this->panel, wxID_ANY, wxNullBitmap, wxPoint(PHOTO_DISPLAY_X, PHOTO_DISPLAY_Y), wxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT));
 }
 
 void SearchPage::OnTitleTextChange(wxCommandEvent &_) {
