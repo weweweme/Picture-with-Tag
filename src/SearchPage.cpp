@@ -104,15 +104,20 @@ void SearchPage::OnSearchConfirm(wxCommandEvent& _) {
 
     // 검색 조건에 따라 필터링
     for (auto& item : items) {
-        if (selectedOption == 0 && item.title.Lower().Contains(searchText)) {
-            this->searchResults.push_back(item);
-        } else if (selectedOption == 1) {
-            for (auto& tag : item.tags) {
-                if (tag.Lower().Contains(searchText)) {
+        switch (selectedOption) {
+            case 0: // 제목으로 검색
+                if (item.title.Lower().Contains(searchText)) {
                     this->searchResults.push_back(item);
-                    continue;
                 }
-            }
+                break;
+            case 1: // 태그로 검색
+                for (const auto& tag : item.tags) {
+                    if (tag.Lower().Contains(searchText)) {
+                        this->searchResults.push_back(item);
+                        break; // 일치하는 태그를 찾으면 더 이상의 태그 검사는 불필요
+                    }
+                }
+                break;
         }
     }
 
