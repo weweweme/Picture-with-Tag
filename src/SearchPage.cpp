@@ -128,7 +128,18 @@ void SearchPage::OnSearchConfirm(wxCommandEvent& _) {
 }
 
 void SearchPage::OnClickReset(wxCommandEvent& _) {
-
+    // 사용자에게 리셋을 확인하는 메시지 박스를 표시
+    int response = wxMessageBox("검색 설정과 결과를 모두 초기화하시겠습니까?", "리셋 확인", wxICON_QUESTION | wxYES_NO, this);
+    if (response == wxYES) {
+        this->searchInput->Clear();
+        this->searchCondition->SetSelection(0);
+        this->searchResults.clear();
+        this->articleList->Clear();
+        this->tagView->Clear();
+        this->bodyView->Clear();
+        this->pictureDisplay->SetBitmap(wxNullBitmap);
+        this->pictureDisplay->Refresh();
+    }
 }
 
 std::vector<DataItem> SearchPage::LoadDataItems() {
