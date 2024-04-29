@@ -84,14 +84,18 @@ void SearchPage::OnSearchConfirm(wxCommandEvent &_) {
         }
     }
 
-    // TODO: 결과 표시 로직 구현
+    // 검색 결과를 ListBox에 표시
+    articleList->Clear();
+    for (auto& result : results) {
+        articleList->Append(result.title);
+    }
 }
 
 void SearchPage::OnClickReset(wxCommandEvent &_) {
 
 }
 
-std::vector<DataItem> LoadDataItems() {
+std::vector<DataItem> SearchPage::LoadDataItems() {
     std::vector<DataItem> items; // DataItem 객체들을 저장할 벡터
 
     // OS 문서 디렉토리 경로를 가져옵니다.
