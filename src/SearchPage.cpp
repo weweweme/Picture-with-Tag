@@ -59,20 +59,29 @@ void SearchPage::OnArticleSelected(wxCommandEvent &_) {
 }
 
 void SearchPage::OnSearchConfirm(wxCommandEvent &_) {
-    wxString searchText = searchInput->GetValue();
+    wxString searchText = searchInput->GetValue().Lower();
     int selectedOption = searchCondition->GetSelection();
 
     // 데이터 로드
     std::vector<DataItem> items = LoadDataItems();
-
     std::vector<DataItem> results;
 
     // TODO: 탐색할 데이터 아이템 목록 가져오는 로직 구현
 
-    if (selectedOption == 0) {
-        // TODO: 제목으로 검색하는 로직 구현
-    } else if (selectedOption == 1) {
-        // TODO: 태그로 검색하는 로직 구현
+    // 검색 조건에 따라 필터링
+    for (auto& item : items) {
+        if (selectedOption == 0) { // 제목으로 검색
+            if (item.title.Lower().Contains(searchText)) {
+                results.push_back(item);
+            }
+        } else if (selectedOption == 1) { // 태그로 검색
+            for (auto& tag : item.tags) {
+                if (tag.Lower().Contains(searchText)) {
+                    results.push_back(item);
+                    break;
+                }
+            }
+        }
     }
 
     // TODO: 결과 표시 로직 구현
