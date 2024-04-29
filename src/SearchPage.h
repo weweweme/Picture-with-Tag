@@ -25,6 +25,7 @@ private:
     wxTextCtrl* tagView;
     wxTextCtrl* bodyView;
     wxStaticBitmap* pictureDisplay;
+    std::vector<DataItem> searchResults;
 
     // Label constants
     static constexpr char SEARCH_LABEL_TEXT[] = "검색";

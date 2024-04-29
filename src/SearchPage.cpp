@@ -50,39 +50,88 @@ void SearchPage::InitUI() {
     resetButton->Bind(wxEVT_BUTTON, &SearchPage::OnClickReset, this);
 }
 
-void SearchPage::OnTitleTextChange(wxCommandEvent &_) {
+void SearchPage::OnTitleTextChange(wxCommandEvent& _) {
 
 }
 
-void SearchPage::OnArticleSelected(wxCommandEvent &_) {
+void SearchPage::OnArticleSelected(wxCommandEvent& _) {
+    int selection = this->articleList->GetSelection();
 
+    // 항목이 선택되지 않은 경우 에러 메시지를 로그하고 함수를 종료합니다.
+    if (selection == wxNOT_FOUND) {
+        wxLogMessage("No item selected.");
+        return;
+    }
+
+    const DataItem& selectedItem = this->searchResults.at(selection);
+
+    // 태그와 본문 정보를 표시
+    wxString tagsStr;
+    for (const auto& tag : selectedItem.tags) {
+        if (!tagsStr.IsEmpty()) tagsStr += ", ";
+        tagsStr += tag;
+    }
+    this->tagView->SetValue(tagsStr);
+    this->bodyView->SetValue(selectedItem.body);
+
+    // 이미지 데이터 처리
+    wxMemoryInputStream memStream(&selectedItem.image_data[0], selectedItem.image_data.size());
+    wxImage image;
+    if (image.LoadFile(memStream, wxBITMAP_TYPE_PNG)) {
+        // 이미지 크기 조정
+        if (image.GetWidth() > MAX_IMAGE_WIDTH || image.GetHeight() > MAX_IMAGE_HEIGHT) {
+            image = image.Scale(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT, wxIMAGE_QUALITY_HIGH);
+        }
+        this->pictureDisplay->SetBitmap(wxBitmap(image));
+        this->pictureDisplay->Refresh();
+    } else {
+        wxLogMessage("Failed to load image.");
+        this->pictureDisplay->SetBitmap(wxNullBitmap);
+        this->pictureDisplay->Refresh();
+    }
 }
 
-void SearchPage::OnSearchConfirm(wxCommandEvent &_) {
-    wxString searchText = searchInput->GetValue();
-    int selectedOption = searchCondition->GetSelection();
+void SearchPage::OnSearchConfirm(wxCommandEvent& _) {
+    wxString searchText = this->searchInput->GetValue().Lower();
+    int selectedOption = this->searchCondition->GetSelection();
 
     // 데이터 로드
     std::vector<DataItem> items = LoadDataItems();
 
-    std::vector<DataItem> results;
+    // 검색 결과를 클리어하고 새로운 검색을 수행합니다.
+    this->searchResults.clear();
+    this->articleList->Clear();
 
-    // TODO: 탐색할 데이터 아이템 목록 가져오는 로직 구현
-
-    if (selectedOption == 0) {
-        // TODO: 제목으로 검색하는 로직 구현
-    } else if (selectedOption == 1) {
-        // TODO: 태그로 검색하는 로직 구현
+    // 검색 조건에 따라 필터링
+    for (auto& item : items) {
+        switch (selectedOption) {
+            case 0: // 제목으로 검색
+                if (item.title.Lower().Contains(searchText)) {
+                    this->searchResults.push_back(item);
+                }
+                break;
+            case 1: // 태그로 검색
+                for (const auto& tag : item.tags) {
+                    if (tag.Lower().Contains(searchText)) {
+                        this->searchResults.push_back(item);
+                        break; // 일치하는 태그를 찾으면 더 이상의 태그 검사는 불필요
+                    }
+                }
+                break;
+        }
     }
 
-    // TODO: 결과 표시 로직 구현
+    // 검색 결과를 ListBox에 표시
+    for (auto& result : this->searchResults) {
+        this->articleList->Append(result.title);
+    }
 }
 
-void SearchPage::OnClickReset(wxCommandEvent &_) {
+void SearchPage::OnClickReset(wxCommandEvent& _) {
 
 }
 
-std::vector<DataItem> LoadDataItems() {
+std::vector<DataItem> SearchPage::LoadDataItems() {
     std::vector<DataItem> items; // DataItem 객체들을 저장할 벡터
 
     // OS 문서 디렉토리 경로를 가져옵니다.
