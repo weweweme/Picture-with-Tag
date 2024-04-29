@@ -34,6 +34,14 @@ void SearchPage::InitUI() {
 
     // PictureDisplay 정적 비트맵 설정
     this->pictureDisplay = new wxStaticBitmap(this->panel, wxID_ANY, wxNullBitmap, wxPoint(PHOTO_DISPLAY_X, PHOTO_DISPLAY_Y), wxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT));
+
+    // 본문 텍스트 입력 필드 (읽기 전용 입력 필드)
+    new wxStaticText(this->panel, wxID_ANY, BODY_LABEL_TEXT, wxPoint(BODY_LABEL_X, BODY_LABEL_Y));
+    this->bodyView = new wxTextCtrl(this->panel, wxID_ANY, "", wxPoint(BODY_INPUT_X, BODY_INPUT_Y), wxSize(BODY_TEXT_WIDTH, BODY_TEXT_HEIGHT), wxTE_MULTILINE);
+
+    // 초기화 버튼
+    auto* resetButton = new wxButton(this->panel, wxID_ANY, CLEAR_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X, CLEAR_BUTTON_Y), defaultButtonSize);
+    resetButton->Bind(wxEVT_BUTTON, &SearchPage::OnClickReset, this);
 }
 
 void SearchPage::OnTitleTextChange(wxCommandEvent &_) {
@@ -45,5 +53,9 @@ void SearchPage::OnArticleSelected(wxCommandEvent &_) {
 }
 
 void SearchPage::OnSearchConfirm(wxCommandEvent &_) {
+
+}
+
+void SearchPage::OnClickReset(wxCommandEvent &_) {
 
 }

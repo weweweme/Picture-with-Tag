@@ -14,12 +14,14 @@ private:
     void OnTitleTextChange(wxCommandEvent& _);
     void OnArticleSelected(wxCommandEvent& _);
     void OnSearchConfirm(wxCommandEvent& _);
+    void OnClickReset(wxCommandEvent& _);
 
     wxTextCtrl* searchInput;
     wxListBox* articleList;
     wxChoice* searchCondition;
     wxButton* searchButton;
     wxTextCtrl* tagView;
+    wxTextCtrl* bodyView;
     wxStaticBitmap* pictureDisplay;
 
     // Label constants
@@ -59,6 +61,19 @@ private:
     static constexpr int PHOTO_DISPLAY_Y = 122;
     static constexpr int MAX_IMAGE_WIDTH = 940;
     static constexpr int MAX_IMAGE_HEIGHT = 480;
+
+    // 본문
+    static constexpr int BODY_TEXT_WIDTH = 900;
+    static constexpr int BODY_TEXT_HEIGHT = 130;
+    static constexpr int BODY_LABEL_X = 20;
+    static constexpr int BODY_LABEL_Y = 690;
+    static constexpr int BODY_INPUT_X = 60;
+    static constexpr int BODY_INPUT_Y = 630;
+    static constexpr char BODY_LABEL_TEXT[] = "본문";
+
+    // 초기화
+    static constexpr int CLEAR_BUTTON_Y = 680;
+    static constexpr char CLEAR_BUTTON_TEXT[] = "초기화";
 };
 
 #endif //PICTURE_WITH_TAG_SEARCHPAGE_H
