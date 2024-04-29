@@ -13,21 +13,35 @@ protected:
 private:
     void OnTitleTextChange(wxCommandEvent& _);
     void OnArticleSelected(wxCommandEvent& _);
+    void OnSearchConfirm(wxCommandEvent& _);
 
     wxTextCtrl* searchInput;
     wxListBox* articleList;
+    wxChoice* searchCondition;
+    wxButton* searchButton;
 
+    // Label constants
     static constexpr char SEARCH_LABEL_TEXT[] = "검색";
     static constexpr int SEARCH_LABEL_X = 20;
     static constexpr int SEARCH_LABEL_Y = 25;
     static constexpr int SEARCH_INPUT_X = 60;
     static constexpr int SEARCH_INPUT_Y = 20;
-    static constexpr int SEARCH_INPUT_FIELD_WIDTH = 700;
+    static constexpr int SEARCH_INPUT_FIELD_WIDTH = 750;
     static constexpr int INPUT_FIELD_HEIGHT = 25;
+
+    // ListBox constants
     static constexpr int LISTBOX_X = 1185;
     static constexpr int LISTBOX_Y = 18;
     static constexpr int LISTBOX_WIDTH = 230;
     static constexpr int LISTBOX_HEIGHT = 600;
+
+    // Search condition dropdown and button positioning
+    static constexpr char SEARCH_OPTION_TITLE[] = "제목";
+    static constexpr char SEARCH_OPTION_TAG[] = "태그";
+    static constexpr int SEARCH_CONDITION_OFFSET = 12; // Offset from the end of the input field
+    static constexpr int SEARCH_CONDITION_TOP_OFFSET = 2; // Vertical alignment offset
+    static constexpr int SEARCH_BUTTON_OFFSET = 80; // Offset for button from the condition dropdown
+    static constexpr int SEARCH_BUTTON_TOP_OFFSET = -6; // Vertical alignment offset for button
 };
 
 #endif //PICTURE_WITH_TAG_SEARCHPAGE_H
