@@ -111,14 +111,34 @@ void SearchPage::OnSearchConfirm(wxCommandEvent& _) {
                     this->searchResults.push_back(item);
                 }
                 break;
+
             case 1: // 태그로 검색
-                for (const auto& tag : item.tags) {
-                    if (tag.Lower().Contains(searchText)) {
-                        this->searchResults.push_back(item);
-                        break; // 일치하는 태그를 찾으면 더 이상의 태그 검사는 불필요
+                wxArrayString inputTags = wxSplit(searchText, ','); // 쉼표로 분리하여 배열 생성
+
+                std::set<wxString> searchTags;
+                for (wxString& tag : inputTags) {
+                    wxString cleanTag = tag.Trim().Lower(); // 공백 제거 및 소문자 변환
+                    if (!cleanTag.IsEmpty()) {
+                        searchTags.insert(cleanTag); // 빈 태그 제외하고 집합에 추가
                     }
                 }
-                break;
+
+                std::set<wxString> itemTags;
+                for (const auto& itemTag : item.tags) {
+                    itemTags.insert(itemTag.Lower().Trim()); // 아이템 태그를 소문자로 변환 및 저장
+                }
+
+                bool allTagsFound = true;
+                for (const auto& searchTag : searchTags) {
+                    if (itemTags.find(searchTag) == itemTags.end()) {
+                        allTagsFound = false; // 하나라도 태그가 아이템 태그 집합에 없으면 false
+                        break;
+                    }
+                }
+
+                if (allTagsFound) {
+                    this->searchResults.push_back(item); // 모든 태그가 일치하면 결과에 아이템 추가
+                }
         }
     }
 
