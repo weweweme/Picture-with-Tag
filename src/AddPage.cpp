@@ -133,7 +133,6 @@ void AddPage::OnDeleteTagButtonClick(wxCommandEvent& _) {
     }
 }
 
-
 void AddPage::OnBodyTextChange(wxCommandEvent& _) {
     wxString text = bodyInput->GetValue();
     SetBackgroundColourBasedOnLength(bodyInput, MAX_BODY_LENGTH);
