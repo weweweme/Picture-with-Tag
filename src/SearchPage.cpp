@@ -5,6 +5,11 @@
 #include <wx/dir.h>
 #include <wx/filename.h>
 #include <wx/stdpaths.h>
+#include <wx/wx.h>
+#include <wx/zipstrm.h>
+#include <wx/wfstream.h>
+#include <wx/datetime.h>
+#include <wx/txtstrm.h>
 
 SearchPage::SearchPage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage)
         : BasePage(title, pos, size, currentPage) {
@@ -35,7 +40,7 @@ void SearchPage::InitUI() {
     this->tagView = new wxTextCtrl(this->panel, wxID_ANY, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y + TAG_INPUT_Y_OFFSET), wxSize(TAG_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT), wxTE_READONLY);
 
     // 글 목록 리스트
-    this->articleList = new wxListBox(this->panel, wxID_ANY, wxPoint(LISTBOX_X, LISTBOX_Y), wxSize(LISTBOX_WIDTH, LISTBOX_HEIGHT));
+    this->articleList = new wxListBox(this->panel, wxID_ANY, wxPoint(LISTBOX_X, LISTBOX_Y), wxSize(LISTBOX_WIDTH, LISTBOX_HEIGHT), 0, nullptr, wxLB_MULTIPLE);
     this->articleList->Bind(wxEVT_LISTBOX, &SearchPage::OnArticleSelected, this);
 
     // PictureDisplay 정적 비트맵 설정
@@ -215,9 +220,60 @@ std::vector<DataItem> SearchPage::LoadDataItems() {
 }
 
 void SearchPage::OnClickDataSave(wxCommandEvent& _) {
+    wxArrayInt selections;
+    int count = this->articleList->GetSelections(selections);
 
+    if (count == 0) {
+        wxMessageBox("저장할 데이터를 선택하세요.", "경고", wxICON_WARNING);
+        return;
+    }
+
+    wxString dataDir = wxStandardPaths::Get().GetDocumentsDir() + "/Picture-with-Tag";
+
+    wxString targetDir = dataDir + "/Bundles";
+    if (!wxDirExists(targetDir)) {
+        wxMkdir(targetDir);
+    }
+
+    wxDateTime now = wxDateTime::Now();
+    wxString zipFilename = targetDir + "/" + now.Format("%Y%m%d%H%M%S") + ".zip";
+
+    int response = wxMessageBox("선택한 데이터를 저장하시겠습니까?", "저장 확인", wxYES_NO | wxICON_QUESTION);
+    if (response != wxYES) {
+        return;  // 사용자가 취소한 경우
+    }
+
+    wxFFileOutputStream outStream(zipFilename);
+    wxZipOutputStream zipStream(outStream);
+
+
+    for (int i : selections) {
+        DataItem selectedItem = this->searchResults.at(i);
+        wxString pwtFilename = selectedItem.title + ".pwt"; // 파일 이름 생성
+        wxString fullPwtPath = dataDir + "/" + pwtFilename; // 파일 경로 생성
+
+        if (!wxFileExists(fullPwtPath)) {
+            wxLogError("파일 '%s'를 찾을 수 없습니다.", fullPwtPath);
+            continue;
+        }
+
+        wxFFileInputStream inputStream(fullPwtPath);
+        if (!inputStream.IsOk()) {
+            wxLogError("파일 '%s'를 읽을 수 없습니다.", fullPwtPath);
+            continue;
+        }
+
+        zipStream.PutNextEntry(pwtFilename);
+        inputStream.Read(zipStream);  // 파일을 읽어서 직접 스트림에 쓰기
+        zipStream.CloseEntry();
+    }
+
+    zipStream.Close();
+    outStream.Close();
+
+    wxMessageBox("데이터가 성공적으로 저장되었습니다.", "저장 완료", wxICON_INFORMATION);
 }
 
-void SearchPage::OnClickFolderDir(wxCommandEvent& _) {
+void SearchPage::OnClickFolderDir(wxCommandEvent &_) {
 
 }
