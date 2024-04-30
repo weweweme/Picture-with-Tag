@@ -52,6 +52,10 @@ void SearchPage::InitUI() {
     // 데이터 저장 버튼
     this->saveButton = new wxButton(this->panel, wxID_ANY, SAVE_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X, SAVE_BUTTON_Y), defaultButtonSize);
     this->saveButton->Bind(wxEVT_BUTTON, &SearchPage::OnClickDataSave, this);
+
+    // 폴더 경로 오픈 버튼
+    auto* dirOpenButton = new wxButton(this->panel, wxID_ANY, FILE_DIR_BUTTON_TEXT, wxPoint(1371, 5), wxSize(40, 30));
+    dirOpenButton->Bind(wxEVT_BUTTON, &SearchPage::OnClickFolderDir, this);
 }
 
 void SearchPage::OnTitleTextChange(wxCommandEvent& _) {
@@ -211,5 +215,9 @@ std::vector<DataItem> SearchPage::LoadDataItems() {
 }
 
 void SearchPage::OnClickDataSave(wxCommandEvent& _) {
+
+}
+
+void SearchPage::OnClickFolderDir(wxCommandEvent& _) {
 
 }

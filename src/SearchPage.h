@@ -17,6 +17,7 @@ private:
     void OnSearchConfirm(wxCommandEvent& _);
     void OnClickReset(wxCommandEvent& _);
     void OnClickDataSave(wxCommandEvent& _);
+    void OnClickFolderDir(wxCommandEvent& _);
     static std::vector<DataItem> LoadDataItems();
 
     wxTextCtrl* searchInput;
@@ -83,6 +84,9 @@ private:
     // 저장
     static constexpr char SAVE_BUTTON_TEXT[] = "데이터 묶음 저장";
     static constexpr int SAVE_BUTTON_Y = 640;
+
+    // 폴더 경로 오픈
+    static constexpr char FILE_DIR_BUTTON_TEXT[] = "폴더";
 };
 
 #endif //PICTURE_WITH_TAG_SEARCHPAGE_H
