@@ -27,8 +27,6 @@ add_executable(Picture_with_Tag
         src/PageManager.cpp
         src/SearchPage.h
         src/SearchPage.cpp
-        src/DataManagementPage.h
-        src/DataManagementPage.cpp
         src/DataItem.h
         src/GlobalColors.h
         src/GlobalColors.cpp
