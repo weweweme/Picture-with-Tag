@@ -35,7 +35,7 @@ void SearchPage::InitUI() {
     this->tagView = new wxTextCtrl(this->panel, wxID_ANY, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y + TAG_INPUT_Y_OFFSET), wxSize(TAG_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT), wxTE_READONLY);
 
     // 글 목록 리스트
-    this->articleList = new wxListBox(this->panel, wxID_ANY, wxPoint(LISTBOX_X, LISTBOX_Y), wxSize(LISTBOX_WIDTH, LISTBOX_HEIGHT));
+    this->articleList = new wxListBox(this->panel, wxID_ANY, wxPoint(LISTBOX_X, LISTBOX_Y), wxSize(LISTBOX_WIDTH, LISTBOX_HEIGHT), 0, nullptr, wxLB_MULTIPLE);
     this->articleList->Bind(wxEVT_LISTBOX, &SearchPage::OnArticleSelected, this);
 
     // PictureDisplay 정적 비트맵 설정
