@@ -3,7 +3,6 @@
 #include "AddPage.h"
 #include "PageManager.h"
 #include "SearchPage.h"
-#include "DataManagementPage.h"
 #include "GlobalColors.h"
 
 // 상수 정의
@@ -14,7 +13,6 @@ constexpr int INIT_WINDOW_Y = 50;
 constexpr char INIT_WINDOW_TITLE[] = "Picture with Tag";
 constexpr char INIT_WINDOW_ADD[] = "Add Page";
 constexpr char INIT_WINDOW_SEARCH[] = "Search Page";
-constexpr char INIT_WINDOW_DATA_MANAGEMENT[] = "Data Management Page";
 
 bool AppInitializer::OnInit() {
     wxInitAllImageHandlers();
@@ -23,7 +21,6 @@ bool AppInitializer::OnInit() {
     InitPage(PageID::ID_Title);
     InitPage(PageID::ID_Add);
     InitPage(PageID::ID_Search);
-    InitPage(PageID::ID_DataManagement);
 
     return true;
 }
@@ -44,9 +41,6 @@ void AppInitializer::InitPage(const PageID id) {
             break;
         case PageID::ID_Search:
             frame = new SearchPage(INIT_WINDOW_SEARCH, initPosition, initSize, ID_Search);
-            break;
-        case PageID::ID_DataManagement:
-            frame = new DataManagementPage(INIT_WINDOW_DATA_MANAGEMENT, initPosition, initSize, ID_DataManagement);
             break;
     }
 

@@ -5,8 +5,7 @@ enum PageID {
     ID_None,
     ID_Title,
     ID_Add,
-    ID_Search,
-    ID_DataManagement
+    ID_Search
 };
 
 #endif // FRAMEIDENTIFIERS_H

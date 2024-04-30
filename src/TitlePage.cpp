@@ -7,7 +7,6 @@ constexpr int BUTTON_WIDTH = 300;
 constexpr int BUTTON_HEIGHT = 150;
 constexpr char BTN_LABEL_ADD[] = "추가";
 constexpr char BTN_LABEL_SEARCH[] = "검색";
-constexpr char BTN_LABEL_MANAGE[] = "데이터 관리";
 constexpr char BTN_LABEL_EXIT[] = "종료";
 constexpr int SPACER_OPTIONS = 1;
 constexpr int NO_EXPAND = 0;
@@ -25,7 +24,6 @@ void TitlePage::InitUI() {
 
     CreateButton(BTN_LABEL_ADD, PageID::ID_Add);
     CreateButton(BTN_LABEL_SEARCH, PageID::ID_Search);  // 예시 ID
-    CreateButton(BTN_LABEL_MANAGE, PageID::ID_DataManagement);
     CreateButton(BTN_LABEL_EXIT, PageID::ID_None);  // 종료 버튼의 경우 특별한 처리 필요
 
     // 버튼이 추가될 수직 sizer에 하단 공간 추가
