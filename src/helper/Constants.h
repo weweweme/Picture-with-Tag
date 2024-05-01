@@ -23,4 +23,9 @@ constexpr int SPACER_OPTIONS = 1;
 constexpr int NO_EXPAND = 0;
 const int ALIGNMENT_OPTIONS = wxALIGN_CENTER_HORIZONTAL | wxALL;
 
+// BasePage 상수
+constexpr int SIZE_BUTTON_X = 224;
+constexpr int SIZE_BUTTON_Y = 35;
+constexpr char BACK_BUTTON_LABEL[] = "뒤로가기";
+
 #endif // PICTURE_WITH_TAG_CONSTANTS_H

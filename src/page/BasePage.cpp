@@ -1,11 +1,6 @@
 #include "BasePage.h"
 #include "PageManager.h"
-
-// 상수 정의
-constexpr int SIZE_BUTTON_X = 224;
-constexpr int SIZE_BUTTON_Y = 35;
-constexpr char BACK_BUTTON_LABEL[] = "뒤로가기";
-
+#include "../helper/Constants.h"
 
 BasePage::BasePage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage)
         : wxFrame(nullptr, wxID_ANY, title, pos, size),
@@ -14,7 +9,7 @@ BasePage::BasePage(const wxString& title, const wxPoint& pos, const wxSize& size
 }
 
 void BasePage::InitUI() {
-    panel = new wxPanel(this);
+    this->panel = new wxPanel(this);
     auto* backButton = new wxButton(panel, wxID_ANY, BACK_BUTTON_LABEL, wxPoint(RIGHT_BUTTON_X, BACK_BUTTON_Y), defaultButtonSize);
     backButton->Bind(wxEVT_BUTTON, &BasePage::OnClickBack, this);
 }
