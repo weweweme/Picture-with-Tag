@@ -246,7 +246,6 @@ void SearchPage::OnClickDataSave(wxCommandEvent& _) {
     wxFFileOutputStream outStream(zipFilename);
     wxZipOutputStream zipStream(outStream);
 
-
     for (int i : selections) {
         DataItem selectedItem = this->searchResults.at(i);
         wxString pwtFilename = selectedItem.title + ".pwt"; // 파일 이름 생성
@@ -274,6 +273,27 @@ void SearchPage::OnClickDataSave(wxCommandEvent& _) {
     wxMessageBox("데이터가 성공적으로 저장되었습니다.", "저장 완료", wxICON_INFORMATION);
 }
 
-void SearchPage::OnClickFolderDir(wxCommandEvent &_) {
+void SearchPage::OnClickFolderDir(wxCommandEvent& _) {
+    wxString path = wxStandardPaths::Get().GetDocumentsDir() + "/Picture-with-Tag";
 
+    // 디렉토리가 존재하는지 확인하고 없다면 생성
+    if (!wxDirExists(path)) {
+        if (!wxMkdir(path)) {
+            wxLogError("디렉토리 '%s' 생성 실패.", path);
+            wxMessageBox("디렉토리 생성 실패.", "오류", wxICON_ERROR);
+            return;
+        }
+    }
+
+    // 시스템 파일 탐색기에서 폴더를 엽니다.
+#ifdef __WXMSW__
+    // Windows의 경우
+    wxExecute("explorer \"" + path + "\"", wxEXEC_ASYNC);
+#elif defined(__WXMAC__)
+    // macOS의 경우
+    wxExecute("open \"" + path + "\"", wxEXEC_ASYNC);
+#else
+    // Linux의 경우 (대부분의 데스크탑 환경에서 동작)
+    wxExecute("xdg-open \"" + path + "\"", wxEXEC_ASYNC);
+#endif
 }
