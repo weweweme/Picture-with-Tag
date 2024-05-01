@@ -1,18 +1,10 @@
+#include "helper/Constants.h"
 #include "AppInitializer.h"
 #include "page/TitlePage.h"
 #include "page/AddPage.h"
 #include "page/PageManager.h"
 #include "page/SearchPage.h"
 #include "helper/GlobalColors.h"
-
-// 상수 정의
-constexpr int INIT_WINDOW_WIDTH = 1440;
-constexpr int INIT_WINDOW_HEIGHT = 810;
-constexpr int INIT_WINDOW_X = 50;
-constexpr int INIT_WINDOW_Y = 50;
-constexpr char INIT_WINDOW_TITLE[] = "Picture with Tag";
-constexpr char INIT_WINDOW_ADD[] = "Add Page";
-constexpr char INIT_WINDOW_SEARCH[] = "Search Page";
 
 bool AppInitializer::OnInit() {
     wxInitAllImageHandlers();
