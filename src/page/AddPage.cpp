@@ -1,7 +1,7 @@
 #include "AddPage.h"
-#include "DataItem.h"
-#include "GlobalColors.h"
-#include "UIHelpers.h"
+#include "../data/DataItem.h"
+#include "../helper/GlobalColors.h"
+#include "../helper/UIHelpers.h"
 #include <wx/stdpaths.h>
 #include <wx/filename.h>
 #include <fstream>

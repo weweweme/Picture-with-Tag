@@ -2,7 +2,7 @@
 #define PICTURE_WITH_TAG_SEARCHPAGE_H
 
 #include "BasePage.h"
-#include "DataItem.h"
+#include "../data/DataItem.h"
 
 class SearchPage : public BasePage {
 public:

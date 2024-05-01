@@ -1,5 +1,5 @@
 #include "SearchPage.h"
-#include "DataItem.h"
+#include "../data/DataItem.h"
 #include <boost/archive/text_iarchive.hpp>
 #include <fstream>
 #include <wx/dir.h>

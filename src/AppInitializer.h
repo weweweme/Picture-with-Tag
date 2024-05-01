@@ -2,8 +2,8 @@
 #define APPINITIALIZER_H
 
 #include <wx/wx.h>
-#include "TitlePage.h"
-#include "PageID.h"
+#include "page/TitlePage.h"
+#include "page/PageID.h"
 #include <map>
 
 /**

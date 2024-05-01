@@ -15,23 +15,23 @@ include_directories(${Boost_INCLUDE_DIRS})
 # 실행 파일 이름과 소스 파일 경로를 지정
 add_executable(Picture_with_Tag
         src/AppInitializer.h
-        src/TitlePage.h
+        src/page/TitlePage.h
         src/AppInitializer.cpp
-        src/TitlePage.cpp
-        src/PageID.h
-        src/BasePage.h
-        src/BasePage.cpp
-        src/AddPage.h
-        src/AddPage.cpp
-        src/PageManager.h
-        src/PageManager.cpp
-        src/SearchPage.h
-        src/SearchPage.cpp
-        src/DataItem.h
-        src/GlobalColors.h
-        src/GlobalColors.cpp
-        src/UIHelpers.h
-        src/UIHelpers.cpp)
+        src/page/TitlePage.cpp
+        src/page/PageID.h
+        src/page/BasePage.h
+        src/page/BasePage.cpp
+        src/page/AddPage.h
+        src/page/AddPage.cpp
+        src/page/PageManager.h
+        src/page/PageManager.cpp
+        src/page/SearchPage.h
+        src/page/SearchPage.cpp
+        src/data/DataItem.h
+        src/helper/GlobalColors.h
+        src/helper/GlobalColors.cpp
+        src/helper/UIHelpers.h
+        src/helper/UIHelpers.cpp)
 
 target_link_libraries(Picture_with_Tag ${wxWidgets_LIBRARIES} ${Boost_LIBRARIES})
 

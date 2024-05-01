@@ -1,9 +1,9 @@
 #include "AppInitializer.h"
-#include "TitlePage.h"
-#include "AddPage.h"
-#include "PageManager.h"
-#include "SearchPage.h"
-#include "GlobalColors.h"
+#include "page/TitlePage.h"
+#include "page/AddPage.h"
+#include "page/PageManager.h"
+#include "page/SearchPage.h"
+#include "helper/GlobalColors.h"
 
 // 상수 정의
 constexpr int INIT_WINDOW_WIDTH = 1440;
