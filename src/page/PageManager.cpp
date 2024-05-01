@@ -11,7 +11,7 @@ PageManager* PageManager::GetInstance() {
 }
 
 void PageManager::RegisterPage(PageID id, wxFrame* frame) {
-    pages[id] = frame;
+    this->pages[id] = frame;
 }
 
 void PageManager::ShowPage(PageID id) {
@@ -20,13 +20,13 @@ void PageManager::ShowPage(PageID id) {
         return;
     }
 
-    pages[currentVisiblePage]->Hide();
-    currentVisiblePage = id;
-    pages[id]->Show();
-    pages[id]->Raise();
+    this->pages[currentVisiblePage]->Hide();
+    this->currentVisiblePage = id;
+    this->pages[id]->Show();
+    this->pages[id]->Raise();
 }
 
 void PageManager::HidePage(PageID id) {
-    currentVisiblePage = id;
-    pages[id]->Hide();
+    this->currentVisiblePage = id;
+    this->pages[id]->Hide();
 }
