@@ -1,16 +1,6 @@
 #include "TitlePage.h"
 #include "PageManager.h"
-
-// 상수 정의
-constexpr int BUTTON_SPACE = 3;  // 버튼 사이의 공간
-constexpr int BUTTON_WIDTH = 300;
-constexpr int BUTTON_HEIGHT = 150;
-constexpr char BTN_LABEL_ADD[] = "추가";
-constexpr char BTN_LABEL_SEARCH[] = "검색";
-constexpr char BTN_LABEL_EXIT[] = "종료";
-constexpr int SPACER_OPTIONS = 1;
-constexpr int NO_EXPAND = 0;
-const int ALIGNMENT_OPTIONS = wxALIGN_CENTER_HORIZONTAL | wxALL;
+#include "../helper/Constants.h"
 
 TitlePage::TitlePage(const wxString& title, const wxPoint& pos, const wxSize& size)
         : wxFrame(nullptr, wxID_ANY, title, pos, size) {
