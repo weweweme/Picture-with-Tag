@@ -30,6 +30,7 @@ constexpr int SIZE_BUTTON_Y = 35;
 constexpr char BACK_BUTTON_LABEL[] = "뒤로가기";
 
 // AddPage 상수
+constexpr char CONFIRM_BUTTON_LABEL[] = "저장";
 constexpr int CONFIRM_BUTTON_Y = 640;
 constexpr int CLEAR_BUTTON_Y = 680;
 constexpr int INPUT_FIELD_HEIGHT = 25;
