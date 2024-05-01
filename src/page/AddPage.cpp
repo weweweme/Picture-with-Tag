@@ -2,13 +2,11 @@
 #include "../data/DataItem.h"
 #include "../helper/GlobalColors.h"
 #include "../helper/UIHelpers.h"
+#include "../helper/Constants.h"
 #include <wx/stdpaths.h>
 #include <wx/filename.h>
 #include <fstream>
 #include <boost/archive/text_oarchive.hpp>
-
-static const wxColour LIGHT_RED(255, 204, 204);
-static const wxColour DEFAULT_BG_COLOR(*wxWHITE);
 
 AddPage::AddPage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage)
         : BasePage(title, pos, size, currentPage) {
@@ -51,13 +49,13 @@ void AddPage::InitUI() {
     this->photoDisplay = new wxStaticBitmap(this->panel, wxID_ANY, wxNullBitmap, wxPoint(PHOTO_DISPLAY_X, PHOTO_DISPLAY_Y), wxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT));
 
     // 사진 추가 버튼 초기화
-    int centerX = (MAX_IMAGE_WIDTH - BUTTON_WIDTH) / 2;
-    int centerY = (MAX_IMAGE_HEIGHT - BUTTON_HEIGHT) / 2;
-    this->addPhotoButton = new wxButton(this->photoDisplay, wxID_ANY, PHOTO_ADD_TEXT, wxPoint(centerX, centerY), wxSize(BUTTON_WIDTH, BUTTON_HEIGHT));
+    int centerX = (MAX_IMAGE_WIDTH - ADD_PAGE_BUTTON_WIDTH) / 2;
+    int centerY = (MAX_IMAGE_HEIGHT - ADD_PAGE_BUTTON_HEIGHT) / 2;
+    this->addPhotoButton = new wxButton(this->photoDisplay, wxID_ANY, PHOTO_ADD_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT));
     this->addPhotoButton->Bind(wxEVT_BUTTON, &AddPage::OnAddPhoto, this);
 
     // 사진 제거 버튼 추가
-    this->removePhotoButton = new wxButton(this->photoDisplay, wxID_ANY, PHOTO_REMOVE_TEXT, wxPoint(centerX, centerY), wxSize(BUTTON_WIDTH, BUTTON_HEIGHT));
+    this->removePhotoButton = new wxButton(this->photoDisplay, wxID_ANY, PHOTO_REMOVE_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT));
     this->removePhotoButton->Bind(wxEVT_BUTTON, &AddPage::OnRemovePhoto, this);
     this->removePhotoButton->Hide();  // 초기에는 숨김
 
@@ -118,7 +116,6 @@ void AddPage::OnTagSelected(wxCommandEvent& event) {
     this->deleteTagButton->SetPosition(wxPoint(DELETE_BUTTON_OFFSET_X, itemTop + DELETE_BUTTON_OFFSET_Y));
     this->deleteTagButton->Show();
 }
-
 
 void AddPage::OnDeleteTagButtonClick(wxCommandEvent& _) {
     int selection = this->tagList->GetSelection();
