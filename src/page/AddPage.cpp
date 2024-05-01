@@ -46,16 +46,16 @@ void AddPage::InitUI() {
     this->bodyInput->Bind(wxEVT_TEXT, &AddPage::OnBodyTextChange, this);
 
     // photoDisplay 정적 비트맵 설정
-    this->photoDisplay = new wxStaticBitmap(this->panel, wxID_ANY, wxNullBitmap, wxPoint(PHOTO_DISPLAY_X, PHOTO_DISPLAY_Y), wxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT));
+    this->photoDisplay = new wxStaticBitmap(this->panel, wxID_ANY, wxNullBitmap, wxPoint(PICTURE_DISPLAY_X, PICTURE_DISPLAY_Y), wxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT));
 
     // 사진 추가 버튼 초기화
     int centerX = (MAX_IMAGE_WIDTH - ADD_PAGE_BUTTON_WIDTH) / 2;
     int centerY = (MAX_IMAGE_HEIGHT - ADD_PAGE_BUTTON_HEIGHT) / 2;
-    this->addPhotoButton = new wxButton(this->photoDisplay, wxID_ANY, PHOTO_ADD_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT));
+    this->addPhotoButton = new wxButton(this->photoDisplay, wxID_ANY, PICTURE_ADD_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT));
     this->addPhotoButton->Bind(wxEVT_BUTTON, &AddPage::OnAddPhoto, this);
 
     // 사진 제거 버튼 추가
-    this->removePhotoButton = new wxButton(this->photoDisplay, wxID_ANY, PHOTO_REMOVE_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT));
+    this->removePhotoButton = new wxButton(this->photoDisplay, wxID_ANY, PICTURE_REMOVE_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT));
     this->removePhotoButton->Bind(wxEVT_BUTTON, &AddPage::OnRemovePhoto, this);
     this->removePhotoButton->Hide();  // 초기에는 숨김
 

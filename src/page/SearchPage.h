@@ -12,7 +12,6 @@ protected:
     void InitUI() override;
 
 private:
-    void OnTitleTextChange(wxCommandEvent& _);
     void OnArticleSelected(wxCommandEvent& _);
     void OnSearchConfirm(wxCommandEvent& _);
     void OnClickReset(wxCommandEvent& _);
