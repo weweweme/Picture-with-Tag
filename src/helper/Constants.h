@@ -28,6 +28,8 @@ const int ALIGNMENT_OPTIONS = wxALIGN_CENTER_HORIZONTAL | wxALL;
 constexpr int SIZE_BUTTON_X = 224;
 constexpr int SIZE_BUTTON_Y = 35;
 constexpr char BACK_BUTTON_LABEL[] = "뒤로가기";
+static constexpr int RIGHT_BUTTON_X = 1188;
+static constexpr int BACK_BUTTON_Y = 720;
 
 // AddPage 상수
 constexpr char CONFIRM_BUTTON_LABEL[] = "저장";
@@ -80,5 +82,31 @@ constexpr char IMAGE_LOAD_FAIL_TEXT[] = "이미지 파일을 로드할 수 없�
 constexpr char FILE_DIALOG_FILTER[] = "JPEG files (*.jpg)|*.jpg|PNG files (*.png)|*.png";
 const wxColour LIGHT_RED(255, 204, 204);
 const wxColour DEFAULT_BG_COLOR(*wxWHITE);
+
+// Label constants
+static constexpr char SEARCH_LABEL_TEXT[] = "검색";
+static constexpr int SEARCH_LABEL_X = 20;
+static constexpr int SEARCH_LABEL_Y = 25;
+static constexpr int SEARCH_INPUT_X = 60;
+static constexpr int SEARCH_INPUT_Y = 20;
+static constexpr int SEARCH_INPUT_FIELD_WIDTH = 750;
+
+// Search condition dropdown and button positioning
+static constexpr char SEARCH_OPTION_TITLE[] = "제목";
+static constexpr char SEARCH_OPTION_TAG[] = "태그";
+static constexpr int SEARCH_CONDITION_OFFSET = 12; // Offset from the end of the input field
+static constexpr int SEARCH_CONDITION_TOP_OFFSET = 2; // Vertical alignment offset
+static constexpr int SEARCH_BUTTON_OFFSET = 80; // Offset for button from the condition dropdown
+static constexpr int SEARCH_BUTTON_TOP_OFFSET = -6; // Vertical alignment offset for button
+
+// 태그
+static constexpr int SEARCH_TAG_INPUT_FIELD_WIDTH = 1055;
+
+// 저장
+static constexpr char SAVE_BUTTON_TEXT[] = "데이터 묶음 저장";
+static constexpr int SAVE_BUTTON_Y = 640;
+
+// 폴더 경로 오픈
+static constexpr char FILE_DIR_BUTTON_TEXT[] = "폴더";
 
 #endif // PICTURE_WITH_TAG_CONSTANTS_H
