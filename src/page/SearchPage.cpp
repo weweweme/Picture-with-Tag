@@ -1,10 +1,7 @@
 #include "SearchPage.h"
 #include "../helper/Constants.h"
 #include "../data/DataManager.h"
-#include <wx/stdpaths.h>
-#include <wx/wx.h>
-#include <wx/datetime.h>
-#include <wx/txtstrm.h>
+#include "../helper/UIHelpers.h"
 
 SearchPage::SearchPage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage)
         : BasePage(title, pos, size, currentPage) {
@@ -14,46 +11,46 @@ SearchPage::SearchPage(const wxString& title, const wxPoint& pos, const wxSize& 
 void SearchPage::InitUI() {
     BasePage::InitUI();
 
-    // 검색값 입력 필드
-    new wxStaticText(this->panel, wxID_ANY, SEARCH_LABEL_TEXT, wxPoint(SEARCH_LABEL_X, SEARCH_LABEL_Y));
-    this->searchInput = new wxTextCtrl(this->panel, wxID_ANY, "", wxPoint(SEARCH_INPUT_X, SEARCH_INPUT_Y), wxSize(SEARCH_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT));
+    // 검색값 입력 필드 생성
+    UIHelpers::CreateStaticText(this->panel, SEARCH_LABEL_TEXT, wxPoint(SEARCH_LABEL_X, SEARCH_LABEL_Y), wxDefaultSize);
+    this->searchInput = UIHelpers::CreateTextCtrl(this->panel, "", wxPoint(SEARCH_INPUT_X, SEARCH_INPUT_Y), wxSize(SEARCH_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT));
 
-    // 검색 조건 선택 드롭다운
+    // 검색 조건 선택 드롭다운 생성
     wxArrayString searchOptions;
     searchOptions.Add(SEARCH_OPTION_TITLE);
     searchOptions.Add(SEARCH_OPTION_TAG);
-    this->searchCondition = new wxChoice(this->panel, wxID_ANY, wxPoint(SEARCH_INPUT_X + SEARCH_INPUT_FIELD_WIDTH + SEARCH_CONDITION_OFFSET, SEARCH_INPUT_Y + SEARCH_CONDITION_TOP_OFFSET), wxDefaultSize, searchOptions);
+    this->searchCondition = UIHelpers::CreateChoice(this->panel, searchOptions, wxPoint(SEARCH_INPUT_X + SEARCH_INPUT_FIELD_WIDTH + SEARCH_CONDITION_OFFSET, SEARCH_INPUT_Y + SEARCH_CONDITION_TOP_OFFSET), wxDefaultSize);
     this->searchCondition->SetSelection(0); // 기본값 설정
 
-    // 검색 버튼
-    this->searchButton = new wxButton(this->panel, wxID_ANY, SEARCH_LABEL_TEXT, wxPoint(SEARCH_INPUT_X + SEARCH_INPUT_FIELD_WIDTH + SEARCH_BUTTON_OFFSET, SEARCH_INPUT_Y + SEARCH_BUTTON_TOP_OFFSET), defaultButtonSize);
+    // 검색 버튼 생성
+    this->searchButton = UIHelpers::CreateButton(this->panel, SEARCH_LABEL_TEXT, wxPoint(SEARCH_INPUT_X + SEARCH_INPUT_FIELD_WIDTH + SEARCH_BUTTON_OFFSET, SEARCH_INPUT_Y + SEARCH_BUTTON_TOP_OFFSET), wxDefaultSize);
     this->searchButton->Bind(wxEVT_BUTTON, &SearchPage::OnSearchConfirm, this);
 
-    // 태그 보기 필드 (읽기 전용 입력 필드)
-    new wxStaticText(this->panel, wxID_ANY, TAG_LABEL_TEXT, wxPoint(TITLE_LABEL_X, TITLE_LABEL_Y + TAG_INPUT_Y_OFFSET));
-    this->tagView = new wxTextCtrl(this->panel, wxID_ANY, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y + TAG_INPUT_Y_OFFSET), wxSize(SEARCH_TAG_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT), wxTE_READONLY);
+    // 태그 보기 필드 (읽기 전용 입력 필드) 생성
+    UIHelpers::CreateStaticText(this->panel, TAG_LABEL_TEXT, wxPoint(TITLE_LABEL_X, TITLE_LABEL_Y + TAG_INPUT_Y_OFFSET), wxDefaultSize);
+    this->tagView = UIHelpers::CreateTextCtrl(this->panel, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y + TAG_INPUT_Y_OFFSET), wxSize(SEARCH_TAG_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT), wxTE_READONLY);
 
-    // 글 목록 리스트
-    this->articleList = new wxListBox(this->panel, wxID_ANY, wxPoint(LISTBOX_X, LISTBOX_Y), wxSize(LISTBOX_WIDTH, LISTBOX_HEIGHT), 0, nullptr, wxLB_MULTIPLE);
+    // 글 목록 리스트 생성
+    this->articleList = UIHelpers::CreateListBox(this->panel, wxPoint(LISTBOX_X, LISTBOX_Y), wxSize(LISTBOX_WIDTH, LISTBOX_HEIGHT), wxLB_MULTIPLE);
     this->articleList->Bind(wxEVT_LISTBOX, &SearchPage::OnArticleSelected, this);
 
     // PictureDisplay 정적 비트맵 설정
     this->pictureDisplay = new wxStaticBitmap(this->panel, wxID_ANY, wxNullBitmap, wxPoint(PICTURE_DISPLAY_X, PICTURE_DISPLAY_Y), wxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT));
 
-    // 본문 텍스트 입력 필드 (읽기 전용 입력 필드)
-    new wxStaticText(this->panel, wxID_ANY, BODY_LABEL_TEXT, wxPoint(BODY_LABEL_X, BODY_LABEL_Y));
-    this->bodyView = new wxTextCtrl(this->panel, wxID_ANY, "", wxPoint(BODY_INPUT_X, BODY_INPUT_Y), wxSize(BODY_TEXT_WIDTH, BODY_TEXT_HEIGHT), wxTE_MULTILINE);
+    // 본문 텍스트 입력 필드 생성
+    UIHelpers::CreateStaticText(this->panel, BODY_LABEL_TEXT, wxPoint(BODY_LABEL_X, BODY_LABEL_Y), wxDefaultSize);
+    this->bodyView = UIHelpers::CreateTextCtrl(this->panel, "", wxPoint(BODY_INPUT_X, BODY_INPUT_Y), wxSize(BODY_TEXT_WIDTH, BODY_TEXT_HEIGHT), wxTE_MULTILINE);
 
-    // 초기화 버튼
-    auto* resetButton = new wxButton(this->panel, wxID_ANY, CLEAR_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X, CLEAR_BUTTON_Y), defaultButtonSize);
+    // 초기화 버튼 생성
+    auto* resetButton = UIHelpers::CreateButton(this->panel, CLEAR_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X, CLEAR_BUTTON_Y), wxDefaultSize);
     resetButton->Bind(wxEVT_BUTTON, &SearchPage::OnClickReset, this);
 
-    // 데이터 저장 버튼
-    this->saveButton = new wxButton(this->panel, wxID_ANY, SAVE_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X, SAVE_BUTTON_Y), defaultButtonSize);
+    // 데이터 저장 버튼 생성
+    this->saveButton = UIHelpers::CreateButton(this->panel, SAVE_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X, SAVE_BUTTON_Y), wxDefaultSize);
     this->saveButton->Bind(wxEVT_BUTTON, &SearchPage::OnClickDataSave, this);
 
-    // 폴더 경로 오픈 버튼
-    auto* dirOpenButton = new wxButton(this->panel, wxID_ANY, FILE_DIR_BUTTON_TEXT, wxPoint(FILE_DIR_BUTTON_X, FILE_DIR_BUTTON_Y), wxSize(FILE_DIR_BUTTON_WIDTH, FILE_DIR_BUTTON_HEIGHT));
+    // 폴더 경로 오픈 버튼 생성
+    auto* dirOpenButton = UIHelpers::CreateButton(this->panel, FILE_DIR_BUTTON_TEXT, wxPoint(FILE_DIR_BUTTON_X, FILE_DIR_BUTTON_Y), wxSize(FILE_DIR_BUTTON_WIDTH, FILE_DIR_BUTTON_HEIGHT));
     dirOpenButton->Bind(wxEVT_BUTTON, &SearchPage::OnClickFolderDir, this);
 }
 

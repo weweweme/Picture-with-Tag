@@ -1,7 +1,4 @@
 #include "DataManager.h"
-#include <boost/archive/text_iarchive.hpp>
-#include <wx/wfstream.h>
-#include <wx/zipstrm.h>
 #include "../helper/Constants.h"
 
 std::vector<DataItem> DataManager::LoadDataItems() {
