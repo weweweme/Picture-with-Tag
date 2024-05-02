@@ -3,8 +3,6 @@
 #include "../data/DataManager.h"
 #include <wx/stdpaths.h>
 #include <wx/wx.h>
-#include <wx/zipstrm.h>
-#include <wx/wfstream.h>
 #include <wx/datetime.h>
 #include <wx/txtstrm.h>
 
