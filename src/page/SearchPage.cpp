@@ -1,5 +1,5 @@
 #include "SearchPage.h"
-#include "DataItem.h"
+#include "../helper/Constants.h"
 #include <boost/archive/text_iarchive.hpp>
 #include <fstream>
 #include <wx/dir.h>
@@ -22,7 +22,6 @@ void SearchPage::InitUI() {
     // 검색값 입력 필드
     new wxStaticText(this->panel, wxID_ANY, SEARCH_LABEL_TEXT, wxPoint(SEARCH_LABEL_X, SEARCH_LABEL_Y));
     this->searchInput = new wxTextCtrl(this->panel, wxID_ANY, "", wxPoint(SEARCH_INPUT_X, SEARCH_INPUT_Y), wxSize(SEARCH_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT));
-    this->searchInput->Bind(wxEVT_TEXT, &SearchPage::OnTitleTextChange, this);
 
     // 검색 조건 선택 드롭다운
     wxArrayString searchOptions;
@@ -32,19 +31,19 @@ void SearchPage::InitUI() {
     this->searchCondition->SetSelection(0); // 기본값 설정
 
     // 검색 버튼
-    this->searchButton = new wxButton(this->panel, wxID_ANY, "검색", wxPoint(SEARCH_INPUT_X + SEARCH_INPUT_FIELD_WIDTH + SEARCH_BUTTON_OFFSET, SEARCH_INPUT_Y + SEARCH_BUTTON_TOP_OFFSET), defaultButtonSize);
+    this->searchButton = new wxButton(this->panel, wxID_ANY, SEARCH_LABEL_TEXT, wxPoint(SEARCH_INPUT_X + SEARCH_INPUT_FIELD_WIDTH + SEARCH_BUTTON_OFFSET, SEARCH_INPUT_Y + SEARCH_BUTTON_TOP_OFFSET), defaultButtonSize);
     this->searchButton->Bind(wxEVT_BUTTON, &SearchPage::OnSearchConfirm, this);
 
     // 태그 보기 필드 (읽기 전용 입력 필드)
     new wxStaticText(this->panel, wxID_ANY, TAG_LABEL_TEXT, wxPoint(TITLE_LABEL_X, TITLE_LABEL_Y + TAG_INPUT_Y_OFFSET));
-    this->tagView = new wxTextCtrl(this->panel, wxID_ANY, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y + TAG_INPUT_Y_OFFSET), wxSize(TAG_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT), wxTE_READONLY);
+    this->tagView = new wxTextCtrl(this->panel, wxID_ANY, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y + TAG_INPUT_Y_OFFSET), wxSize(SEARCH_TAG_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT), wxTE_READONLY);
 
     // 글 목록 리스트
     this->articleList = new wxListBox(this->panel, wxID_ANY, wxPoint(LISTBOX_X, LISTBOX_Y), wxSize(LISTBOX_WIDTH, LISTBOX_HEIGHT), 0, nullptr, wxLB_MULTIPLE);
     this->articleList->Bind(wxEVT_LISTBOX, &SearchPage::OnArticleSelected, this);
 
     // PictureDisplay 정적 비트맵 설정
-    this->pictureDisplay = new wxStaticBitmap(this->panel, wxID_ANY, wxNullBitmap, wxPoint(PHOTO_DISPLAY_X, PHOTO_DISPLAY_Y), wxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT));
+    this->pictureDisplay = new wxStaticBitmap(this->panel, wxID_ANY, wxNullBitmap, wxPoint(PICTURE_DISPLAY_X, PICTURE_DISPLAY_Y), wxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT));
 
     // 본문 텍스트 입력 필드 (읽기 전용 입력 필드)
     new wxStaticText(this->panel, wxID_ANY, BODY_LABEL_TEXT, wxPoint(BODY_LABEL_X, BODY_LABEL_Y));
@@ -59,12 +58,8 @@ void SearchPage::InitUI() {
     this->saveButton->Bind(wxEVT_BUTTON, &SearchPage::OnClickDataSave, this);
 
     // 폴더 경로 오픈 버튼
-    auto* dirOpenButton = new wxButton(this->panel, wxID_ANY, FILE_DIR_BUTTON_TEXT, wxPoint(1371, 5), wxSize(40, 30));
+    auto* dirOpenButton = new wxButton(this->panel, wxID_ANY, FILE_DIR_BUTTON_TEXT, wxPoint(FILE_DIR_BUTTON_X, FILE_DIR_BUTTON_Y), wxSize(FILE_DIR_BUTTON_WIDTH, FILE_DIR_BUTTON_HEIGHT));
     dirOpenButton->Bind(wxEVT_BUTTON, &SearchPage::OnClickFolderDir, this);
-}
-
-void SearchPage::OnTitleTextChange(wxCommandEvent& _) {
-
 }
 
 void SearchPage::OnArticleSelected(wxCommandEvent& _) {
@@ -98,7 +93,7 @@ void SearchPage::OnArticleSelected(wxCommandEvent& _) {
         this->pictureDisplay->SetBitmap(wxBitmap(image));
         this->pictureDisplay->Refresh();
     } else {
-        wxLogMessage("Failed to load image.");
+        wxLogMessage(ERROR_MESSAGE_LOAD_FAIL);
         this->pictureDisplay->SetBitmap(wxNullBitmap);
         this->pictureDisplay->Refresh();
     }
@@ -182,7 +177,7 @@ std::vector<DataItem> SearchPage::LoadDataItems() {
     // OS 문서 디렉토리 경로를 가져옵니다.
     wxString docDir = wxStandardPaths::Get().GetDocumentsDir();
     // 검색 대상이 될 디렉토리 경로를 설정합니다.
-    wxString targetDir = docDir + "/Picture-with-Tag";
+    wxString targetDir = docDir + DATA_ITEMS_DIR;
 
     // 해당 디렉토리가 존재하는지 확인합니다.
     if (!(wxDirExists(targetDir))) {
@@ -219,28 +214,29 @@ std::vector<DataItem> SearchPage::LoadDataItems() {
     return items; // 로드된 데이터 아이템의 벡터 반환
 }
 
+
 void SearchPage::OnClickDataSave(wxCommandEvent& _) {
     wxArrayInt selections;
     int count = this->articleList->GetSelections(selections);
 
     if (count == 0) {
-        wxMessageBox("저장할 데이터를 선택하세요.", "경고", wxICON_WARNING);
+        wxMessageBox(NO_DATA_SELECTED_ERROR, WARNING_TITLE, wxICON_WARNING);
         return;
     }
 
-    wxString dataDir = wxStandardPaths::Get().GetDocumentsDir() + "/Picture-with-Tag";
+    wxString dataDir = wxStandardPaths::Get().GetDocumentsDir() + DATA_ITEMS_DIR;
 
-    wxString targetDir = dataDir + "/Bundles";
+    wxString targetDir = dataDir + BUNDLES_DIR_NAME;
     if (!wxDirExists(targetDir)) {
         wxMkdir(targetDir);
     }
 
     wxDateTime now = wxDateTime::Now();
-    wxString zipFilename = targetDir + "/" + now.Format("%Y%m%d%H%M%S") + ".zip";
+    wxString zipFilename = targetDir + "/" + now.Format(ZIP_EXTENSION_FORMAT);
 
-    int response = wxMessageBox("선택한 데이터를 저장하시겠습니까?", "저장 확인", wxYES_NO | wxICON_QUESTION);
+    int response = wxMessageBox(DATA_SAVE_PROMPT, SAVE_CONFIRM_TITLE, wxYES_NO | wxICON_QUESTION);
     if (response != wxYES) {
-        return;  // 사용자가 취소한 경우
+        return;
     }
 
     wxFFileOutputStream outStream(zipFilename);
@@ -248,39 +244,38 @@ void SearchPage::OnClickDataSave(wxCommandEvent& _) {
 
     for (int i : selections) {
         DataItem selectedItem = this->searchResults.at(i);
-        wxString pwtFilename = selectedItem.title + ".pwt"; // 파일 이름 생성
-        wxString fullPwtPath = dataDir + "/" + pwtFilename; // 파일 경로 생성
+        wxString pwtFilename = selectedItem.title + PWT_EXTENSION;
+        wxString fullPwtPath = dataDir + "/" + pwtFilename;
 
         if (!wxFileExists(fullPwtPath)) {
-            wxLogError("파일 '%s'를 찾을 수 없습니다.", fullPwtPath);
+            wxLogError(FILE_NOT_FOUND_ERROR, fullPwtPath);
             continue;
         }
 
         wxFFileInputStream inputStream(fullPwtPath);
         if (!inputStream.IsOk()) {
-            wxLogError("파일 '%s'를 읽을 수 없습니다.", fullPwtPath);
+            wxLogError(FILE_READ_ERROR, fullPwtPath);
             continue;
         }
 
         zipStream.PutNextEntry(pwtFilename);
-        inputStream.Read(zipStream);  // 파일을 읽어서 직접 스트림에 쓰기
+        inputStream.Read(zipStream);
         zipStream.CloseEntry();
     }
 
     zipStream.Close();
     outStream.Close();
 
-    wxMessageBox("데이터가 성공적으로 저장되었습니다.", "저장 완료", wxICON_INFORMATION);
+    wxMessageBox(DATA_SAVE_SUCCESS, SAVE_COMPLETE_TITLE, wxICON_INFORMATION);
 }
 
 void SearchPage::OnClickFolderDir(wxCommandEvent& _) {
-    wxString path = wxStandardPaths::Get().GetDocumentsDir() + "/Picture-with-Tag";
+    wxString path = wxStandardPaths::Get().GetDocumentsDir() + DATA_ITEMS_DIR;
 
-    // 디렉토리가 존재하는지 확인하고 없다면 생성
     if (!wxDirExists(path)) {
         if (!wxMkdir(path)) {
-            wxLogError("디렉토리 '%s' 생성 실패.", path);
-            wxMessageBox("디렉토리 생성 실패.", "오류", wxICON_ERROR);
+            wxLogError(DIRECTORY_CREATION_FAIL, path);
+            wxMessageBox(DIRECTORY_CREATION_FAIL, ERROR_TITLE, wxICON_ERROR);
             return;
         }
     }
@@ -288,7 +283,7 @@ void SearchPage::OnClickFolderDir(wxCommandEvent& _) {
     // 시스템 파일 탐색기에서 폴더를 엽니다.
 #ifdef __WXMSW__
     // Windows의 경우
-    wxExecute("explorer \"" + path + "\"", wxEXEC_ASYNC);
+    wxExecute("EXPLORER_WINDOWS \"" + path + "\"", wxEXEC_ASYNC);
 #elif defined(__WXMAC__)
     // macOS의 경우
     wxExecute("open \"" + path + "\"", wxEXEC_ASYNC);

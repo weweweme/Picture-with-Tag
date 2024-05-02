@@ -1,18 +1,10 @@
+#include "helper/Constants.h"
 #include "AppInitializer.h"
-#include "TitlePage.h"
-#include "AddPage.h"
-#include "PageManager.h"
-#include "SearchPage.h"
-#include "GlobalColors.h"
-
-// 상수 정의
-constexpr int INIT_WINDOW_WIDTH = 1440;
-constexpr int INIT_WINDOW_HEIGHT = 810;
-constexpr int INIT_WINDOW_X = 50;
-constexpr int INIT_WINDOW_Y = 50;
-constexpr char INIT_WINDOW_TITLE[] = "Picture with Tag";
-constexpr char INIT_WINDOW_ADD[] = "Add Page";
-constexpr char INIT_WINDOW_SEARCH[] = "Search Page";
+#include "page/TitlePage.h"
+#include "page/AddPage.h"
+#include "page/PageManager.h"
+#include "page/SearchPage.h"
+#include "helper/GlobalColors.h"
 
 bool AppInitializer::OnInit() {
     wxInitAllImageHandlers();
@@ -29,7 +21,7 @@ void AppInitializer::InitPage(const PageID id) {
     PageManager* manager = PageManager::GetInstance();
     wxSize initSize = wxSize(INIT_WINDOW_WIDTH, INIT_WINDOW_HEIGHT);
     wxPoint initPosition = wxPoint(INIT_WINDOW_X, INIT_WINDOW_Y);
-    wxFrame* frame;
+    wxFrame *frame = nullptr;
 
     switch (id) {
         case PageID::ID_Title:
@@ -42,6 +34,15 @@ void AppInitializer::InitPage(const PageID id) {
         case PageID::ID_Search:
             frame = new SearchPage(INIT_WINDOW_SEARCH, initPosition, initSize, ID_Search);
             break;
+
+        case PageID::ID_None:
+        default:
+            break;
+    }
+
+    if (frame == nullptr) {
+        wxLogError("Failed to create the page for ID: %d", id);
+        return;
     }
 
     // 창의 크기 고정을 위한 기본값

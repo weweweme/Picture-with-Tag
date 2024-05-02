@@ -1,14 +1,12 @@
 #include "AddPage.h"
-#include "DataItem.h"
-#include "GlobalColors.h"
-#include "UIHelpers.h"
+#include "../data/DataItem.h"
+#include "../helper/GlobalColors.h"
+#include "../helper/UIHelpers.h"
+#include "../helper/Constants.h"
 #include <wx/stdpaths.h>
 #include <wx/filename.h>
 #include <fstream>
 #include <boost/archive/text_oarchive.hpp>
-
-static const wxColour LIGHT_RED(255, 204, 204);
-static const wxColour DEFAULT_BG_COLOR(*wxWHITE);
 
 AddPage::AddPage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage)
         : BasePage(title, pos, size, currentPage) {
@@ -48,16 +46,16 @@ void AddPage::InitUI() {
     this->bodyInput->Bind(wxEVT_TEXT, &AddPage::OnBodyTextChange, this);
 
     // photoDisplay 정적 비트맵 설정
-    this->photoDisplay = new wxStaticBitmap(this->panel, wxID_ANY, wxNullBitmap, wxPoint(PHOTO_DISPLAY_X, PHOTO_DISPLAY_Y), wxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT));
+    this->photoDisplay = new wxStaticBitmap(this->panel, wxID_ANY, wxNullBitmap, wxPoint(PICTURE_DISPLAY_X, PICTURE_DISPLAY_Y), wxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT));
 
     // 사진 추가 버튼 초기화
-    int centerX = (MAX_IMAGE_WIDTH - BUTTON_WIDTH) / 2;
-    int centerY = (MAX_IMAGE_HEIGHT - BUTTON_HEIGHT) / 2;
-    this->addPhotoButton = new wxButton(this->photoDisplay, wxID_ANY, PHOTO_ADD_TEXT, wxPoint(centerX, centerY), wxSize(BUTTON_WIDTH, BUTTON_HEIGHT));
+    int centerX = (MAX_IMAGE_WIDTH - ADD_PAGE_BUTTON_WIDTH) / 2;
+    int centerY = (MAX_IMAGE_HEIGHT - ADD_PAGE_BUTTON_HEIGHT) / 2;
+    this->addPhotoButton = new wxButton(this->photoDisplay, wxID_ANY, PICTURE_ADD_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT));
     this->addPhotoButton->Bind(wxEVT_BUTTON, &AddPage::OnAddPhoto, this);
 
     // 사진 제거 버튼 추가
-    this->removePhotoButton = new wxButton(this->photoDisplay, wxID_ANY, PHOTO_REMOVE_TEXT, wxPoint(centerX, centerY), wxSize(BUTTON_WIDTH, BUTTON_HEIGHT));
+    this->removePhotoButton = new wxButton(this->photoDisplay, wxID_ANY, PICTURE_REMOVE_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT));
     this->removePhotoButton->Bind(wxEVT_BUTTON, &AddPage::OnRemovePhoto, this);
     this->removePhotoButton->Hide();  // 초기에는 숨김
 
@@ -119,12 +117,11 @@ void AddPage::OnTagSelected(wxCommandEvent& event) {
     this->deleteTagButton->Show();
 }
 
-
 void AddPage::OnDeleteTagButtonClick(wxCommandEvent& _) {
     int selection = this->tagList->GetSelection();
 
     wxString tag = this->tagList->GetString(selection);  // 선택된 태그의 문자열 가져오기
-    bool shouldDelete = wxMessageBox(_("선택한 태그를 정말로 삭제하시겠습니까?"), _("태그 삭제 확인"), wxYES_NO | wxICON_WARNING) == wxYES;
+    bool shouldDelete = wxMessageBox(_(DIALOGUE_CONFIRM_DELETE), _(DIALOGUE_TITLE_DELETE), wxYES_NO | wxICON_WARNING) == wxYES;
 
     if (shouldDelete) {
         this->tags.erase(tag);
@@ -145,13 +142,13 @@ void AddPage::OnAddPhoto(wxCommandEvent& _) {
         return;
 
     wxString path = openFileDialog.GetPath();
-    UpdatePhotoDisplay(path);
+    UpdatePictureDisplay(path);
 }
 
-void AddPage::UpdatePhotoDisplay(const wxString& path) {
+void AddPage::UpdatePictureDisplay(const wxString& path) {
     wxImage image;
     if (!image.LoadFile(path, wxBITMAP_TYPE_ANY)) {
-        wxLogMessage(_(IMAGE_LOAD_FAIL_TEXT));
+        wxLogMessage(_(ERROR_MESSAGE_LOAD_FAIL));
         return;
     }
 
@@ -188,7 +185,7 @@ void AddPage::OnRemovePhoto(wxCommandEvent& _) {
 }
 
 void AddPage::OnResetButtonClick(wxCommandEvent& _) {
-    if (wxMessageBox(_("정말로 모든 정보를 초기화하시겠습니까?"), _("경고"), wxICON_WARNING | wxYES_NO | wxNO_DEFAULT) == wxYES) {
+    if (wxMessageBox(_(DIALOGUE_TITLE_RESET), _(DIALOGUE_WARNING_RESET), wxICON_WARNING | wxYES_NO | wxNO_DEFAULT) == wxYES) {
         this->titleInput->Clear();
         this->tagInput->Clear();
         this->tagList->Clear();
@@ -213,7 +210,7 @@ void AddPage::OnPanelClick(wxMouseEvent& event) {
 
 void AddPage::OnClickConfirm(wxCommandEvent& _) {
     bool inputValid = true;
-    wxString validationMessage = _("유효한 값을 입력해주세요:");
+    wxString validationMessage = _(_(SUCCESS_MESSAGE_DATA_SAVED));
 
     // 입력 데이터 수집
     wxString title = this->titleInput->GetValue();
@@ -256,18 +253,18 @@ void AddPage::OnClickConfirm(wxCommandEvent& _) {
 
     // 파일 경로 설정
     wxString docDir = wxStandardPaths::Get().GetDocumentsDir();
-    wxString targetDir = docDir + "/Picture-with-Tag";
+    wxString targetDir = docDir + DATA_ITEMS_DIR;
     if (!wxDirExists(targetDir)) {
         wxMkdir(targetDir);
     }
-    wxString filePath = targetDir + "/" + title + ".pwt";
+    wxString filePath = targetDir + "/" + title + PWT_EXTENSION;
 
     // 데이터 직렬화 및 파일 저장
     std::ofstream ofs(filePath.ToStdString(), std::ios::binary);
     boost::archive::text_oarchive oa(ofs);
     oa << newItem;
 
-    wxLogMessage(_("데이터가 성공적으로 저장되었습니다."));
+    wxLogMessage(_(SUCCESS_MESSAGE_DATA_SAVED));
 }
 
 void AddPage::SetBackgroundColourBasedOnLength(wxTextCtrl* input, size_t max_length) {
