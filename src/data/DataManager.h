@@ -8,11 +8,13 @@
 #include <fstream>
 #include <vector>
 #include <set>
+#include <wx/osx/listbox.h>
 
 class DataManager {
 public:
     static std::vector<DataItem> LoadDataItems();
     static void OpenDataDirectory();
+    static void SaveDataItems(wxListBox* articleList, const std::vector<DataItem>& searchResults);
 };
 
 #endif // DATA_MANAGER_H

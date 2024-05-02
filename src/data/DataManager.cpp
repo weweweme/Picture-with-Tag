@@ -1,5 +1,7 @@
 #include "DataManager.h"
 #include <boost/archive/text_iarchive.hpp>
+#include <wx/wfstream.h>
+#include <wx/zipstrm.h>
 #include "../helper/Constants.h"
 
 std::vector<DataItem> DataManager::LoadDataItems() {
@@ -63,4 +65,58 @@ void DataManager::OpenDataDirectory() {
 #else
     wxExecute("xdg-open \"" + path + "\"", wxEXEC_ASYNC);
 #endif
+}
+
+void DataManager::SaveDataItems(wxListBox* articleList, const std::vector<DataItem>& searchResults) {
+    wxArrayInt selections;
+    int count = articleList->GetSelections(selections);
+
+    if (count == 0) {
+        wxMessageBox(NO_DATA_SELECTED_ERROR, WARNING_TITLE, wxICON_WARNING);
+        return;
+    }
+
+    wxString dataDir = wxStandardPaths::Get().GetDocumentsDir() + DATA_ITEMS_DIR;
+    wxString targetDir = dataDir + BUNDLES_DIR_NAME;
+
+    if (!wxDirExists(targetDir)) {
+        wxMkdir(targetDir);
+    }
+
+    wxDateTime now = wxDateTime::Now();
+    wxString zipFilename = targetDir + "/" + now.Format(ZIP_EXTENSION_FORMAT);
+
+    int response = wxMessageBox(DATA_SAVE_PROMPT, SAVE_CONFIRM_TITLE, wxYES_NO | wxICON_QUESTION);
+    if (response != wxYES) {
+        return;
+    }
+
+    wxFFileOutputStream outStream(zipFilename);
+    wxZipOutputStream zipStream(outStream);
+
+    for (int i : selections) {
+        DataItem selectedItem = searchResults.at(i);
+        wxString pwtFilename = selectedItem.title + PWT_EXTENSION;
+        wxString fullPwtPath = dataDir + "/" + pwtFilename;
+
+        if (!wxFileExists(fullPwtPath)) {
+            wxLogError(FILE_NOT_FOUND_ERROR, fullPwtPath);
+            continue;
+        }
+
+        wxFFileInputStream inputStream(fullPwtPath);
+        if (!inputStream.IsOk()) {
+            wxLogError(FILE_READ_ERROR, fullPwtPath);
+            continue;
+        }
+
+        zipStream.PutNextEntry(pwtFilename);
+        inputStream.Read(zipStream);
+        zipStream.CloseEntry();
+    }
+
+    zipStream.Close();
+    outStream.Close();
+
+    wxMessageBox(DATA_SAVE_SUCCESS, SAVE_COMPLETE_TITLE, wxICON_INFORMATION);
 }
