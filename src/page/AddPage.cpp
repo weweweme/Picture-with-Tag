@@ -16,61 +16,59 @@ void AddPage::InitUI() {
     BasePage::InitUI();
 
     // 제목 입력 필드
-    new wxStaticText(this->panel, wxID_ANY, TITLE_LABEL_TEXT, wxPoint(TITLE_LABEL_X, TITLE_LABEL_Y));
-    this->titleInput = new wxTextCtrl(this->panel, wxID_ANY, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y), wxSize(TITLE_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT));
+    UIHelpers::CreateStaticText(this->panel, TITLE_LABEL_TEXT, wxPoint(TITLE_LABEL_X, TITLE_LABEL_Y), wxDefaultSize);
+    this->titleInput = UIHelpers::CreateTextCtrl(this->panel, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y), wxSize(TITLE_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT), 0);
     this->titleInput->Bind(wxEVT_TEXT, &AddPage::OnTitleTextChange, this);
 
     // 태그 입력 필드
-    new wxStaticText(this->panel, wxID_ANY, TAG_LABEL_TEXT, wxPoint(TITLE_LABEL_X, TITLE_LABEL_Y + TAG_INPUT_Y_OFFSET));
-    this->tagInput = new wxTextCtrl(this->panel, wxID_ANY, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y + TAG_INPUT_Y_OFFSET), wxSize(TAG_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT));
+    UIHelpers::CreateStaticText(this->panel, TAG_LABEL_TEXT, wxPoint(TITLE_LABEL_X, TITLE_LABEL_Y + TAG_INPUT_Y_OFFSET), wxDefaultSize);
+    this->tagInput = UIHelpers::CreateTextCtrl(this->panel, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y + TAG_INPUT_Y_OFFSET), wxSize(TAG_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT), 0);
     this->tagInput->Bind(wxEVT_TEXT, &AddPage::OnTagTextChange, this);
 
     // 태그 입력 버튼
-    this->tagButton = new wxButton(this->panel, wxID_ANY, TAG_BUTTON_TEXT, wxPoint(TAG_INPUT_FIELD_WIDTH + TAG_BUTTON_X_OFFSET, TITLE_INPUT_Y + TAG_INPUT_Y_OFFSET), wxSize(TAG_BUTTON_WIDTH, INPUT_FIELD_HEIGHT));
+    this->tagButton = UIHelpers::CreateButton(this->panel, TAG_BUTTON_TEXT, wxPoint(TAG_INPUT_FIELD_WIDTH + TAG_BUTTON_X_OFFSET, TITLE_INPUT_Y + TAG_INPUT_Y_OFFSET), wxSize(TAG_BUTTON_WIDTH, INPUT_FIELD_HEIGHT), 0);
     this->tagButton->Bind(wxEVT_BUTTON, &AddPage::OnTagButtonClick, this);
     this->tagButton->Enable(false);
 
     // 태그 리스트 박스 초기화
-    this->tagList = new wxListBox(this->panel, wxID_ANY, wxPoint(LISTBOX_X, LISTBOX_Y), wxSize(LISTBOX_WIDTH, LISTBOX_HEIGHT));
+    this->tagList = UIHelpers::CreateListBox(this->panel, wxPoint(LISTBOX_X, LISTBOX_Y), wxSize(LISTBOX_WIDTH, LISTBOX_HEIGHT), wxLB_MULTIPLE);
     this->tagList->Bind(wxEVT_LISTBOX, &AddPage::OnTagSelected, this);
 
     // 태그 삭제 버튼 초기화
-    this->deleteTagButton = new wxButton(this->panel, wxID_ANY, _("-"), wxDefaultPosition, wxSize(20, BUTTON_HEIGHT));
+    this->deleteTagButton = UIHelpers::CreateButton(this->panel, _("-"), wxDefaultPosition, wxSize(20, BUTTON_HEIGHT), 0);
     this->deleteTagButton->Bind(wxEVT_BUTTON, &AddPage::OnDeleteTagButtonClick, this);
-    this->deleteTagButton->Hide();  // 초기에 비활성화
+    this->deleteTagButton->Hide();
 
     // 본문 텍스트 입력 필드
-    new wxStaticText(this->panel, wxID_ANY, BODY_LABEL_TEXT, wxPoint(BODY_LABEL_X, BODY_LABEL_Y));
-    this->bodyInput = new wxTextCtrl(this->panel, wxID_ANY, "", wxPoint(BODY_INPUT_X, BODY_INPUT_Y), wxSize(BODY_TEXT_WIDTH, BODY_TEXT_HEIGHT), wxTE_MULTILINE);
+    UIHelpers::CreateStaticText(this->panel, BODY_LABEL_TEXT, wxPoint(BODY_LABEL_X, BODY_LABEL_Y), wxDefaultSize);
+    this->bodyInput = UIHelpers::CreateTextCtrl(this->panel, "", wxPoint(BODY_INPUT_X, BODY_INPUT_Y), wxSize(BODY_TEXT_WIDTH, BODY_TEXT_HEIGHT), wxTE_MULTILINE);
     this->bodyInput->Bind(wxEVT_TEXT, &AddPage::OnBodyTextChange, this);
 
     // photoDisplay 정적 비트맵 설정
     this->photoDisplay = new wxStaticBitmap(this->panel, wxID_ANY, wxNullBitmap, wxPoint(PICTURE_DISPLAY_X, PICTURE_DISPLAY_Y), wxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT));
 
-    // 사진 추가 버튼 초기화
+    // 사진 추가 및 제거 버튼 초기화
     int centerX = (MAX_IMAGE_WIDTH - ADD_PAGE_BUTTON_WIDTH) / 2;
     int centerY = (MAX_IMAGE_HEIGHT - ADD_PAGE_BUTTON_HEIGHT) / 2;
-    this->addPhotoButton = new wxButton(this->photoDisplay, wxID_ANY, PICTURE_ADD_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT));
+    this->addPhotoButton = UIHelpers::CreateButton(this->photoDisplay, PICTURE_ADD_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT), 0);
     this->addPhotoButton->Bind(wxEVT_BUTTON, &AddPage::OnAddPhoto, this);
 
-    // 사진 제거 버튼 추가
-    this->removePhotoButton = new wxButton(this->photoDisplay, wxID_ANY, PICTURE_REMOVE_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT));
+    this->removePhotoButton = UIHelpers::CreateButton(this->photoDisplay, PICTURE_REMOVE_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT), 0);
     this->removePhotoButton->Bind(wxEVT_BUTTON, &AddPage::OnRemovePicture, this);
-    this->removePhotoButton->Hide();  // 초기에는 숨김
+    this->removePhotoButton->Hide();
 
     // 마우스 이벤트 바인딩
     this->photoDisplay->Bind(wxEVT_ENTER_WINDOW, &AddPage::OnMouseEnterPhoto, this);
     this->photoDisplay->Bind(wxEVT_LEAVE_WINDOW, &AddPage::OnMouseLeavePhoto, this);
 
-    // 초기화 버튼
-    auto* resetButton = new wxButton(this->panel, wxID_ANY, CLEAR_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X, CLEAR_BUTTON_Y), defaultButtonSize);
+    // 초기화 및 확인 버튼
+    auto* resetButton = UIHelpers::CreateButton(this->panel, CLEAR_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X, CLEAR_BUTTON_Y), defaultButtonSize, 0);
     resetButton->Bind(wxEVT_BUTTON, &AddPage::OnResetButtonClick, this);
 
-    // 확인 버튼
-    this->confirmButton = new wxButton(this->panel, wxID_ANY, CONFIRM_BUTTON_LABEL, wxPoint(RIGHT_BUTTON_X, CONFIRM_BUTTON_Y), defaultButtonSize);
+    this->confirmButton = UIHelpers::CreateButton(this->panel, CONFIRM_BUTTON_LABEL, wxPoint(RIGHT_BUTTON_X, CONFIRM_BUTTON_Y), defaultButtonSize, 0);
     this->confirmButton->Bind(wxEVT_BUTTON, &AddPage::OnClickConfirm, this);
 
-    // 패널의 클릭 이벤트를 바인딩합니다.
+    // 패널 클릭 이벤트
     this->panel->Bind(wxEVT_LEFT_DOWN, &AddPage::OnPanelClick, this);
 }
 
