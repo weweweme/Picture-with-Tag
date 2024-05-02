@@ -93,7 +93,7 @@ void SearchPage::OnArticleSelected(wxCommandEvent& _) {
         this->pictureDisplay->SetBitmap(wxBitmap(image));
         this->pictureDisplay->Refresh();
     } else {
-        wxLogMessage("Failed to load image.");
+        wxLogMessage(ERROR_MESSAGE_LOAD_FAIL);
         this->pictureDisplay->SetBitmap(wxNullBitmap);
         this->pictureDisplay->Refresh();
     }
@@ -177,7 +177,7 @@ std::vector<DataItem> SearchPage::LoadDataItems() {
     // OS 문서 디렉토리 경로를 가져옵니다.
     wxString docDir = wxStandardPaths::Get().GetDocumentsDir();
     // 검색 대상이 될 디렉토리 경로를 설정합니다.
-    wxString targetDir = docDir + "/Picture-with-Tag";
+    wxString targetDir = docDir + DATA_ITEMS_DIR;
 
     // 해당 디렉토리가 존재하는지 확인합니다.
     if (!(wxDirExists(targetDir))) {

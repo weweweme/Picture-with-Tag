@@ -24,21 +24,21 @@ private:
     void OnRemovePhoto(wxCommandEvent& _);
     void OnMouseEnterPhoto(wxMouseEvent& event);
     void OnMouseLeavePhoto(wxMouseEvent& event);
-    void UpdatePhotoDisplay(const wxString& path);
+    void UpdatePictureDisplay(const wxString& path);
     void OnResetButtonClick(wxCommandEvent& _);
     void OnPanelClick(wxMouseEvent& event);
 
-    wxTextCtrl* titleInput;
-    wxTextCtrl* tagInput;
-    wxButton* tagButton;
-    wxListBox* tagList;
-    wxButton* deleteTagButton;
+    wxTextCtrl* titleInput{};
+    wxTextCtrl* tagInput{};
+    wxButton* tagButton{};
+    wxListBox* tagList{};
+    wxButton* deleteTagButton{};
     std::set<wxString> tags;
-    wxTextCtrl* bodyInput;
-    wxButton* addPhotoButton;
-    wxButton* removePhotoButton;
-    wxButton* confirmButton;
-    wxStaticBitmap* photoDisplay;
+    wxTextCtrl* bodyInput{};
+    wxButton* addPhotoButton{};
+    wxButton* removePhotoButton{};
+    wxButton* confirmButton{};
+    wxStaticBitmap* photoDisplay{};
 };
 
 #endif // PICTURE_WITH_TAG_ADDPAGE_H

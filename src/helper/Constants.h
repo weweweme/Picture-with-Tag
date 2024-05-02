@@ -88,6 +88,11 @@ static constexpr int DELETE_BUTTON_OFFSET_X = LISTBOX_X + LISTBOX_WIDTH - 30;
 static constexpr int DELETE_BUTTON_OFFSET_Y = 14;
 
 // 대화창 텍스트
+static constexpr char DIALOGUE_TITLE_RESET[] = "정말로 모든 정보를 초기화하시겠습니까?";
+static constexpr char DIALOGUE_TITLE_SAVE[] = "저장할 데이터를 선택하세요.";
+static constexpr char DIALOGUE_WARNING_RESET[] = "경고";
+static constexpr char DIALOGUE_CONFIRM_DELETE[] = "선택한 태그를 정말로 삭제하시겠습니까?";
+static constexpr char DIALOGUE_TITLE_DELETE[] = "태그 삭제 확인";
 static constexpr char CLEAR_BUTTON_TEXT[] = "초기화";
 static constexpr char TAG_DUPLICATE_TEXT[] = "중복된 태그입니다";
 static constexpr char TAG_SPACE_IN_TEXT[] = "태그에 공백을 포함할 수 없습니다";
@@ -143,5 +148,10 @@ constexpr char BUNDLES_DIR_NAME[] = "/Bundles";
 constexpr char DATA_ITEMS_DIR[] = "/Picture-with-Tag";
 constexpr char PWT_EXTENSION[] = ".pwt";
 constexpr char ZIP_EXTENSION_FORMAT[] = "%Y%m%d_%H%M%S.zip";
+constexpr char ERROR_MESSAGE_FILE_NOT_FOUND[] = "파일 '%s'를 찾을 수 없습니다.";
+constexpr char ERROR_MESSAGE_FILE_READ[] = "파일 '%s'를 읽을 수 없습니다.";
+constexpr char SUCCESS_MESSAGE_DATA_SAVED[] = "데이터가 성공적으로 저장되었습니다.";
+constexpr char ERROR_MESSAGE_DIRECTORY_CREATE[] = "디렉토리 '%s' 생성 실패.";
+constexpr char ERROR_MESSAGE_LOAD_FAIL[] = "이미지 파일을 로드할 수 없습니다.";
 
 #endif // PICTURE_WITH_TAG_CONSTANTS_H
