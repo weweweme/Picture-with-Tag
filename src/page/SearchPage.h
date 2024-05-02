@@ -17,16 +17,15 @@ private:
     void OnClickReset(wxCommandEvent& _);
     void OnClickDataSave(wxCommandEvent& _);
     void OnClickFolderDir(wxCommandEvent& _);
-    static std::vector<DataItem> LoadDataItems();
 
-    wxTextCtrl* searchInput{}{};
-    wxListBox* articleList{}{};
-    wxChoice* searchCondition{}{};
-    wxButton* searchButton{}{};
-    wxButton* saveButton{}{};
-    wxTextCtrl* tagView{}{};
-    wxTextCtrl* bodyView{}{};
-    wxStaticBitmap* pictureDisplay{}{};
+    wxTextCtrl* searchInput{};
+    wxListBox* articleList{};
+    wxChoice* searchCondition{};
+    wxButton* searchButton{};
+    wxButton* saveButton{};
+    wxTextCtrl* tagView{};
+    wxTextCtrl* bodyView{};
+    wxStaticBitmap* pictureDisplay{};
     std::vector<DataItem> searchResults;
 };
 
