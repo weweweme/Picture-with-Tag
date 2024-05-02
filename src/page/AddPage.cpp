@@ -3,10 +3,9 @@
 #include "../helper/GlobalColors.h"
 #include "../helper/UIHelpers.h"
 #include "../helper/Constants.h"
-#include <wx/stdpaths.h>
+#include "../data/DataManager.h"
 #include <wx/filename.h>
 #include <fstream>
-#include <boost/archive/text_oarchive.hpp>
 
 AddPage::AddPage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage)
         : BasePage(title, pos, size, currentPage) {
@@ -56,7 +55,7 @@ void AddPage::InitUI() {
 
     // 사진 제거 버튼 추가
     this->removePhotoButton = new wxButton(this->photoDisplay, wxID_ANY, PICTURE_REMOVE_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT));
-    this->removePhotoButton->Bind(wxEVT_BUTTON, &AddPage::OnRemovePhoto, this);
+    this->removePhotoButton->Bind(wxEVT_BUTTON, &AddPage::OnRemovePicture, this);
     this->removePhotoButton->Hide();  // 초기에는 숨김
 
     // 마우스 이벤트 바인딩
@@ -176,7 +175,7 @@ void AddPage::OnMouseLeavePhoto(wxMouseEvent& event) {
     event.Skip();
 }
 
-void AddPage::OnRemovePhoto(wxCommandEvent& _) {
+void AddPage::OnRemovePicture(wxCommandEvent& _) {
     // 사진 제거 로직
     this->removePhotoButton->Hide();
     this->photoDisplay->SetBitmap(wxNullBitmap);
@@ -250,19 +249,7 @@ void AddPage::OnClickConfirm(wxCommandEvent& _) {
     // DataItem 객체 생성
     wxImage image = bitmap.ConvertToImage();
     DataItem newItem(title, tags, body, image);
-
-    // 파일 경로 설정
-    wxString docDir = wxStandardPaths::Get().GetDocumentsDir();
-    wxString targetDir = docDir + DATA_ITEMS_DIR;
-    if (!wxDirExists(targetDir)) {
-        wxMkdir(targetDir);
-    }
-    wxString filePath = targetDir + "/" + title + PWT_EXTENSION;
-
-    // 데이터 직렬화 및 파일 저장
-    std::ofstream ofs(filePath.ToStdString(), std::ios::binary);
-    boost::archive::text_oarchive oa(ofs);
-    oa << newItem;
+    DataManager::SaveDataItem(newItem);
 
     wxLogMessage(_(SUCCESS_MESSAGE_DATA_SAVED));
 }
