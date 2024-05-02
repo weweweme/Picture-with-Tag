@@ -1,14 +1,17 @@
 #ifndef DATA_MANAGER_H
 #define DATA_MANAGER_H
 
-#include "../data/DataItem.h"
 #include <wx/stdpaths.h>
 #include <wx/dir.h>
 #include <wx/filename.h>
 #include <fstream>
 #include <vector>
 #include <set>
-#include <wx/osx/listbox.h>
+#include <wx/listbox.h>  // 변경: wx/osx/listbox.h -> wx/listbox.h
+#include <boost/archive/text_iarchive.hpp>
+#include <wx/wfstream.h>
+#include <wx/zipstrm.h>
+#include "DataItem.h"
 
 class DataManager {
 public:
