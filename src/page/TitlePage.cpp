@@ -1,6 +1,7 @@
 #include "TitlePage.h"
 #include "PageManager.h"
 #include "../helper/Constants.h"
+#include "../helper/UIHelpers.h"
 
 TitlePage::TitlePage(const wxString& title, const wxPoint& pos, const wxSize& size)
         : wxFrame(nullptr, wxID_ANY, title, pos, size) {
@@ -24,11 +25,16 @@ void TitlePage::InitUI() {
 }
 
 void TitlePage::CreateButton(const wxString& label, PageID pageID) {
-    auto* button = new wxButton(this, wxID_ANY, label, wxDefaultPosition, wxSize(BUTTON_WIDTH, BUTTON_HEIGHT), 0);
-    this->vSizer->Add(button, NO_EXPAND, ALIGNMENT_OPTIONS, BUTTON_SPACE);
+    // 버튼 생성
+    auto* button = UIHelpers::CreateButton(this, label, wxDefaultPosition, wxSize(BUTTON_WIDTH, BUTTON_HEIGHT));
+
+    // 버튼에 이벤트 핸들러 연결
     button->Bind(wxEVT_BUTTON, [this, pageID](wxCommandEvent& event) {
         OnClickGeneric(event, pageID);
     });
+
+    // 버튼을 sizer에 추가
+    this->vSizer->Add(button, NO_EXPAND, ALIGNMENT_OPTIONS, BUTTON_SPACE);
 }
 
 void TitlePage::OnClickGeneric(wxCommandEvent& _, PageID pageID) {
