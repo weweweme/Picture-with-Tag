@@ -116,7 +116,7 @@ static constexpr char SEARCH_OPTION_TITLE[] = "제목";
 static constexpr char SEARCH_OPTION_TAG[] = "태그";
 static constexpr int SEARCH_CONDITION_OFFSET = 12; // 입력 필드 끝에서 검색 조건 드롭다운까지의 오프셋
 static constexpr int SEARCH_CONDITION_TOP_OFFSET = 2; // 검색 조건 드롭다운의 수직 정렬 오프셋
-static constexpr int SEARCH_BUTTON_OFFSET = 80; // 조건 드롭다운에서 검색 버튼까지의 오프셋
+static constexpr int SEARCH_BUTTON_OFFSET = 136; // 조건 드롭다운에서 검색 버튼까지의 오프셋
 static constexpr int SEARCH_BUTTON_TOP_OFFSET = -6; // 검색 버튼의 수직 정렬 오프셋
 
 // 태그

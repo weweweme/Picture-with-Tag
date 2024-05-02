@@ -23,7 +23,7 @@ void SearchPage::InitUI() {
     this->searchCondition->SetSelection(0); // 기본값 설정
 
     // 검색 버튼 생성
-    this->searchButton = UIHelpers::CreateButton(this->panel, SEARCH_LABEL_TEXT, wxPoint(SEARCH_INPUT_X + SEARCH_INPUT_FIELD_WIDTH + SEARCH_BUTTON_OFFSET, SEARCH_INPUT_Y + SEARCH_BUTTON_TOP_OFFSET), wxDefaultSize);
+    this->searchButton = UIHelpers::CreateButton(this->panel, SEARCH_LABEL_TEXT, wxPoint(SEARCH_INPUT_X + SEARCH_INPUT_FIELD_WIDTH + SEARCH_BUTTON_OFFSET, SEARCH_INPUT_Y + SEARCH_BUTTON_TOP_OFFSET), wxSize(SIZE_BUTTON_X, SIZE_BUTTON_Y));
     this->searchButton->Bind(wxEVT_BUTTON, &SearchPage::OnSearchConfirm, this);
 
     // 태그 보기 필드 (읽기 전용 입력 필드) 생성
@@ -42,11 +42,11 @@ void SearchPage::InitUI() {
     this->bodyView = UIHelpers::CreateTextCtrl(this->panel, "", wxPoint(BODY_INPUT_X, BODY_INPUT_Y), wxSize(BODY_TEXT_WIDTH, BODY_TEXT_HEIGHT), wxTE_MULTILINE);
 
     // 초기화 버튼 생성
-    auto* resetButton = UIHelpers::CreateButton(this->panel, CLEAR_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X, CLEAR_BUTTON_Y), wxDefaultSize);
+    auto* resetButton = UIHelpers::CreateButton(this->panel, CLEAR_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X, CLEAR_BUTTON_Y), wxSize(SIZE_BUTTON_X, SIZE_BUTTON_Y));
     resetButton->Bind(wxEVT_BUTTON, &SearchPage::OnClickReset, this);
 
     // 데이터 저장 버튼 생성
-    this->saveButton = UIHelpers::CreateButton(this->panel, SAVE_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X, SAVE_BUTTON_Y), wxDefaultSize);
+    this->saveButton = UIHelpers::CreateButton(this->panel, SAVE_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X, SAVE_BUTTON_Y), wxSize(SIZE_BUTTON_X, SIZE_BUTTON_Y));
     this->saveButton->Bind(wxEVT_BUTTON, &SearchPage::OnClickDataSave, this);
 
     // 폴더 경로 오픈 버튼 생성
