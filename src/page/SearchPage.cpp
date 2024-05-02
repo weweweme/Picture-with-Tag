@@ -1,10 +1,6 @@
 #include "SearchPage.h"
 #include "../helper/Constants.h"
 #include "../data/DataManager.h"
-#include <wx/stdpaths.h>
-#include <wx/wx.h>
-#include <wx/datetime.h>
-#include <wx/txtstrm.h>
 
 SearchPage::SearchPage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage)
         : BasePage(title, pos, size, currentPage) {
