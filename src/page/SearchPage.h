@@ -16,7 +16,7 @@ private:
     void OnSearchConfirm(wxCommandEvent& _);
     void OnClickReset(wxCommandEvent& _);
     void OnClickDataSave(wxCommandEvent& _);
-    void OnClickFolderDir(wxCommandEvent& _);
+    static void OnClickFolderDir(wxCommandEvent& _);
 
     wxTextCtrl* searchInput{};
     wxListBox* articleList{};

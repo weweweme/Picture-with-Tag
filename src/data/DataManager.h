@@ -12,9 +12,7 @@
 class DataManager {
 public:
     static std::vector<DataItem> LoadDataItems();
-    bool SaveDataItem(const DataItem& item, const wxString& directory);
-    std::vector<DataItem> SearchItemsByTags(const std::vector<DataItem>& items, const std::set<wxString>& searchTags);
-    bool SaveDataItemsAsBundle(const std::vector<DataItem>& items, const wxString& directory);
+    static void OpenDataDirectory();
 };
 
 #endif // DATA_MANAGER_H

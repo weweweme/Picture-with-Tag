@@ -223,25 +223,5 @@ void SearchPage::OnClickDataSave(wxCommandEvent& _) {
 }
 
 void SearchPage::OnClickFolderDir(wxCommandEvent& _) {
-    wxString path = wxStandardPaths::Get().GetDocumentsDir() + DATA_ITEMS_DIR;
-
-    if (!wxDirExists(path)) {
-        if (!wxMkdir(path)) {
-            wxLogError(DIRECTORY_CREATION_FAIL, path);
-            wxMessageBox(DIRECTORY_CREATION_FAIL, ERROR_TITLE, wxICON_ERROR);
-            return;
-        }
-    }
-
-    // 시스템 파일 탐색기에서 폴더를 엽니다.
-#ifdef __WXMSW__
-    // Windows의 경우
-    wxExecute("EXPLORER_WINDOWS \"" + path + "\"", wxEXEC_ASYNC);
-#elif defined(__WXMAC__)
-    // macOS의 경우
-    wxExecute("open \"" + path + "\"", wxEXEC_ASYNC);
-#else
-    // Linux의 경우 (대부분의 데스크탑 환경에서 동작)
-    wxExecute("xdg-open \"" + path + "\"", wxEXEC_ASYNC);
-#endif
+    DataManager::OpenDataDirectory();
 }

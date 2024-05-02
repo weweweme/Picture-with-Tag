@@ -44,3 +44,23 @@ std::vector<DataItem> DataManager::LoadDataItems() {
 
     return items; // 로드된 데이터 아이템의 벡터 반환
 }
+
+void DataManager::OpenDataDirectory() {
+    wxString path = wxStandardPaths::Get().GetDocumentsDir() + DATA_ITEMS_DIR;
+
+    if (!wxDirExists(path)) {
+        if (!wxMkdir(path)) {
+            wxLogError(DIRECTORY_CREATION_FAIL, path);
+            wxMessageBox(DIRECTORY_CREATION_FAIL, ERROR_TITLE, wxICON_ERROR);
+            return;
+        }
+    }
+
+#ifdef __WXMSW__
+    wxExecute("explorer \"" + path + "\"", wxEXEC_ASYNC);
+#elif defined(__WXMAC__)
+    wxExecute("open \"" + path + "\"", wxEXEC_ASYNC);
+#else
+    wxExecute("xdg-open \"" + path + "\"", wxEXEC_ASYNC);
+#endif
+}
