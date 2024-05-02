@@ -21,7 +21,7 @@ private:
     void OnDeleteTagButtonClick(wxCommandEvent& _);
     void OnBodyTextChange(wxCommandEvent& _);
     void OnAddPhoto(wxCommandEvent& _);
-    void OnRemovePhoto(wxCommandEvent& _);
+    void OnRemovePicture(wxCommandEvent& _);
     void OnMouseEnterPhoto(wxMouseEvent& event);
     void OnMouseLeavePhoto(wxMouseEvent& event);
     void UpdatePictureDisplay(const wxString& path);

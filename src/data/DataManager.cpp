@@ -120,3 +120,26 @@ void DataManager::SaveDataItems(wxListBox* articleList, const std::vector<DataIt
 
     wxMessageBox(DATA_SAVE_SUCCESS, SAVE_COMPLETE_TITLE, wxICON_INFORMATION);
 }
+
+void DataManager::SaveDataItem(const DataItem& item) {
+    wxString docDir = wxStandardPaths::Get().GetDocumentsDir();
+    wxString targetDir = docDir + DATA_ITEMS_DIR;
+
+    if (!wxDirExists(targetDir)) {
+        wxMkdir(targetDir);
+    }
+
+    wxString filePath = targetDir + "/" + item.title + PWT_EXTENSION;
+    std::ofstream ofs(filePath.ToStdString(), std::ios::binary);
+    if (!ofs.is_open()) {
+        wxLogError(FILE_READ_ERROR, filePath);
+        return;
+    }
+
+    try {
+        boost::archive::text_oarchive oa(ofs);
+        oa << item;
+    } catch (const boost::archive::archive_exception& e) {
+        wxLogError("Failed to save data item: %s", wxString(e.what()));
+    }
+}

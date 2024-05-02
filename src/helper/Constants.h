@@ -149,7 +149,6 @@ constexpr char DATA_ITEMS_DIR[] = "/Picture-with-Tag";
 constexpr char PWT_EXTENSION[] = ".pwt";
 constexpr char ZIP_EXTENSION_FORMAT[] = "%Y%m%d_%H%M%S.zip";
 constexpr char ERROR_MESSAGE_FILE_NOT_FOUND[] = "파일 '%s'를 찾을 수 없습니다.";
-constexpr char ERROR_MESSAGE_FILE_READ[] = "파일 '%s'를 읽을 수 없습니다.";
 constexpr char SUCCESS_MESSAGE_DATA_SAVED[] = "데이터가 성공적으로 저장되었습니다.";
 constexpr char ERROR_MESSAGE_DIRECTORY_CREATE[] = "디렉토리 '%s' 생성 실패.";
 constexpr char ERROR_MESSAGE_LOAD_FAIL[] = "이미지 파일을 로드할 수 없습니다.";

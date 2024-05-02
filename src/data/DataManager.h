@@ -15,6 +15,7 @@ public:
     static std::vector<DataItem> LoadDataItems();
     static void OpenDataDirectory();
     static void SaveDataItems(wxListBox* articleList, const std::vector<DataItem>& searchResults);
+    static void SaveDataItem(const DataItem& item);
 };
 
 #endif // DATA_MANAGER_H
