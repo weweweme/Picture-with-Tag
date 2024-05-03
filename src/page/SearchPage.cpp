@@ -52,6 +52,9 @@ void SearchPage::InitUI() {
     // 폴더 경로 오픈 버튼 생성
     auto* dirOpenButton = UIHelpers::CreateButton(this->panel, FILE_DIR_BUTTON_TEXT, wxPoint(FILE_DIR_BUTTON_X, FILE_DIR_BUTTON_Y), wxSize(FILE_DIR_BUTTON_WIDTH, FILE_DIR_BUTTON_HEIGHT));
     dirOpenButton->Bind(wxEVT_BUTTON, &SearchPage::OnClickFolderDir, this);
+
+    // 삭제 버튼 추가
+    auto* deleteButton = UIHelpers::CreateButton(this->panel, DATA_DELETE_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X - SIZE_BUTTON_X, CLEAR_BUTTON_Y), wxSize(SIZE_BUTTON_X, SIZE_BUTTON_Y));
 }
 
 void SearchPage::OnArticleSelected(wxCommandEvent& _) {

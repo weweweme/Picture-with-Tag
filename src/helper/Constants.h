@@ -133,6 +133,9 @@ static constexpr int FILE_DIR_BUTTON_Y = 5;
 static constexpr int FILE_DIR_BUTTON_WIDTH = 40;
 static constexpr int FILE_DIR_BUTTON_HEIGHT = 30;
 
+// 삭제
+static constexpr char DATA_DELETE_BUTTON_TEXT[] = "데이터 삭제";
+
 // 데이터 관련 상수 ========================================
 constexpr char DATA_SAVE_PROMPT[] = "선택한 데이터를 저장하시겠습니까?";
 constexpr char SAVE_CONFIRM_TITLE[] = "저장 확인";
