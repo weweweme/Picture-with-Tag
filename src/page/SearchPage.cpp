@@ -55,6 +55,7 @@ void SearchPage::InitUI() {
 
     // 삭제 버튼 추가
     auto* deleteButton = UIHelpers::CreateButton(this->panel, DATA_DELETE_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X - SIZE_BUTTON_X, CLEAR_BUTTON_Y), wxSize(SIZE_BUTTON_X, SIZE_BUTTON_Y));
+    deleteButton->Bind(wxEVT_BUTTON, &SearchPage::OnClickDeletePost, this);
 }
 
 void SearchPage::OnArticleSelected(wxCommandEvent& _) {
@@ -172,4 +173,24 @@ void SearchPage::OnClickDataSave(wxCommandEvent& _) {
 
 void SearchPage::OnClickFolderDir(wxCommandEvent& _) {
     DataManager::OpenDataDirectory();
+}
+
+void SearchPage::OnClickDeletePost(wxCommandEvent& _) {
+    int selection = this->articleList->GetSelection();
+    if (selection != wxNOT_FOUND) {
+        wxString title = this->searchResults.at(selection).title;
+        if (wxMessageBox("Are you sure you want to delete this post?", DATA_DELETE_BUTTON_TEXT, wxICON_QUESTION | wxYES_NO) == wxYES) {
+            DataManager::DeleteDataItem(title); // DataManager를 통해 파일 삭제
+            this->searchResults.erase(this->searchResults.begin() + selection); // 메모리에서 게시물 데이터 삭제
+            this->articleList->Delete(selection); // 리스트에서 해당 항목 제거
+
+            this->searchInput->Clear();
+            this->tagView->Clear();
+            this->bodyView->Clear();
+            this->pictureDisplay->SetBitmap(wxNullBitmap);
+            this->pictureDisplay->Refresh();
+        }
+    } else {
+        wxMessageBox("Please select a post to delete.", "No Selection", wxICON_WARNING);
+    }
 }

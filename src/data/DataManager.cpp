@@ -140,3 +140,18 @@ void DataManager::SaveDataItem(const DataItem& item) {
         wxLogError("Failed to save data item: %s", wxString(e.what()));
     }
 }
+
+void DataManager::DeleteDataItem(const wxString& title) {
+    wxString docDir = wxStandardPaths::Get().GetDocumentsDir();
+    wxString targetDir = docDir + DATA_ITEMS_DIR;
+    wxString filePath = targetDir + "/" + title + PWT_EXTENSION;
+
+    if (wxFileExists(filePath)) {
+        if (!wxRemoveFile(filePath)) {
+            wxLogError("Failed to delete the file: %s", filePath);
+        }
+    } else {
+        wxLogMessage("File does not exist: %s", filePath);
+    }
+}
+

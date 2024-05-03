@@ -19,6 +19,7 @@ public:
     static void OpenDataDirectory();
     static void SaveDataItems(wxListBox* articleList, const std::vector<DataItem>& searchResults);
     static void SaveDataItem(const DataItem& item);
+    static void DeleteDataItem(const wxString& item);
 };
 
 #endif // DATA_MANAGER_H
