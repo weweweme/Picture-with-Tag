@@ -56,6 +56,9 @@ void SearchPage::InitUI() {
     // 삭제 버튼 추가
     auto* deleteButton = UIHelpers::CreateButton(this->panel, DATA_DELETE_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X - SIZE_BUTTON_X, CLEAR_BUTTON_Y), wxSize(SIZE_BUTTON_X, SIZE_BUTTON_Y));
     deleteButton->Bind(wxEVT_BUTTON, &SearchPage::OnClickDeletePost, this);
+
+    // 수정 버튼 생성
+    auto* editButton = UIHelpers::CreateButton(this->panel, ARTICLE_EDIT_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X - SIZE_BUTTON_X, SAVE_BUTTON_Y), wxSize(SIZE_BUTTON_X, SIZE_BUTTON_Y));
 }
 
 void SearchPage::OnArticleSelected(wxCommandEvent& _) {
