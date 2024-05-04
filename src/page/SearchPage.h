@@ -17,7 +17,8 @@ private:
     void OnClickReset(wxCommandEvent& _);
     void OnClickDataSave(wxCommandEvent& _);
     void OnClickFolderDir(wxCommandEvent& _);
-    void OnClickDeletePost(wxCommandEvent& _);
+    void OnClickDeleteArticle(wxCommandEvent& _);
+    void OnClickEditArticle(wxCommandEvent& _);
 
     wxTextCtrl* searchInput{};
     wxListBox* articleList{};

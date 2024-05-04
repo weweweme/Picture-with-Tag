@@ -2,6 +2,7 @@
 #define PICTURE_WITH_TAG_ADDPAGE_H
 
 #include "BasePage.h"
+#include "../data/DataItem.h"
 #include <set>
 
 class AddPage : public BasePage {
@@ -27,6 +28,7 @@ private:
     void UpdatePictureDisplay(const wxString& path);
     void OnResetButtonClick(wxCommandEvent& _);
     void OnPanelClick(wxMouseEvent& event);
+    void DisplayDataItem(const DataItem& item);
 
     wxTextCtrl* titleInput{};
     wxTextCtrl* tagInput{};

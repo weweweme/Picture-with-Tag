@@ -260,3 +260,34 @@ void AddPage::SetBackgroundColourBasedOnLength(wxTextCtrl* input, size_t max_len
     UIHelpers::SetControlColours(input, backgroundColour, GlobalColors::textColour);
     input->Refresh();
 }
+
+void AddPage::DisplayDataItem(const DataItem& item) {
+    // 제목 설정
+    this->titleInput->SetValue(item.title);
+
+    // 본문 설정
+    this->bodyInput->SetValue(item.body);
+
+    // 태그 리스트 설정
+    this->tagList->Clear();  // 기존 태그 목록 클리어
+    for (const auto& tag : item.tags) {
+        this->tagList->Append(tag);
+    }
+
+    // 이미지 설정 (이미지가 있는 경우)
+    if (!item.image_data.empty()) {
+        wxMemoryInputStream memStream(item.image_data.data(), item.image_data.size());
+        wxImage image;
+        if (image.LoadFile(memStream, wxBITMAP_TYPE_ANY)) { // wxBITMAP_TYPE_ANY는 모든 지원되는 형식을 시도합니다.
+            this->photoDisplay->SetBitmap(wxBitmap(image));
+            this->removePhotoButton->Show();  // 제거 버튼 활성화
+        }
+    } else {
+        this->photoDisplay->SetBitmap(wxNullBitmap);  // 이미지 없을 경우 기본 이미지 설정
+        this->removePhotoButton->Hide();  // 제거 버튼 비활성화
+    }
+
+    this->photoDisplay->Refresh();
+    this->panel->Refresh();  // UI 새로고침
+}
+
