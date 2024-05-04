@@ -21,8 +21,8 @@ add_executable(Picture_with_Tag
         src/page/PageID.h
         src/page/BasePage.h
         src/page/BasePage.cpp
-        src/page/AddPage.h
-        src/page/AddPage.cpp
+        src/page/EditPage.h
+        src/page/EditPage.cpp
         src/page/PageManager.h
         src/page/PageManager.cpp
         src/page/SearchPage.h
