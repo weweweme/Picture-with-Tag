@@ -305,6 +305,7 @@ void EditPage::Clear() {
     this->removePictureButton->Hide();
     this->panel->Refresh();
     this->isEditing = false;
+    this->tags.clear();
 }
 
 void EditPage::OnClickBack(wxCommandEvent &_) {
