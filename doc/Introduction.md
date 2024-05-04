@@ -10,3 +10,5 @@
     - It is not necessary to input the body, but saving other elements is mandatory.
 - Searching: You can search based on specific criteria.
     - Various actions can be performed based on the searched data.
+
+![img](../rsc/Introduction_img.png)
