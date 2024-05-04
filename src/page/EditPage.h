@@ -12,6 +12,7 @@ public:
 
 protected:
     void InitUI() override;
+    void OnClickBack(wxCommandEvent& _) override;
 
 private:
     static void SetBackgroundColourBasedOnLength(wxTextCtrl* input, size_t max_length);

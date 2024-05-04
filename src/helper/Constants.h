@@ -120,7 +120,7 @@ static constexpr int SEARCH_BUTTON_OFFSET = 136; // 조건 드롭다운에서 �
 static constexpr int SEARCH_BUTTON_TOP_OFFSET = -6; // 검색 버튼의 수직 정렬 오프셋
 
 // 태그
-static constexpr int SEARCH_TAG_INPUT_FIELD_WIDTH = 1055;
+static constexpr int SEARCH_TAG_INPUT_FIELD_WIDTH = 1110;
 
 // 저장
 static constexpr char SAVE_BUTTON_TEXT[] = "데이터 묶음 저장";

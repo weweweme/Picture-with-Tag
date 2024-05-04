@@ -12,12 +12,11 @@ public:
 
 protected:
     virtual void InitUI();
+    virtual void OnClickBack(wxCommandEvent& _);
     wxPanel* panel{};
     wxSize defaultButtonSize;
 
 private:
-    void OnClickBack(wxCommandEvent& _);
-
     PageID currentPage;
 };
 

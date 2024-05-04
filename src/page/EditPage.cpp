@@ -306,3 +306,9 @@ void EditPage::Clear() {
     this->panel->Refresh();
     this->isEditing = false;
 }
+
+void EditPage::OnClickBack(wxCommandEvent &_) {
+    BasePage::OnClickBack(_);
+
+    Clear();
+}
