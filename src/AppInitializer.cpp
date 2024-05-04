@@ -1,7 +1,7 @@
 #include "helper/Constants.h"
 #include "AppInitializer.h"
 #include "page/TitlePage.h"
-#include "page/AddPage.h"
+#include "page/EditPage.h"
 #include "page/PageManager.h"
 #include "page/SearchPage.h"
 #include "helper/GlobalColors.h"
@@ -29,7 +29,7 @@ void AppInitializer::InitPage(const PageID id) {
             frame->Show();
             break;
         case PageID::ID_Add:
-            frame = new AddPage(INIT_WINDOW_ADD, initPosition, initSize, ID_Add);
+            frame = new EditPage(INIT_WINDOW_ADD, initPosition, initSize, ID_Add);
             break;
         case PageID::ID_Search:
             frame = new SearchPage(INIT_WINDOW_SEARCH, initPosition, initSize, ID_Search);

@@ -1,4 +1,4 @@
-#include "AddPage.h"
+#include "EditPage.h"
 #include "../helper/GlobalColors.h"
 #include "../helper/UIHelpers.h"
 #include "../helper/Constants.h"
@@ -6,42 +6,42 @@
 #include <wx/filename.h>
 #include <fstream>
 
-AddPage::AddPage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage)
+EditPage::EditPage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage)
         : BasePage(title, pos, size, currentPage) {
-    AddPage::InitUI();
+    EditPage::InitUI();
 }
 
-void AddPage::InitUI() {
+void EditPage::InitUI() {
     BasePage::InitUI();
 
     // 제목 입력 필드
     UIHelpers::CreateStaticText(this->panel, TITLE_LABEL_TEXT, wxPoint(TITLE_LABEL_X, TITLE_LABEL_Y), wxDefaultSize);
     this->titleInput = UIHelpers::CreateTextCtrl(this->panel, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y), wxSize(TITLE_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT), 0);
-    this->titleInput->Bind(wxEVT_TEXT, &AddPage::OnTitleTextChange, this);
+    this->titleInput->Bind(wxEVT_TEXT, &EditPage::OnTitleTextChange, this);
 
     // 태그 입력 필드
     UIHelpers::CreateStaticText(this->panel, TAG_LABEL_TEXT, wxPoint(TITLE_LABEL_X, TITLE_LABEL_Y + TAG_INPUT_Y_OFFSET), wxDefaultSize);
     this->tagInput = UIHelpers::CreateTextCtrl(this->panel, "", wxPoint(TITLE_INPUT_X, TITLE_INPUT_Y + TAG_INPUT_Y_OFFSET), wxSize(TAG_INPUT_FIELD_WIDTH, INPUT_FIELD_HEIGHT), 0);
-    this->tagInput->Bind(wxEVT_TEXT, &AddPage::OnTagTextChange, this);
+    this->tagInput->Bind(wxEVT_TEXT, &EditPage::OnTagTextChange, this);
 
     // 태그 입력 버튼
     this->tagButton = UIHelpers::CreateButton(this->panel, TAG_BUTTON_TEXT, wxPoint(TAG_INPUT_FIELD_WIDTH + TAG_BUTTON_X_OFFSET, TITLE_INPUT_Y + TAG_INPUT_Y_OFFSET), wxSize(TAG_BUTTON_WIDTH, INPUT_FIELD_HEIGHT), 0);
-    this->tagButton->Bind(wxEVT_BUTTON, &AddPage::OnTagButtonClick, this);
+    this->tagButton->Bind(wxEVT_BUTTON, &EditPage::OnTagButtonClick, this);
     this->tagButton->Enable(false);
 
     // 태그 리스트 박스 초기화
     this->tagList = UIHelpers::CreateListBox(this->panel, wxPoint(LISTBOX_X, LISTBOX_Y), wxSize(LISTBOX_WIDTH, LISTBOX_HEIGHT), wxLB_MULTIPLE);
-    this->tagList->Bind(wxEVT_LISTBOX, &AddPage::OnTagSelected, this);
+    this->tagList->Bind(wxEVT_LISTBOX, &EditPage::OnTagSelected, this);
 
     // 태그 삭제 버튼 초기화
     this->deleteTagButton = UIHelpers::CreateButton(this->panel, _("-"), wxDefaultPosition, wxSize(20, BUTTON_HEIGHT), 0);
-    this->deleteTagButton->Bind(wxEVT_BUTTON, &AddPage::OnDeleteTagButtonClick, this);
+    this->deleteTagButton->Bind(wxEVT_BUTTON, &EditPage::OnDeleteTagButtonClick, this);
     this->deleteTagButton->Hide();
 
     // 본문 텍스트 입력 필드
     UIHelpers::CreateStaticText(this->panel, BODY_LABEL_TEXT, wxPoint(BODY_LABEL_X, BODY_LABEL_Y), wxDefaultSize);
     this->bodyInput = UIHelpers::CreateTextCtrl(this->panel, "", wxPoint(BODY_INPUT_X, BODY_INPUT_Y), wxSize(BODY_TEXT_WIDTH, BODY_TEXT_HEIGHT), wxTE_MULTILINE);
-    this->bodyInput->Bind(wxEVT_TEXT, &AddPage::OnBodyTextChange, this);
+    this->bodyInput->Bind(wxEVT_TEXT, &EditPage::OnBodyTextChange, this);
 
     // pictureDisplay 정적 비트맵 설정
     this->pictureDisplay = new wxStaticBitmap(this->panel, wxID_ANY, wxNullBitmap, wxPoint(PICTURE_DISPLAY_X, PICTURE_DISPLAY_Y), wxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT));
@@ -50,32 +50,32 @@ void AddPage::InitUI() {
     int centerX = (MAX_IMAGE_WIDTH - ADD_PAGE_BUTTON_WIDTH) / 2;
     int centerY = (MAX_IMAGE_HEIGHT - ADD_PAGE_BUTTON_HEIGHT) / 2;
     this->addPictureButton = UIHelpers::CreateButton(this->pictureDisplay, PICTURE_ADD_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT), 0);
-    this->addPictureButton->Bind(wxEVT_BUTTON, &AddPage::OnAddPhoto, this);
+    this->addPictureButton->Bind(wxEVT_BUTTON, &EditPage::OnAddPhoto, this);
 
     this->removePictureButton = UIHelpers::CreateButton(this->pictureDisplay, PICTURE_REMOVE_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT), 0);
-    this->removePictureButton->Bind(wxEVT_BUTTON, &AddPage::OnRemovePicture, this);
+    this->removePictureButton->Bind(wxEVT_BUTTON, &EditPage::OnRemovePicture, this);
     this->removePictureButton->Hide();
 
     // 마우스 이벤트 바인딩
-    this->pictureDisplay->Bind(wxEVT_ENTER_WINDOW, &AddPage::OnMouseEnterPhoto, this);
-    this->pictureDisplay->Bind(wxEVT_LEAVE_WINDOW, &AddPage::OnMouseLeavePhoto, this);
+    this->pictureDisplay->Bind(wxEVT_ENTER_WINDOW, &EditPage::OnMouseEnterPhoto, this);
+    this->pictureDisplay->Bind(wxEVT_LEAVE_WINDOW, &EditPage::OnMouseLeavePhoto, this);
 
     // 초기화 및 확인 버튼
     auto* resetButton = UIHelpers::CreateButton(this->panel, CLEAR_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X, CLEAR_BUTTON_Y), defaultButtonSize, 0);
-    resetButton->Bind(wxEVT_BUTTON, &AddPage::OnResetButtonClick, this);
+    resetButton->Bind(wxEVT_BUTTON, &EditPage::OnResetButtonClick, this);
 
     this->confirmButton = UIHelpers::CreateButton(this->panel, CONFIRM_BUTTON_LABEL, wxPoint(RIGHT_BUTTON_X, CONFIRM_BUTTON_Y), defaultButtonSize, 0);
-    this->confirmButton->Bind(wxEVT_BUTTON, &AddPage::OnClickConfirm, this);
+    this->confirmButton->Bind(wxEVT_BUTTON, &EditPage::OnClickConfirm, this);
 
     // 패널 클릭 이벤트
-    this->panel->Bind(wxEVT_LEFT_DOWN, &AddPage::OnPanelClick, this);
+    this->panel->Bind(wxEVT_LEFT_DOWN, &EditPage::OnPanelClick, this);
 }
 
-void AddPage::OnTitleTextChange(wxCommandEvent& _) {
+void EditPage::OnTitleTextChange(wxCommandEvent& _) {
     SetBackgroundColourBasedOnLength(this->titleInput, MAX_TITLE_LENGTH);
 }
 
-void AddPage::OnTagTextChange(wxCommandEvent& _) {
+void EditPage::OnTagTextChange(wxCommandEvent& _) {
     wxString text = this->tagInput->GetValue();
     bool isValid = !text.IsEmpty() && text.length() <= MAX_TAG_LENGTH && this->tagList->GetCount() <= MAX_TAGS;
 
@@ -84,7 +84,7 @@ void AddPage::OnTagTextChange(wxCommandEvent& _) {
     SetBackgroundColourBasedOnLength(this->tagInput, MAX_TAG_LENGTH);
 }
 
-void AddPage::OnTagButtonClick(wxCommandEvent& _) {
+void EditPage::OnTagButtonClick(wxCommandEvent& _) {
     wxString tag = this->tagInput->GetValue().Trim().Trim(false);
 
     // 태그에 공백이 포함된 경우 경고
@@ -105,7 +105,7 @@ void AddPage::OnTagButtonClick(wxCommandEvent& _) {
     this->tagInput->SetFocus(); // 포커스 재설정
 }
 
-void AddPage::OnTagSelected(wxCommandEvent& event) {
+void EditPage::OnTagSelected(wxCommandEvent& event) {
     int selection = this->tagList->GetSelection();
     int itemHeight = LISTBOX_Y;  // 예상 아이템 높이
     int itemTop = itemHeight * selection;  // 선택된 항목의 상단 위치 계산
@@ -113,7 +113,7 @@ void AddPage::OnTagSelected(wxCommandEvent& event) {
     this->deleteTagButton->Show();
 }
 
-void AddPage::OnDeleteTagButtonClick(wxCommandEvent& _) {
+void EditPage::OnDeleteTagButtonClick(wxCommandEvent& _) {
     int selection = this->tagList->GetSelection();
 
     wxString tag = this->tagList->GetString(selection);  // 선택된 태그의 문자열 가져오기
@@ -126,12 +126,12 @@ void AddPage::OnDeleteTagButtonClick(wxCommandEvent& _) {
     }
 }
 
-void AddPage::OnBodyTextChange(wxCommandEvent& _) {
+void EditPage::OnBodyTextChange(wxCommandEvent& _) {
     wxString text = bodyInput->GetValue();
     SetBackgroundColourBasedOnLength(bodyInput, MAX_BODY_LENGTH);
 }
 
-void AddPage::OnAddPhoto(wxCommandEvent& _) {
+void EditPage::OnAddPhoto(wxCommandEvent& _) {
     wxFileDialog openFileDialog(this, _(SELECT_PHOTO_TEXT), "", "", _(FILE_DIALOG_FILTER), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 
     if (openFileDialog.ShowModal() == wxID_CANCEL)
@@ -141,7 +141,7 @@ void AddPage::OnAddPhoto(wxCommandEvent& _) {
     UpdatePictureDisplay(path);
 }
 
-void AddPage::UpdatePictureDisplay(const wxString& path) {
+void EditPage::UpdatePictureDisplay(const wxString& path) {
     wxImage image;
     if (!image.LoadFile(path, wxBITMAP_TYPE_ANY)) {
         wxLogMessage(_(ERROR_MESSAGE_LOAD_FAIL));
@@ -151,7 +151,7 @@ void AddPage::UpdatePictureDisplay(const wxString& path) {
     DisplayImage(image);
 }
 
-void AddPage::OnMouseEnterPhoto(wxMouseEvent& event) {
+void EditPage::OnMouseEnterPhoto(wxMouseEvent& event) {
     if (this->pictureDisplay->GetBitmap().IsOk()) {  // Check if pictureDisplay has a valid bitmap
         this->removePictureButton->Show();
         this->pictureDisplay->Refresh();
@@ -159,13 +159,13 @@ void AddPage::OnMouseEnterPhoto(wxMouseEvent& event) {
     event.Skip();
 }
 
-void AddPage::OnMouseLeavePhoto(wxMouseEvent& event) {
+void EditPage::OnMouseLeavePhoto(wxMouseEvent& event) {
     this->removePictureButton->Hide();
     this->panel->Refresh();
     event.Skip();
 }
 
-void AddPage::OnRemovePicture(wxCommandEvent& _) {
+void EditPage::OnRemovePicture(wxCommandEvent& _) {
     // 사진 제거 로직
     this->removePictureButton->Hide();
     this->pictureDisplay->SetBitmap(wxNullBitmap);
@@ -173,13 +173,13 @@ void AddPage::OnRemovePicture(wxCommandEvent& _) {
     this->pictureDisplay->Refresh();
 }
 
-void AddPage::OnResetButtonClick(wxCommandEvent& _) {
+void EditPage::OnResetButtonClick(wxCommandEvent& _) {
     if (wxMessageBox(_(DIALOGUE_TITLE_RESET), _(DIALOGUE_WARNING_RESET), wxICON_WARNING | wxYES_NO | wxNO_DEFAULT) == wxYES) {
         Clear();
     }
 }
 
-void AddPage::OnPanelClick(wxMouseEvent& event) {
+void EditPage::OnPanelClick(wxMouseEvent& event) {
     wxPoint pt = event.GetPosition();
     // 패널 클릭 위치가 ListBox 범위 내에 없을 경우
     if (!this->tagList->GetRect().Contains(pt)) {
@@ -190,7 +190,7 @@ void AddPage::OnPanelClick(wxMouseEvent& event) {
     event.Skip();
 }
 
-void AddPage::OnClickConfirm(wxCommandEvent& _) {
+void EditPage::OnClickConfirm(wxCommandEvent& _) {
     bool inputValid = true;
     wxString validationMessage = _(_(SUCCESS_MESSAGE_DATA_SAVED));
 
@@ -243,7 +243,7 @@ void AddPage::OnClickConfirm(wxCommandEvent& _) {
     wxLogMessage(_(SUCCESS_MESSAGE_DATA_SAVED));
 }
 
-void AddPage::SetBackgroundColourBasedOnLength(wxTextCtrl* input, size_t max_length) {
+void EditPage::SetBackgroundColourBasedOnLength(wxTextCtrl* input, size_t max_length) {
     wxString text = input->GetValue();
     bool isTooLong = text.length() > max_length;
     wxColour backgroundColour = isTooLong ? LIGHT_RED : DEFAULT_BG_COLOR;
@@ -252,7 +252,7 @@ void AddPage::SetBackgroundColourBasedOnLength(wxTextCtrl* input, size_t max_len
     input->Refresh();
 }
 
-void AddPage::DisplayDataItem(const DataItem& item) {
+void EditPage::DisplayDataItem(const DataItem& item) {
     this->isEditing = true; // 편집 모드 활성화
     this->originalTitle = item.title; // 원래 제목 저장
 
@@ -280,7 +280,7 @@ void AddPage::DisplayDataItem(const DataItem& item) {
     this->panel->Refresh();  // UI 새로고침
 }
 
-void AddPage::DisplayImage(const wxImage& originalImage) {
+void EditPage::DisplayImage(const wxImage& originalImage) {
     wxImage resizedImage = originalImage;
 
     // 이미지 사이즈 조정
@@ -295,7 +295,7 @@ void AddPage::DisplayImage(const wxImage& originalImage) {
     this->pictureDisplay->Refresh();
 }
 
-void AddPage::Clear() {
+void EditPage::Clear() {
     this->titleInput->Clear();
     this->tagInput->Clear();
     this->tagList->Clear();

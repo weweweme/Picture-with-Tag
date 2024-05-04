@@ -1,13 +1,13 @@
-#ifndef PICTURE_WITH_TAG_ADDPAGE_H
-#define PICTURE_WITH_TAG_ADDPAGE_H
+#ifndef PICTURE_WITH_TAG_EDITPAGE_H
+#define PICTURE_WITH_TAG_EDITPAGE_H
 
 #include "BasePage.h"
 #include "../data/DataItem.h"
 #include <set>
 
-class AddPage : public BasePage {
+class EditPage : public BasePage {
 public:
-    AddPage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage);
+    EditPage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage);
     void DisplayDataItem(const DataItem& item);
 
 protected:
@@ -48,4 +48,4 @@ private:
     wxStaticBitmap* pictureDisplay{};
 };
 
-#endif // PICTURE_WITH_TAG_ADDPAGE_H
+#endif // PICTURE_WITH_TAG_EDITPAGE_H

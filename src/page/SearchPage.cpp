@@ -2,7 +2,7 @@
 #include "../helper/Constants.h"
 #include "../data/DataManager.h"
 #include "../helper/UIHelpers.h"
-#include "AddPage.h"
+#include "EditPage.h"
 #include "PageManager.h"
 
 SearchPage::SearchPage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage)
@@ -209,7 +209,7 @@ void SearchPage::OnClickEditArticle(wxCommandEvent &_) {
             wxFrame* frame = manager->GetPage(PageID::ID_Add);
 
             // 이 변환은 PageManager에서 반환된 객체가 실제로 AddPage의 인스턴스임을 우리가 알고 있기 때문에 안전합니다.
-            auto* pageIns = static_cast<AddPage*>(frame);
+            auto* pageIns = static_cast<EditPage*>(frame);
 
             DataItem& item = this->searchResults[selection];
             pageIns->DisplayDataItem(item);

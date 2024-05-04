@@ -31,7 +31,7 @@ static constexpr char BACK_BUTTON_LABEL[] = "뒤로가기";
 static constexpr int RIGHT_BUTTON_X = 1188;
 static constexpr int BACK_BUTTON_Y = 720;
 
-// AddPage 상수 ========================================
+// EditPage 상수 ========================================
 // 결과 저장
 static constexpr char CONFIRM_BUTTON_LABEL[] = "저장";
 static constexpr int CONFIRM_BUTTON_Y = 640;
