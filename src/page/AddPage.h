@@ -8,6 +8,7 @@
 class AddPage : public BasePage {
 public:
     AddPage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage);
+    void DisplayDataItem(const DataItem& item);
 
 protected:
     void InitUI() override;
@@ -28,7 +29,6 @@ private:
     void UpdatePictureDisplay(const wxString& path);
     void OnResetButtonClick(wxCommandEvent& _);
     void OnPanelClick(wxMouseEvent& event);
-    void DisplayDataItem(const DataItem& item);
 
     wxTextCtrl* titleInput{};
     wxTextCtrl* tagInput{};

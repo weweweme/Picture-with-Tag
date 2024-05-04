@@ -2,6 +2,8 @@
 #include "../helper/Constants.h"
 #include "../data/DataManager.h"
 #include "../helper/UIHelpers.h"
+#include "AddPage.h"
+#include "PageManager.h"
 
 SearchPage::SearchPage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage)
         : BasePage(title, pos, size, currentPage) {
@@ -202,13 +204,20 @@ void SearchPage::OnClickDeleteArticle(wxCommandEvent& _) {
 void SearchPage::OnClickEditArticle(wxCommandEvent &_) {
     int selection = this->articleList->GetSelection();
     if (selection != wxNOT_FOUND) {
-        DataItem& item = this->searchResults[selection]; // 선택된 항목 참조
         if (wxMessageBox("Are you sure you want to edit this post?", ARTICLE_EDIT_BUTTON_TEXT, wxICON_QUESTION | wxYES_NO) == wxYES) {
-            // 편집 로직을 여기에 구현
-            // 예: 편집용 다이얼로그 열기, 변경된 내용 받기
+            PageManager* manager = PageManager::GetInstance();
+            wxFrame* frame = manager->GetPage(PageID::ID_Add);
+
+            // 이 변환은 PageManager에서 반환된 객체가 실제로 AddPage의 인스턴스임을 우리가 알고 있기 때문에 안전합니다.
+            auto* pageIns = static_cast<AddPage*>(frame);
+
+            DataItem& item = this->searchResults[selection];
+            pageIns->DisplayDataItem(item);
+
+            manager->HidePage(PageID::ID_Search);
+            manager->ShowPage(PageID::ID_Add);
         }
     } else {
         wxMessageBox("Please select a post to edit.", "No Selection", wxICON_WARNING);
     }
 }
-
