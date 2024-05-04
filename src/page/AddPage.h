@@ -15,6 +15,7 @@ protected:
 
 private:
     static void SetBackgroundColourBasedOnLength(wxTextCtrl* input, size_t max_length);
+    void DisplayImage(const wxImage& originalImage);
     void OnClickConfirm(wxCommandEvent& _);
     void OnTitleTextChange(wxCommandEvent& _);
     void OnTagTextChange(wxCommandEvent& _);
@@ -37,10 +38,10 @@ private:
     wxButton* deleteTagButton{};
     std::set<wxString> tags;
     wxTextCtrl* bodyInput{};
-    wxButton* addPhotoButton{};
-    wxButton* removePhotoButton{};
+    wxButton* addPictureButton{};
+    wxButton* removePictureButton{};
     wxButton* confirmButton{};
-    wxStaticBitmap* photoDisplay{};
+    wxStaticBitmap* pictureDisplay{};
 };
 
 #endif // PICTURE_WITH_TAG_ADDPAGE_H
