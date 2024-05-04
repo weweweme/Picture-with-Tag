@@ -30,6 +30,10 @@ private:
     void UpdatePictureDisplay(const wxString& path);
     void OnResetButtonClick(wxCommandEvent& _);
     void OnPanelClick(wxMouseEvent& event);
+    void Clear();
+
+    bool isEditing{};
+    wxString originalTitle; // 편집 중인 게시물의 원래 제목 저장
 
     wxTextCtrl* titleInput{};
     wxTextCtrl* tagInput{};

@@ -1,5 +1,4 @@
 #include "AddPage.h"
-#include "../data/DataItem.h"
 #include "../helper/GlobalColors.h"
 #include "../helper/UIHelpers.h"
 #include "../helper/Constants.h"
@@ -176,14 +175,7 @@ void AddPage::OnRemovePicture(wxCommandEvent& _) {
 
 void AddPage::OnResetButtonClick(wxCommandEvent& _) {
     if (wxMessageBox(_(DIALOGUE_TITLE_RESET), _(DIALOGUE_WARNING_RESET), wxICON_WARNING | wxYES_NO | wxNO_DEFAULT) == wxYES) {
-        this->titleInput->Clear();
-        this->tagInput->Clear();
-        this->tagList->Clear();
-        this->bodyInput->Clear();
-        this->pictureDisplay->SetBitmap(wxNullBitmap);
-        this->addPictureButton->Show();
-        this->removePictureButton->Hide();
-        this->panel->Refresh();
+        Clear();
     }
 }
 
@@ -237,10 +229,16 @@ void AddPage::OnClickConfirm(wxCommandEvent& _) {
         return;
     }
 
+    if (this->isEditing) {
+        DataManager::DeleteDataItem(this->originalTitle); // 원본 게시물 삭제
+    }
+
     // DataItem 객체 생성
     wxImage image = bitmap.ConvertToImage();
     DataItem newItem(title, set, body, image);
     DataManager::SaveDataItem(newItem);
+
+    Clear();
 
     wxLogMessage(_(SUCCESS_MESSAGE_DATA_SAVED));
 }
@@ -255,6 +253,9 @@ void AddPage::SetBackgroundColourBasedOnLength(wxTextCtrl* input, size_t max_len
 }
 
 void AddPage::DisplayDataItem(const DataItem& item) {
+    this->isEditing = true; // 편집 모드 활성화
+    this->originalTitle = item.title; // 원래 제목 저장
+
     // 제목 설정
     this->titleInput->SetValue(item.title);
 
@@ -292,4 +293,16 @@ void AddPage::DisplayImage(const wxImage& originalImage) {
     this->addPictureButton->Hide();
     this->removePictureButton->Show(); // 수정된 내용은 항상 사진이 있으므로 제거 버튼을 활성화
     this->pictureDisplay->Refresh();
+}
+
+void AddPage::Clear() {
+    this->titleInput->Clear();
+    this->tagInput->Clear();
+    this->tagList->Clear();
+    this->bodyInput->Clear();
+    this->pictureDisplay->SetBitmap(wxNullBitmap);
+    this->addPictureButton->Show();
+    this->removePictureButton->Hide();
+    this->panel->Refresh();
+    this->isEditing = false;
 }
