@@ -154,4 +154,3 @@ void DataManager::DeleteDataItem(const wxString& title) {
         wxLogMessage("File does not exist: %s", filePath);
     }
 }
-

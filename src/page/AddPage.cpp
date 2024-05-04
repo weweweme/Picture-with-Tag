@@ -1,5 +1,4 @@
 #include "AddPage.h"
-#include "../data/DataItem.h"
 #include "../helper/GlobalColors.h"
 #include "../helper/UIHelpers.h"
 #include "../helper/Constants.h"
@@ -44,22 +43,22 @@ void AddPage::InitUI() {
     this->bodyInput = UIHelpers::CreateTextCtrl(this->panel, "", wxPoint(BODY_INPUT_X, BODY_INPUT_Y), wxSize(BODY_TEXT_WIDTH, BODY_TEXT_HEIGHT), wxTE_MULTILINE);
     this->bodyInput->Bind(wxEVT_TEXT, &AddPage::OnBodyTextChange, this);
 
-    // photoDisplay 정적 비트맵 설정
-    this->photoDisplay = new wxStaticBitmap(this->panel, wxID_ANY, wxNullBitmap, wxPoint(PICTURE_DISPLAY_X, PICTURE_DISPLAY_Y), wxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT));
+    // pictureDisplay 정적 비트맵 설정
+    this->pictureDisplay = new wxStaticBitmap(this->panel, wxID_ANY, wxNullBitmap, wxPoint(PICTURE_DISPLAY_X, PICTURE_DISPLAY_Y), wxSize(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT));
 
     // 사진 추가 및 제거 버튼 초기화
     int centerX = (MAX_IMAGE_WIDTH - ADD_PAGE_BUTTON_WIDTH) / 2;
     int centerY = (MAX_IMAGE_HEIGHT - ADD_PAGE_BUTTON_HEIGHT) / 2;
-    this->addPhotoButton = UIHelpers::CreateButton(this->photoDisplay, PICTURE_ADD_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT), 0);
-    this->addPhotoButton->Bind(wxEVT_BUTTON, &AddPage::OnAddPhoto, this);
+    this->addPictureButton = UIHelpers::CreateButton(this->pictureDisplay, PICTURE_ADD_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT), 0);
+    this->addPictureButton->Bind(wxEVT_BUTTON, &AddPage::OnAddPhoto, this);
 
-    this->removePhotoButton = UIHelpers::CreateButton(this->photoDisplay, PICTURE_REMOVE_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT), 0);
-    this->removePhotoButton->Bind(wxEVT_BUTTON, &AddPage::OnRemovePicture, this);
-    this->removePhotoButton->Hide();
+    this->removePictureButton = UIHelpers::CreateButton(this->pictureDisplay, PICTURE_REMOVE_TEXT, wxPoint(centerX, centerY), wxSize(ADD_PAGE_BUTTON_WIDTH, ADD_PAGE_BUTTON_HEIGHT), 0);
+    this->removePictureButton->Bind(wxEVT_BUTTON, &AddPage::OnRemovePicture, this);
+    this->removePictureButton->Hide();
 
     // 마우스 이벤트 바인딩
-    this->photoDisplay->Bind(wxEVT_ENTER_WINDOW, &AddPage::OnMouseEnterPhoto, this);
-    this->photoDisplay->Bind(wxEVT_LEAVE_WINDOW, &AddPage::OnMouseLeavePhoto, this);
+    this->pictureDisplay->Bind(wxEVT_ENTER_WINDOW, &AddPage::OnMouseEnterPhoto, this);
+    this->pictureDisplay->Bind(wxEVT_LEAVE_WINDOW, &AddPage::OnMouseLeavePhoto, this);
 
     // 초기화 및 확인 버튼
     auto* resetButton = UIHelpers::CreateButton(this->panel, CLEAR_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X, CLEAR_BUTTON_Y), defaultButtonSize, 0);
@@ -149,48 +148,34 @@ void AddPage::UpdatePictureDisplay(const wxString& path) {
         return;
     }
 
-    if (image.GetWidth() > MAX_IMAGE_WIDTH || image.GetHeight() > MAX_IMAGE_HEIGHT) {
-        image.Rescale(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT, wxIMAGE_QUALITY_HIGH);
-    }
-
-    this->photoDisplay->SetBitmap(wxBitmap(image));
-    this->addPhotoButton->Hide();
-    this->panel->Refresh();
-    this->photoDisplay->Refresh();
+    DisplayImage(image);
 }
 
 void AddPage::OnMouseEnterPhoto(wxMouseEvent& event) {
-    if (this->photoDisplay->GetBitmap().IsOk()) {  // Check if photoDisplay has a valid bitmap
-        this->removePhotoButton->Show();
-        this->photoDisplay->Refresh();
+    if (this->pictureDisplay->GetBitmap().IsOk()) {  // Check if pictureDisplay has a valid bitmap
+        this->removePictureButton->Show();
+        this->pictureDisplay->Refresh();
     }
     event.Skip();
 }
 
 void AddPage::OnMouseLeavePhoto(wxMouseEvent& event) {
-    this->removePhotoButton->Hide();
+    this->removePictureButton->Hide();
     this->panel->Refresh();
     event.Skip();
 }
 
 void AddPage::OnRemovePicture(wxCommandEvent& _) {
     // 사진 제거 로직
-    this->removePhotoButton->Hide();
-    this->photoDisplay->SetBitmap(wxNullBitmap);
-    this->addPhotoButton->Show();
-    this->photoDisplay->Refresh();
+    this->removePictureButton->Hide();
+    this->pictureDisplay->SetBitmap(wxNullBitmap);
+    this->addPictureButton->Show();
+    this->pictureDisplay->Refresh();
 }
 
 void AddPage::OnResetButtonClick(wxCommandEvent& _) {
     if (wxMessageBox(_(DIALOGUE_TITLE_RESET), _(DIALOGUE_WARNING_RESET), wxICON_WARNING | wxYES_NO | wxNO_DEFAULT) == wxYES) {
-        this->titleInput->Clear();
-        this->tagInput->Clear();
-        this->tagList->Clear();
-        this->bodyInput->Clear();
-        this->photoDisplay->SetBitmap(wxNullBitmap);
-        this->addPhotoButton->Show();
-        this->removePhotoButton->Hide();
-        this->panel->Refresh();
+        Clear();
     }
 }
 
@@ -212,12 +197,12 @@ void AddPage::OnClickConfirm(wxCommandEvent& _) {
     // 입력 데이터 수집
     wxString title = this->titleInput->GetValue();
     wxString body = this->bodyInput->GetValue();
-    wxBitmap bitmap = this->photoDisplay->GetBitmap();
+    wxBitmap bitmap = this->pictureDisplay->GetBitmap();
 
     // 태그 집합 생성
-    std::set<wxString> tags;
+    std::set<wxString> set;
     for (unsigned int i = 0; i < this->tagList->GetCount(); ++i) {
-        tags.insert(this->tagList->GetString(i));
+        set.insert(this->tagList->GetString(i));
     }
 
     // 1. 제목 검증
@@ -233,7 +218,7 @@ void AddPage::OnClickConfirm(wxCommandEvent& _) {
     }
 
     // 3. 태그 검증
-    if (tags.empty()) {
+    if (set.empty()) {
         validationMessage += _("\n- 태그가 최소 1개 이상 등록되어야 합니다.");
         inputValid = false;
     }
@@ -244,10 +229,16 @@ void AddPage::OnClickConfirm(wxCommandEvent& _) {
         return;
     }
 
+    if (this->isEditing) {
+        DataManager::DeleteDataItem(this->originalTitle); // 원본 게시물 삭제
+    }
+
     // DataItem 객체 생성
     wxImage image = bitmap.ConvertToImage();
-    DataItem newItem(title, tags, body, image);
+    DataItem newItem(title, set, body, image);
     DataManager::SaveDataItem(newItem);
+
+    Clear();
 
     wxLogMessage(_(SUCCESS_MESSAGE_DATA_SAVED));
 }
@@ -259,4 +250,59 @@ void AddPage::SetBackgroundColourBasedOnLength(wxTextCtrl* input, size_t max_len
 
     UIHelpers::SetControlColours(input, backgroundColour, GlobalColors::textColour);
     input->Refresh();
+}
+
+void AddPage::DisplayDataItem(const DataItem& item) {
+    this->isEditing = true; // 편집 모드 활성화
+    this->originalTitle = item.title; // 원래 제목 저장
+
+    // 제목 설정
+    this->titleInput->SetValue(item.title);
+
+    // 본문 설정
+    this->bodyInput->SetValue(item.body);
+
+    // 태그 리스트 설정
+    this->tagList->Clear();  // 기존 태그 목록 클리어
+    for (const auto& tag : item.tags) {
+        this->tagList->Append(tag);
+    }
+
+    wxMemoryInputStream memStream(item.image_data.data(), item.image_data.size());
+    wxImage image;
+    if (image.LoadFile(memStream, wxBITMAP_TYPE_ANY)) {
+        DisplayImage(image);
+        this->removePictureButton->Show();
+        this->addPictureButton->Hide();
+    }
+
+    this->pictureDisplay->Refresh();
+    this->panel->Refresh();  // UI 새로고침
+}
+
+void AddPage::DisplayImage(const wxImage& originalImage) {
+    wxImage resizedImage = originalImage;
+
+    // 이미지 사이즈 조정
+    if (originalImage.GetWidth() > MAX_IMAGE_WIDTH || originalImage.GetHeight() > MAX_IMAGE_HEIGHT) {
+        resizedImage.Rescale(MAX_IMAGE_WIDTH, MAX_IMAGE_HEIGHT, wxIMAGE_QUALITY_HIGH);
+    }
+
+    // 이미지 설정
+    this->pictureDisplay->SetBitmap(wxBitmap(resizedImage));
+    this->addPictureButton->Hide();
+    this->removePictureButton->Show(); // 수정된 내용은 항상 사진이 있으므로 제거 버튼을 활성화
+    this->pictureDisplay->Refresh();
+}
+
+void AddPage::Clear() {
+    this->titleInput->Clear();
+    this->tagInput->Clear();
+    this->tagList->Clear();
+    this->bodyInput->Clear();
+    this->pictureDisplay->SetBitmap(wxNullBitmap);
+    this->addPictureButton->Show();
+    this->removePictureButton->Hide();
+    this->panel->Refresh();
+    this->isEditing = false;
 }

@@ -2,6 +2,8 @@
 #include "../helper/Constants.h"
 #include "../data/DataManager.h"
 #include "../helper/UIHelpers.h"
+#include "AddPage.h"
+#include "PageManager.h"
 
 SearchPage::SearchPage(const wxString& title, const wxPoint& pos, const wxSize& size, const PageID currentPage)
         : BasePage(title, pos, size, currentPage) {
@@ -55,7 +57,11 @@ void SearchPage::InitUI() {
 
     // 삭제 버튼 추가
     auto* deleteButton = UIHelpers::CreateButton(this->panel, DATA_DELETE_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X - SIZE_BUTTON_X, CLEAR_BUTTON_Y), wxSize(SIZE_BUTTON_X, SIZE_BUTTON_Y));
-    deleteButton->Bind(wxEVT_BUTTON, &SearchPage::OnClickDeletePost, this);
+    deleteButton->Bind(wxEVT_BUTTON, &SearchPage::OnClickDeleteArticle, this);
+
+    // 수정 버튼 생성
+    auto* editButton = UIHelpers::CreateButton(this->panel, ARTICLE_EDIT_BUTTON_TEXT, wxPoint(RIGHT_BUTTON_X - SIZE_BUTTON_X, SAVE_BUTTON_Y), wxSize(SIZE_BUTTON_X, SIZE_BUTTON_Y));
+    editButton->Bind(wxEVT_BUTTON, &SearchPage::OnClickEditArticle, this);
 }
 
 void SearchPage::OnArticleSelected(wxCommandEvent& _) {
@@ -175,7 +181,7 @@ void SearchPage::OnClickFolderDir(wxCommandEvent& _) {
     DataManager::OpenDataDirectory();
 }
 
-void SearchPage::OnClickDeletePost(wxCommandEvent& _) {
+void SearchPage::OnClickDeleteArticle(wxCommandEvent& _) {
     int selection = this->articleList->GetSelection();
     if (selection != wxNOT_FOUND) {
         wxString title = this->searchResults.at(selection).title;
@@ -192,5 +198,26 @@ void SearchPage::OnClickDeletePost(wxCommandEvent& _) {
         }
     } else {
         wxMessageBox("Please select a post to delete.", "No Selection", wxICON_WARNING);
+    }
+}
+
+void SearchPage::OnClickEditArticle(wxCommandEvent &_) {
+    int selection = this->articleList->GetSelection();
+    if (selection != wxNOT_FOUND) {
+        if (wxMessageBox("Are you sure you want to edit this post?", ARTICLE_EDIT_BUTTON_TEXT, wxICON_QUESTION | wxYES_NO) == wxYES) {
+            PageManager* manager = PageManager::GetInstance();
+            wxFrame* frame = manager->GetPage(PageID::ID_Add);
+
+            // 이 변환은 PageManager에서 반환된 객체가 실제로 AddPage의 인스턴스임을 우리가 알고 있기 때문에 안전합니다.
+            auto* pageIns = static_cast<AddPage*>(frame);
+
+            DataItem& item = this->searchResults[selection];
+            pageIns->DisplayDataItem(item);
+
+            manager->HidePage(PageID::ID_Search);
+            manager->ShowPage(PageID::ID_Add);
+        }
+    } else {
+        wxMessageBox("Please select a post to edit.", "No Selection", wxICON_WARNING);
     }
 }

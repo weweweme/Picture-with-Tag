@@ -16,7 +16,8 @@ class PageManager {
 public:
     static PageManager* GetInstance();
 
-    void RegisterPage(PageID id, wxFrame *frame);
+    void RegisterPage(PageID id, wxFrame *page);
+    wxFrame* GetPage(PageID id);
     void ShowPage(PageID id);
     void HidePage(PageID id);
 

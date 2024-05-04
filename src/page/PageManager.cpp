@@ -10,8 +10,12 @@ PageManager* PageManager::GetInstance() {
     return instance;
 }
 
-void PageManager::RegisterPage(PageID id, wxFrame* frame) {
-    this->pages[id] = frame;
+void PageManager::RegisterPage(PageID id, wxFrame* page) {
+    this->pages[id] = page;
+}
+
+wxFrame* PageManager::GetPage(PageID id) {
+    return this->pages[id];
 }
 
 void PageManager::ShowPage(PageID id) {
