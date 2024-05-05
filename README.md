@@ -1,3 +1,4 @@
+
 # Purpose
 
 - Implement a simple data storage and search module
@@ -14,13 +15,15 @@
 
 - Searchable by title
 - Searchable by tags
-- Searchable by text
+- Data Management
 
 ### Development Environment
 
-- C++
+- C++ 20
 - CLion 2024.1
+- wxWidgets
+- Boost
 
 ### Target Platform
 
-- Windows
+- Windows, macOS
