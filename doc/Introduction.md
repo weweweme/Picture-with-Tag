@@ -5,10 +5,12 @@
 # 2. Purpose of this program
 - This program aims to create a tool that effectively manages and facilitates easy retrieval of user data by combining titles, images, and tags.
 
+![img](../rsc/Introduction_img.png)
+
 # 3. How to use
 - Editing: You can attach titles, tags, and photos and then save them.
     - It is not necessary to input the body, but saving other elements is mandatory.
 - Searching: You can search based on specific criteria.
     - Various actions can be performed based on the searched data.
 
-![img](../rsc/Introduction_img.png)
+![Flow_Chart](../rsc/FlowChart.png)
